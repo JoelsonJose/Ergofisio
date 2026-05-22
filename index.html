@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ergofisio | Saúde e Ergonomia no Trabalho (UNIFG)</title>
+  <meta name="description" content="Projeto de Fisioterapia da UNIFG focado em preservar a integridade física e mental dos educadores através de alongamentos, adaptações ergonômicas e correção postural.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%232E6B4A'/><circle cx='50' cy='40' r='10' fill='%23EDE7D9'/></svg>">
+
+  <!-- Google Fonts - Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Sticky Header & Navigation -->
+  <header class="main-header">
+    <div class="container header-container">
+      <a href="#inicio" class="logo-container" id="brand-logo" aria-label="Ergofisio Home">
+        <img src="img/logo.jpg" alt="Ergofisio Logo" class="brand-logo-img">
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="desktop-nav" aria-label="Menu Principal">
+        <ul>
+          <li><a href="#inicio" class="nav-link active">Início</a></li>
+          <li><a href="#sobre" class="nav-link">Sobre o Projeto</a></li>
+          <li><a href="#exercicios" class="nav-link">Alongamentos</a></li>
+          <li><a href="#adaptacoes" class="nav-link">Adaptações</a></li>
+          <li><a href="#consequencias" class="nav-link">Consequências</a></li>
+          <li><a href="#postura" class="nav-link">Ergonomia</a></li>
+        </ul>
+      </nav>
+
+      <!-- Action Buttons & Break Timer Toggle -->
+      <div class="header-actions">
+        <button class="btn btn-outline break-timer-btn" id="open-timer-widget" aria-label="Temporizador de Pausa">
+          <i data-lucide="clock"></i>
+          <span class="btn-text">Lembrete de Pausa</span>
+          <span class="timer-badge" id="header-timer-badge" style="display: none;">50:00</span>
+        </button>
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobile-menu-btn" aria-label="Abrir Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-menu-drawer" id="mobile-drawer">
+    <div class="drawer-header">
+      <div class="drawer-logo">
+        <span class="logo-text">Ergofisio</span>
+      </div>
+      <button class="close-drawer-btn" id="close-drawer-btn" aria-label="Fechar Menu">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <nav class="mobile-nav" aria-label="Menu Mobile">
+      <ul>
+        <li><a href="#inicio" class="drawer-link">Início</a></li>
+        <li><a href="#sobre" class="drawer-link">Sobre o Projeto</a></li>
+        <li><a href="#exercicios" class="drawer-link">Alongamentos</a></li>
+        <li><a href="#adaptacoes" class="drawer-link">Adaptações</a></li>
+        <li><a href="#consequencias" class="drawer-link">Consequências</a></li>
+        <li><a href="#postura" class="drawer-link">Ergonomia</a></li>
+      </ul>
+    </nav>
+    <div class="drawer-footer">
+      <button class="btn btn-primary w-full break-timer-btn" id="drawer-timer-btn">
+        <i data-lucide="clock"></i>
+        Ativar Alerta de Pausa
+      </button>
+    </div>
+  </div>
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+
+  <!-- Main Content Layout -->
+  <main>
+
+    <!-- SECTION 1: HERO SECTION -->
+    <section id="inicio" class="hero-section">
+      <div class="container hero-container grid grid-2">
+        <div class="hero-content">
+          <span class="badge hero-badge">Curso de Fisioterapia — UNIFG</span>
+          <h1 class="hero-title">Preservando a integridade dos educadores.</h1>
+          <p class="hero-description text-justify">
+            O <strong>Ergofisio</strong> é um projeto desenvolvido pelo curso de fisioterapia com o foco principal em preservar a integridade física e mental dos educadores da UNIFG. Siga nossas orientações e alongamentos preventivos.
+          </p>
+          <div class="hero-cta-group">
+            <a href="#exercicios" class="btn btn-primary btn-lg">
+              Praticar Alongamentos
+              <i data-lucide="arrow-right"></i>
+            </a>
+            <a href="#sobre" class="btn btn-outline btn-lg">
+              Conhecer o Projeto
+              <i data-lucide="info"></i>
+            </a>
+          </div>
+          
+          <!-- Autores Badge Area -->
+          <div class="hero-stats">
+            <div class="stat-item flex-row gap-sm align-center">
+              <span class="stat-label uppercase font-bold text-primary">Alunos Autores:</span>
+              <div class="students-badges flex flex-wrap gap-xs">
+                <span class="badge student-badge">Adriana Soares</span>
+                <span class="badge student-badge">Ana Alice</span>
+                <span class="badge student-badge">Maria Júlia</span>
+                <span class="badge student-badge">Thiago Vinicius</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Hero Visual Area -->
+        <div class="hero-visual">
+          <div class="visual-container">
+            <div class="visual-bg-circle"></div>
+            <!-- Premium Glassmorphic Brand Presentation Card -->
+            <div class="hero-brand-card shadow-lg animate-float-slow">
+              <div class="brand-card-inner">
+                <div class="brand-logo-frame">
+                  <img src="img/logo.jpg" alt="Ergofisio Logo" class="brand-card-logo">
+                </div>
+                <div class="brand-card-divider"></div>
+                <h3 class="brand-card-title">Ergofisio</h3>
+                <p class="brand-card-subtitle">Saúde e Ergonomia no Trabalho</p>
+                <div class="brand-card-footer">
+                  <span class="badge brand-badge-glow">UNIFG Fisioterapia</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: SOBRE O PROJETO (SOBRE + PANFLETO DIGITAL) -->
+    <section id="sobre" class="about-section">
+      <div class="container grid grid-2 gap-lg align-center">
+        <!-- Digital Brochure Viewer (Left) -->
+        <div class="about-visual flex flex-column flex-center">
+          <span class="badge mb-sm">Visualizar Folder Físico</span>
+          <div class="brochure-viewer shadow-lg">
+            <!-- Swipable/Draggable Carousel Container -->
+            <div class="brochure-carousel-container">
+              <div class="brochure-carousel" id="brochure-carousel">
+                <div class="brochure-slide" data-side="frente">
+                  <img src="img/folder_verso.jpg" alt="Folder Ergofisio Frente (Capa)" class="brochure-carousel-img">
+                </div>
+                <div class="brochure-slide" data-side="verso">
+                  <img src="img/folder_frente.jpg" alt="Folder Ergofisio Verso (Conteúdo)" class="brochure-carousel-img">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Carousel dot indicators -->
+            <div class="carousel-dots">
+              <span class="carousel-dot active" data-slide="0"></span>
+              <span class="carousel-dot" data-slide="1"></span>
+            </div>
+
+            <div class="brochure-download-link text-center mt-sm">
+              <a href="img/folder_verso.jpg" target="_blank" class="btn btn-text btn-sm" id="brochure-download-btn">
+                <i data-lucide="external-link"></i> Visualizar em Alta Resolução
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Content (Right) -->
+        <div class="about-content">
+          <span class="badge">Ergofisio Fisioterapia</span>
+          <h2 class="section-title">Você sabe qual o objetivo da Ergonomia?</h2>
+          <p class="about-text-lead text-justify">
+            A ergonomia tem como objetivo principal modificar as ferramentas, os móveis e o ambiente para que você trabalhe com conforto, segurança e eficiência, evitando dores e lesões.
+          </p>
+          
+          <h3 class="mt-lg mb-sm text-primary font-semibold">Benefícios do Alongamento:</h3>
+          <div class="benefits-list grid mt-sm gap-xs" style="grid-template-columns: 1fr;">
+            <div class="value-item">
+              <i data-lucide="check" class="text-primary"></i>
+              <span>Alivia dores e previne lesões</span>
+            </div>
+            <div class="value-item">
+              <i data-lucide="check" class="text-primary"></i>
+              <span>Alivia o estresse</span>
+            </div>
+            <div class="value-item">
+              <i data-lucide="check" class="text-primary"></i>
+              <span>Corrige a postura</span>
+            </div>
+            <div class="value-item">
+              <i data-lucide="check" class="text-primary"></i>
+              <span>Reduz a rigidez muscular</span>
+            </div>
+            <div class="value-item">
+              <i data-lucide="check" class="text-primary"></i>
+              <span>Melhora a circulação sanguínea</span>
+            </div>
+            <div class="value-item">
+              <i data-lucide="check" class="text-primary"></i>
+              <span>Reduz o cansaço</span>
+            </div>
+            <div class="value-item">
+              <i data-lucide="check" class="text-primary"></i>
+              <span>Traz mais disposição</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: DICA DO DIA (Sourced from Brochure) -->
+    <section id="dica-do-dia" class="tip-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="badge">Estudo Postural</span>
+          <h2 class="section-title">Sua Dica de Ergonomia do Dia</h2>
+          <p class="section-description">
+            Baseado no folder oficial do projeto, clique no cartão abaixo para revelar uma orientação ergonômica ou alongamento selecionado para hoje.
+          </p>
+        </div>
+
+        <div class="tip-interactive-area flex flex-center">
+          <!-- 3D Flippable Card -->
+          <div class="flip-card-container" id="daily-tip-card">
+            <div class="flip-card-inner">
+              <!-- Front Side of Card -->
+              <div class="flip-card-front">
+                <div class="card-watermark">
+                  <i data-lucide="sparkles"></i>
+                </div>
+                <div class="card-front-content">
+                  <div class="brand-badge-mini">Ergofisio UNIFG</div>
+                  <div class="icon-circle-lg">
+                    <i data-lucide="help-circle"></i>
+                  </div>
+                  <h3>Qual será sua dica ergonômica para hoje?</h3>
+                  <p class="click-instruction">Clique para virar o cartão e descobrir!</p>
+                  <div class="card-date-badge" id="tip-date-badge">22 de Maio de 2026</div>
+                </div>
+              </div>
+              
+              <!-- Back Side of Card -->
+              <div class="flip-card-back">
+                <div class="card-back-header">
+                  <span class="tip-number-badge" id="tip-number">Dica #22</span>
+                  <div class="icon-circle-sm">
+                    <i data-lucide="lightbulb" id="tip-icon"></i>
+                  </div>
+                </div>
+                <div class="card-back-content">
+                  <h3 class="tip-title" id="tip-title-text">Aguardando Dica...</h3>
+                  <p class="tip-body" id="tip-description-text">
+                    Carregando a dica oficial do dia...
+                  </p>
+                </div>
+                <div class="card-back-footer">
+                  <button class="btn btn-text btn-draw-tip" id="draw-tip-btn" aria-label="Sortear outra dica">
+                    <i data-lucide="shuffle"></i> Outra Dica
+                  </button>
+                  <button class="btn btn-text btn-copy-tip" id="copy-tip-btn" aria-label="Copiar dica">
+                    <i data-lucide="copy"></i> Copiar
+                  </button>
+                  <button class="btn btn-text btn-share-tip" id="share-tip-btn" aria-label="Compartilhar dica">
+                    <i data-lucide="share-2"></i> Compartilhar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: 12 ALONGAMENTOS PREVENTIVOS (BIBLIOTECA DE EXERCÍCIOS) -->
+    <section id="exercicios" class="exercises-section">
+      <div class="container">
+        <div class="section-header flex flex-between flex-wrap gap-md">
+          <div>
+            <span class="badge">Alongamentos</span>
+            <h2 class="section-title">Os 12 Alongamentos Oficiais</h2>
+            <p class="section-description">
+              Rotina física preventiva para os educadores. Execute cada um dos 12 alongamentos ilustrados no panfleto físico.
+            </p>
+          </div>
+          
+          <!-- Category Filter Tabs -->
+          <div class="filter-tabs-container">
+            <div class="filter-tabs" id="exercise-filters" role="tablist">
+              <button class="filter-tab active" data-category="todos" role="tab" aria-selected="true">Todos</button>
+              <button class="filter-tab" data-category="membros-sup" role="tab" aria-selected="false">Membros Superiores</button>
+              <button class="filter-tab" data-category="coluna-tronco" role="tab" aria-selected="false">Coluna e Tronco</button>
+              <button class="filter-tab" data-category="membros-inf" role="tab" aria-selected="false">Membros Inferiores</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exercises Grid -->
+        <div class="exercises-grid grid grid-3" id="exercises-list">
+          <!-- The 12 Exercises will be rendered dynamically by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: ADAPTAÇÕES ERGONÔMICAS -->
+    <section id="adaptacoes" class="adaptations-section" style="background-color: var(--bg-light);">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="badge">Ajustes Físicos</span>
+          <h2 class="section-title">Adaptações Ergonômicas Recomendadas</h2>
+          <p class="section-description">
+            Modificações essenciais nas ferramentas e móveis do posto de trabalho para garantir seu conforto e integridade física.
+          </p>
+        </div>
+
+        <div class="grid grid-2 gap-lg mt-md">
+          <!-- 1. Cadeira Ergonômica -->
+          <div class="exercise-card flex flex-row align-center gap-md p-lg">
+            <div class="icon-circle-lg bg-accent-light text-primary" style="flex-shrink: 0; width: 64px; height: 64px;">
+              <i data-lucide="armchair"></i>
+            </div>
+            <div>
+              <h3 class="exercise-title" style="margin-bottom: 6px;">Cadeira Ergonômica</h3>
+              <p class="exercise-desc" style="margin-bottom: 0; font-size: 0.9rem;">
+                O uso da cadeira ergonômica ajuda a reduzir a sobrecarga lombar durante a jornada laboral.
+              </p>
+            </div>
+          </div>
+
+          <!-- 2. Suporte para Notebook -->
+          <div class="exercise-card flex flex-row align-center gap-md p-lg">
+            <div class="icon-circle-lg bg-accent-light text-primary" style="flex-shrink: 0; width: 64px; height: 64px;">
+              <i data-lucide="laptop"></i>
+            </div>
+            <div>
+              <h3 class="exercise-title" style="margin-bottom: 6px;">Suporte para Notebook</h3>
+              <p class="exercise-desc" style="margin-bottom: 0; font-size: 0.9rem;">
+                Ajustar a altura do monitor para ficar na linha dos olhos, e assim evitar a flexão da cervical e sobrecarga lombar.
+              </p>
+            </div>
+          </div>
+
+          <!-- 3. Suporte para os Pés -->
+          <div class="exercise-card flex flex-row align-center gap-md p-lg">
+            <div class="icon-circle-lg bg-accent-light text-primary" style="flex-shrink: 0; width: 64px; height: 64px;">
+              <i data-lucide="footprints"></i>
+            </div>
+            <div>
+              <h3 class="exercise-title" style="margin-bottom: 6px;">Suporte para os Pés</h3>
+              <p class="exercise-desc" style="margin-bottom: 0; font-size: 0.9rem;">
+                Adicionar o apoio aos pés para garantir o retorno venoso, alinhamento adequado da coluna e quadril e evitar a compressão vascular.
+              </p>
+            </div>
+          </div>
+
+          <!-- 4. Mouse Pad e Teclado Pad -->
+          <div class="exercise-card flex flex-row align-center gap-md p-lg">
+            <div class="icon-circle-lg bg-accent-light text-primary" style="flex-shrink: 0; width: 64px; height: 64px;">
+              <i data-lucide="keyboard"></i>
+            </div>
+            <div>
+              <h3 class="exercise-title" style="margin-bottom: 6px;">Mouse Pad e Teclado Pad</h3>
+              <p class="exercise-desc" style="margin-bottom: 0; font-size: 0.9rem;">
+                Usar esses equipamentos evita a fadiga muscular e aumenta a estabilidade do punho.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: CONSEQUÊNCIAS DA FALTA DE ERGONOMIA -->
+    <section id="consequencias" class="consequences-section" style="background-color: var(--bg-dark);">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="badge">Riscos Ocupacionais</span>
+          <h2 class="section-title">Consequências da Falta de Ergonomia</h2>
+          <p class="section-description">
+            A ausência de ajustes ergonômicos e pausas ativas pode causar lesões graves à saúde física e mental dos profissionais.
+          </p>
+        </div>
+
+        <div class="grid grid-3 gap-md">
+          <!-- 1. Problemas Musculares e Articulares -->
+          <div class="exercise-card" style="background-color: var(--white); padding: 32px;">
+            <div class="icon-circle-lg mb-md text-primary bg-accent-light">
+              <i data-lucide="shield-alert"></i>
+            </div>
+            <h3 class="exercise-title">Problemas Musculares e Articulares (LER)</h3>
+            <ul class="mt-md flex flex-column gap-sm" style="list-style: none; padding-left: 0;">
+              <li class="flex align-center gap-sm font-medium"><i data-lucide="minus" class="text-primary" style="width: 14px;"></i> Tendinites</li>
+              <li class="flex align-center gap-sm font-medium"><i data-lucide="minus" class="text-primary" style="width: 14px;"></i> Bursites</li>
+              <li class="flex align-center gap-sm font-medium"><i data-lucide="minus" class="text-primary" style="width: 14px;"></i> Síndrome do Túnel do Carpo</li>
+              <li class="flex align-center gap-sm font-medium"><i data-lucide="minus" class="text-primary" style="width: 14px;"></i> Lombalgia e Cervicalgia</li>
+            </ul>
+          </div>
+
+          <!-- 2. Problemas Circulatórios e de Visão -->
+          <div class="exercise-card" style="background-color: var(--white); padding: 32px;">
+            <div class="icon-circle-lg mb-md text-primary bg-accent-light">
+              <i data-lucide="eye"></i>
+            </div>
+            <h3 class="exercise-title">Problemas Circulatórios e de Visão</h3>
+            <ul class="mt-md flex flex-column gap-sm" style="list-style: none; padding-left: 0;">
+              <li class="flex align-center gap-sm font-medium"><i data-lucide="minus" class="text-primary" style="width: 14px;"></i> Varizes</li>
+              <li class="flex align-center gap-sm font-medium"><i data-lucide="minus" class="text-primary" style="width: 14px;"></i> Fadiga Visual</li>
+            </ul>
+          </div>
+
+          <!-- 3. Transtornos Psicológicos Ocupacionais -->
+          <div class="exercise-card" style="background-color: var(--white); padding: 32px;">
+            <div class="icon-circle-lg mb-md text-primary bg-accent-light">
+              <i data-lucide="brain"></i>
+            </div>
+            <h3 class="exercise-title">Transtornos Psicológicos Ocupacionais</h3>
+            <ul class="mt-md flex flex-column gap-sm" style="list-style: none; padding-left: 0;">
+              <li class="flex align-center gap-sm font-medium"><i data-lucide="minus" class="text-primary" style="width: 14px;"></i> Ansiedade e Depressão</li>
+              <li class="flex align-center gap-sm font-medium"><i data-lucide="minus" class="text-primary" style="width: 14px;"></i> Síndrome de Burnout</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: ERGONOMIA NO TRABALHO / COTIDIANO -->
+    <section id="postura" class="posture-section" style="background-color: var(--bg-light);">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="badge">Prevenção no Cotidiano</span>
+          <h2 class="section-title">Ergonomia no Trabalho</h2>
+          <p class="section-description">
+            Orientações posturais oficiais do panfleto de Fisioterapia para as tarefas mais comuns do seu dia a dia laboral e pessoal.
+          </p>
+        </div>
+
+        <div class="grid grid-2 gap-lg">
+          <!-- Posture Graphic (Left) -->
+          <div class="exercise-card p-lg flex flex-column flex-center">
+            <h3 class="exercise-title mb-md">Postura Ergonômica Sentado</h3>
+            <div class="flex gap-md w-full justify-around flex-wrap mt-sm">
+              <div class="text-center p-sm" style="border: 2px solid var(--success); border-radius: var(--radius-md); background: rgba(40, 167, 69, 0.05); width: 45%;">
+                <i data-lucide="check-circle" class="text-success mb-xs" style="width: 32px; height: 32px;"></i>
+                <h4 class="text-success font-semibold">Correto</h4>
+                <p style="font-size: 0.75rem;" class="mt-xs">Coluna ereta, pernas e coxas a 90°, pés apoiados, tela na altura dos olhos.</p>
+              </div>
+              <div class="text-center p-sm" style="border: 2px solid var(--error); border-radius: var(--radius-md); background: rgba(220, 53, 69, 0.05); width: 45%;">
+                <i data-lucide="x-circle" class="text-error mb-xs" style="width: 32px; height: 32px;"></i>
+                <h4 class="text-error font-semibold">Incorreto</h4>
+                <p style="font-size: 0.75rem;" class="mt-xs">Coluna curvada, pescoço flexionado olhando para baixo, bacia desalinhada.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Guidelines Grid (Right) -->
+          <div class="flex flex-column gap-md">
+            <!-- 1. Levantar Peso -->
+            <div class="exercise-card p-md flex gap-sm align-center">
+              <div class="icon-circle-sm bg-accent-light text-primary" style="flex-shrink: 0;"><i data-lucide="arrow-up-circle"></i></div>
+              <div>
+                <h4 class="font-bold text-primary">Levantar Peso</h4>
+                <p style="font-size: 0.85rem;">Dobre os joelhos e use a força das pernas mantendo a coluna totalmente ereta e a carga próxima ao corpo.</p>
+              </div>
+            </div>
+
+            <!-- 2. Postura -->
+            <div class="exercise-card p-md flex gap-sm align-center">
+              <div class="icon-circle-sm bg-accent-light text-primary" style="flex-shrink: 0;"><i data-lucide="accessibility"></i></div>
+              <div>
+                <h4 class="font-bold text-primary">Postura</h4>
+                <p style="font-size: 0.85rem;">Mantenha o alinhamento adequado dos ombros, pescoço e coluna nas atividades de pé.</p>
+              </div>
+            </div>
+
+            <!-- 3. Computador -->
+            <div class="exercise-card p-md flex gap-sm align-center">
+              <div class="icon-circle-sm bg-accent-light text-primary" style="flex-shrink: 0;"><i data-lucide="monitor"></i></div>
+              <div>
+                <h4 class="font-bold text-primary">Computador</h4>
+                <p style="font-size: 0.85rem;">Ajuste móveis e ferramentas ergonômicas (cadeira, monitor e suportes) de acordo com seu biotipo.</p>
+              </div>
+            </div>
+
+            <!-- 4. Direção -->
+            <div class="exercise-card p-md flex gap-sm align-center">
+              <div class="icon-circle-sm bg-accent-light text-primary" style="flex-shrink: 0;"><i data-lucide="car"></i></div>
+              <div>
+                <h4 class="font-bold text-primary">Direção</h4>
+                <p style="font-size: 0.85rem;">Mantenha braços e pernas levemente flexionados, quadris apoiados e encosto firme na coluna.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="container footer-grid grid grid-3">
+      <!-- Footer Brand Column -->
+      <div class="footer-col-brand">
+        <!-- Footer Logo -->
+        <div class="footer-logo">
+          <img src="img/logo.jpg" alt="Ergofisio Logo" class="footer-logo-img">
+        </div>
+        <p class="footer-brand-desc mt-sm">
+          Foco em preservar a integridade física e mental dos educadores da UNIFG. Desenvolvido pelo curso de Fisioterapia.
+        </p>
+        <p class="footer-copy mt-lg">
+          &copy; 2026 Ergofisio UNIFG. Todos os direitos reservados.
+        </p>
+      </div>
+
+      <!-- Footer Quick Links Column -->
+      <div class="footer-col-links">
+        <h4 class="footer-col-title">Links Rápidos</h4>
+        <ul class="footer-links-list">
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#sobre">Sobre o Projeto</a></li>
+          <li><a href="#exercicios">Alongamentos Oficiais</a></li>
+          <li><a href="#adaptacoes">Adaptações Recomendadas</a></li>
+          <li><a href="#consequencias">Consequências</a></li>
+        </ul>
+      </div>
+
+      <!-- Footer Contact/Info Column -->
+      <div class="footer-col-info">
+        <h4 class="footer-col-title">Fisioterapia UNIFG</h4>
+        <p class="footer-info-text" style="font-size: 0.85rem; line-height: 1.5;">
+          Projeto acadêmico integrado da UNIFG - Ecossistema Ânima de Ensino.<br><br>
+          <strong>Alunos Autores:</strong><br>
+          Adriana Soares, Ana Alice, Maria Júlia, Thiago Vinicius.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING BREAK TIMER INTERACTIVE WIDGET (MODAL PANEL) -->
+  <div class="timer-widget-modal" id="timer-modal">
+    <div class="timer-widget-card shadow-lg">
+      <div class="timer-widget-header">
+        <div class="flex align-center gap-sm">
+          <i data-lucide="clock" class="text-primary"></i>
+          <h4 class="timer-modal-title">Lembrete de Pausa Ativa</h4>
+        </div>
+        <button class="close-timer-modal" id="close-timer-modal-btn" aria-label="Fechar Cronômetro">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      
+      <div class="timer-widget-body flex flex-column flex-center text-center">
+        <!-- Visual Countdown -->
+        <div class="countdown-display-wrapper">
+          <svg viewBox="0 0 100 100" class="countdown-circle-svg">
+            <circle cx="50" cy="50" r="45" class="countdown-track" />
+            <circle cx="50" cy="50" r="45" class="countdown-fill" id="break-timer-stroke" stroke-dasharray="283" stroke-dashoffset="0" />
+          </svg>
+          <div class="countdown-time-container">
+            <span class="countdown-numbers" id="break-timer-display">50:00</span>
+            <span class="countdown-label" id="break-timer-status-label">Em Espera</span>
+          </div>
+        </div>
+
+        <p class="timer-modal-description mt-sm">
+          Configure um alarme visual para realizar pausas laborais saudáveis e alongamentos preventivos.
+        </p>
+
+        <!-- Interval Options -->
+        <div class="timer-interval-options mt-sm flex gap-sm">
+          <button class="interval-opt-btn active" data-minutes="50">50 min</button>
+          <button class="interval-opt-btn" data-minutes="30">30 min</button>
+          <button class="interval-opt-btn" data-minutes="20">20 min</button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="timer-modal-actions flex gap-sm mt-md w-full">
+          <button class="btn btn-primary flex-1" id="timer-toggle-btn">
+            <i data-lucide="play" id="timer-btn-icon"></i>
+            <span id="timer-btn-text">Iniciar</span>
+          </button>
+          <button class="btn btn-outline" id="timer-reset-btn" disabled>
+            <i data-lucide="rotate-ccw"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXERCISE ACTIVE RUNNING TIMER MODAL -->
+  <div class="exercise-timer-modal-overlay" id="exercise-timer-modal">
+    <div class="exercise-timer-card shadow-lg animate-scale">
+      <button class="close-exercise-timer-btn" id="close-exercise-timer-btn" aria-label="Fechar temporizador do exercício">
+        <i data-lucide="x"></i>
+      </button>
+      
+      <div class="exercise-timer-header text-center">
+        <span class="badge" id="ex-timer-category">Pescoço e Ombros</span>
+        <h3 class="exercise-timer-title" id="ex-timer-title">Alongamento Cervical Lateral</h3>
+        <p class="exercise-timer-instruction" id="ex-timer-instruction">Puxe suavemente a cabeça em direção ao ombro direito.</p>
+      </div>
+
+      <div class="exercise-timer-visual-area flex flex-center flex-column">
+        <!-- Interactive Countdown Wheel -->
+        <div class="ex-countdown-wheel">
+          <svg viewBox="0 0 120 120" class="ex-circle-svg">
+            <circle cx="60" cy="60" r="52" class="ex-track" />
+            <circle cx="60" cy="60" r="52" class="ex-fill" id="ex-timer-stroke" stroke-dasharray="326.7" stroke-dashoffset="0" />
+          </svg>
+          <div class="ex-center">
+            <span class="ex-countdown-number" id="ex-timer-countdown">30</span>
+            <span class="ex-countdown-label">Segundos</span>
+          </div>
+        </div>
+
+        <div class="exercise-timer-controls flex gap-md mt-lg">
+          <button class="btn btn-primary btn-circle-lg" id="ex-timer-play-btn" aria-label="Iniciar/Pausar cronômetro">
+            <i data-lucide="play" style="width: 24px; height: 24px;"></i>
+          </button>
+          <button class="btn btn-outline btn-circle-lg" id="ex-timer-reset-btn" aria-label="Reiniciar cronômetro">
+            <i data-lucide="rotate-ccw" style="width: 20px; height: 20px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="exercise-timer-tips flex gap-sm align-center">
+        <i data-lucide="shield-alert" class="text-primary" style="flex-shrink: 0;"></i>
+        <p>Mantenha movimentos lentos e respiração profunda. Pare imediatamente em caso de dor ou pinçamento.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom JS -->
+  <script src="js/app.js"></script>
+</body>
+</html>
