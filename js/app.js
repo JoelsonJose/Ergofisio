@@ -199,96 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', closeDrawer);
   });
 
-  // ==========================================
-  // 2.5. CONTROLE DO CARROSSEL DO PANFLETO DIGITAL
-  // ==========================================
-  const brochureCarousel = document.getElementById('brochure-carousel');
-  const carouselDots = document.querySelectorAll('.carousel-dot');
-  const brochureDownloadBtn = document.getElementById('brochure-download-btn');
 
-  if (brochureCarousel && brochureDownloadBtn) {
-    const images = ['img/folder_verso.jpg', 'img/folder_frente.jpg'];
-
-    // Update active dot and download button when scrolling
-    let scrollTimeout;
-    brochureCarousel.addEventListener('scroll', () => {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        const width = brochureCarousel.clientWidth;
-        const scrollLeft = brochureCarousel.scrollLeft;
-        const activeIndex = Math.round(scrollLeft / width);
-
-        // Update dots
-        carouselDots.forEach((dot, idx) => {
-          if (idx === activeIndex) {
-            dot.classList.add('active');
-          } else {
-            dot.classList.remove('active');
-          }
-        });
-
-        // Update download href
-        brochureDownloadBtn.href = images[activeIndex];
-      }, 50);
-    });
-
-    // Make dot indicator clicks scroll the carousel
-    carouselDots.forEach(dot => {
-      dot.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const slideIdx = parseInt(dot.getAttribute('data-slide'));
-        const width = brochureCarousel.clientWidth;
-        brochureCarousel.scrollTo({
-          left: slideIdx * width,
-          behavior: 'smooth'
-        });
-      });
-    });
-
-    // Support mouse drag-scroll on desktops
-    let isDown = false;
-    let startX;
-    let scrollLeftVal;
-
-    brochureCarousel.addEventListener('mousedown', (e) => {
-      isDown = true;
-      brochureCarousel.style.scrollSnapType = 'none'; // Temporarily disable snapping during drag for responsiveness
-      startX = e.pageX - brochureCarousel.offsetLeft;
-      scrollLeftVal = brochureCarousel.scrollLeft;
-    });
-
-    brochureCarousel.addEventListener('mouseleave', () => {
-      if (!isDown) return;
-      isDown = false;
-      brochureCarousel.style.scrollSnapType = 'x mandatory';
-      snapToSlide();
-    });
-
-    brochureCarousel.addEventListener('mouseup', () => {
-      if (!isDown) return;
-      isDown = false;
-      brochureCarousel.style.scrollSnapType = 'x mandatory';
-      snapToSlide();
-    });
-
-    brochureCarousel.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - brochureCarousel.offsetLeft;
-      const walk = (x - startX) * 1.5; // Drag scroll velocity
-      brochureCarousel.scrollLeft = scrollLeftVal - walk;
-    });
-
-    function snapToSlide() {
-      const width = brochureCarousel.clientWidth;
-      const scrollLeft = brochureCarousel.scrollLeft;
-      const targetIndex = Math.round(scrollLeft / width);
-      brochureCarousel.scrollTo({
-        left: targetIndex * width,
-        behavior: 'smooth'
-      });
-    }
-  }
 
   // ==========================================
   // 3. SEÇÃO DICA DO DIA - FLIP, OUTRA DICA & CONTROLES
@@ -421,10 +332,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "membros-sup",
       categoriaLbl: "Membros Superiores",
       foco: "Braços e Ombros",
-      duracao: "30 segundos",
+      duracao: "10 segundos",
       desc: "Estende toda a cadeia muscular superior e ajuda a realinhar a coluna após horas de postura sentada.",
       instrucao: "Entrelace os dedos das mãos e empurre os braços verticalmente para cima, acima da cabeça, mantendo os cotovelos esticados e a coluna bem alinhada.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
@@ -433,10 +344,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "membros-sup",
       categoriaLbl: "Membros Superiores",
       foco: "Articulação do Ombro",
-      duracao: "30s cada lado",
+      duracao: "10s cada lado",
       desc: "Reduz o acúmulo de tensão na articulação do ombro e na parte superior das costas.",
       instrucao: "Estenda um braço horizontalmente à frente do peito e, com a outra mão, puxe suavemente o cotovelo em direção ao corpo, mantendo o ombro relaxado.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
@@ -445,10 +356,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "membros-sup",
       categoriaLbl: "Membros Superiores",
       foco: "Tríceps e Dorsal",
-      duracao: "30s cada lado",
+      duracao: "10s cada lado",
       desc: "Melhora a flexibilidade dos braços e alivia a compressão na parte alta e lateral do tronco.",
       instrucao: "Eleve um braço, dobre o cotovelo atrás da cabeça e use a outra mão para puxar suavemente o cotovelo para baixo. Mantenha o pescoço livre.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
@@ -457,10 +368,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "membros-sup",
       categoriaLbl: "Membros Superiores",
       foco: "Nuca e Cervical",
-      duracao: "30 segundos",
+      duracao: "10 segundos",
       desc: "Diminui a rigidez na base do crânio provocada pela inclinação constante da cabeça ao olhar telas.",
       instrucao: "Entrelace as mãos atrás da nuca e puxe a cabeça suavemente para a frente, aproximando o queixo do peito sem curvar o tronco.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
@@ -469,10 +380,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "membros-sup",
       categoriaLbl: "Membros Superiores",
       foco: "Pescoço e Trapézio",
-      duracao: "30s cada lado",
+      duracao: "10s cada lado",
       desc: "Combate torcicolos e tensões acumuladas nos ombros por estresse ou telas baixas.",
       instrucao: "Sentado ereto, puxe suavemente a cabeça com a mão em direção ao ombro correspondente até sentir alongar a lateral oposta do pescoço. Repita do outro lado.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
@@ -481,10 +392,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "coluna-tronco",
       categoriaLbl: "Coluna e Tronco",
       foco: "Região Torácica",
-      duracao: "30 segundos",
+      duracao: "10 segundos",
       desc: "Arredonda a coluna alta e afasta as escápulas, liberando a rigidez muscular dorsal.",
       instrucao: "Entrelace os dedos à frente e empurre as mãos para a frente com as palmas voltadas para fora, curvando suavemente as costas e abaixando a cabeça.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
@@ -493,10 +404,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "coluna-tronco",
       categoriaLbl: "Coluna e Tronco",
       foco: "Coluna e Posterior",
-      duracao: "30 segundos",
+      duracao: "10 segundos",
       desc: "Alongamento global que relaxa a lombar, glúteos e a parte de trás das pernas de uma só vez.",
       instrucao: "De pé, com os joelhos destravados, incline o tronco para a frente a partir do quadril, deixando os braços e a cabeça caírem relaxados em direção ao chão.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Médio"
     },
     {
@@ -505,10 +416,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "coluna-tronco",
       categoriaLbl: "Coluna e Tronco",
       foco: "Oblíquos e Lombar",
-      duracao: "30s cada lado",
+      duracao: "10s cada lado",
       desc: "Abre espaço nas costelas e melhora a mobilidade lateral da lombar e cintura.",
       instrucao: "De pé, eleve um braço acima da cabeça e incline o tronco para o lado oposto, apoiando a outra mão no quadril para estabilização.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
@@ -517,10 +428,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "membros-inf",
       categoriaLbl: "Membros Inferiores",
       foco: "Coxas e Quadril",
-      duracao: "30s cada perna",
+      duracao: "10s cada perna",
       desc: "Descarrega o estresse acumulado na parte anterior da coxa pelo longo tempo sentado na cadeira.",
       instrucao: "Apoie uma das mãos na parede ou cadeira. Com a outra, flexione o joelho e puxe o pé de trás em direção ao glúteo, mantendo os joelhos alinhados.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
@@ -529,10 +440,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "membros-inf",
       categoriaLbl: "Membros Inferiores",
       foco: "Panturrilhas",
-      duracao: "30s cada perna",
+      duracao: "10s cada perna",
       desc: "Estimula a circulação de retorno venoso das pernas e previne dores e encurtamentos musculares.",
       instrucao: "Dê um passo largo à frente flexionando o joelho dianteiro. Mantenha a perna traseira estendida com o calcanhar totalmente apoiado no chão.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
@@ -541,10 +452,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "membros-inf",
       categoriaLbl: "Membros Inferiores",
       foco: "Posterior de Coxa",
-      duracao: "30s cada perna",
+      duracao: "10s cada perna",
       desc: "Ajuda a liberar a tensão ciática e lombar ao alongar os isquiotibiais.",
       instrucao: "Apoie o calcanhar de uma perna estendida sobre um degrau ou cadeira baixa. Incline o tronco à frente a partir do quadril, mantendo as costas retas.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Médio"
     },
     {
@@ -553,10 +464,10 @@ document.addEventListener('DOMContentLoaded', () => {
       categoria: "membros-inf",
       categoriaLbl: "Membros Inferiores",
       foco: "Glúteos e Quadril",
-      duracao: "30s cada perna",
+      duracao: "10s cada perna",
       desc: "Descomprime a articulação do quadril e relaxa a musculatura glútea após longos períodos sentado.",
       instrucao: "Sentado na cadeira, apoie o calcanhar de uma perna sobre o joelho oposto. Mantendo a coluna ereta, incline suavemente o tronco para a frente.",
-      tempoSegundos: 30,
+      tempoSegundos: 10,
       dificuldade: "Médio"
     }
   ];
@@ -650,7 +561,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let activeExObj = null;
   let exTimerInterval = null;
-  let exSecondsLeft = 30;
+  let exSecondsLeft = 10;
   let isExTimerRunning = false;
   const CIRCLE_CIRCUMFERENCE = 326.7; // Calculado de 2 * Math.PI * 52 (raio)
 

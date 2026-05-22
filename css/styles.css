@@ -1274,82 +1274,79 @@ section {
   SOBRE A ERGOFISIO
   =========================================
 */
-.about-visual {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: auto;
-  width: 100%;
-}
-
-/* Digital Brochure Viewer */
-.brochure-viewer {
-  background-color: var(--white);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  border: 1px solid rgba(46, 107, 74, 0.08);
-  box-shadow: var(--shadow-lg);
-  width: 100%;
-  max-width: 650px; /* Made larger for better readability */
+.about-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  transition: var(--transition-normal);
-}
-
-.brochure-viewer:hover {
-  border-color: rgba(46, 107, 74, 0.15);
-}
-
-.brochure-carousel-container {
+  align-items: center;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
   width: 100%;
-  overflow: hidden;
-  border-radius: var(--radius-md);
+}
+
+.benefit-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--accent-light);
+  color: var(--primary);
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(46, 107, 74, 0.04);
   border: 1px solid rgba(46, 107, 74, 0.08);
-  background-color: var(--bg-light);
-  position: relative;
-  cursor: grab;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.brochure-carousel-container:active {
-  cursor: grabbing;
+.benefit-tag i {
+  width: 16px;
+  height: 16px;
+  stroke-width: 3px;
+  color: var(--primary);
 }
 
-.brochure-carousel {
-  display: flex;
-  width: 100%;
-  height: auto;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  -webkit-overflow-scrolling: touch; /* Inertial scrolling for iOS */
-  transition: transform 0.15s ease-out;
+.benefit-tag:hover {
+  transform: translateY(-3px);
+  background-color: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 8px 20px rgba(46, 107, 74, 0.15);
 }
 
-.brochure-carousel::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for Chrome/Safari */
+.benefit-tag:hover i {
+  color: var(--white);
 }
 
-.brochure-slide {
-  flex: 0 0 100%;
-  width: 100%;
-  scroll-snap-align: start;
+/* Product Image Frame (Adaptations) */
+.product-image-frame {
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1.414 / 1; /* Standard A4 folder proportion */
   background-color: var(--white);
-  user-select: none;
-  -webkit-user-drag: none;
+  border: 1px solid rgba(46, 107, 74, 0.08);
+  border-radius: var(--radius-md);
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
-.brochure-carousel-img {
+.product-image-asset {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  user-select: none;
-  pointer-events: none; /* Disables standard browser image dragging */
+  transition: transform 0.3s ease;
+}
+
+.exercise-card:hover .product-image-frame {
+  border-color: rgba(46, 107, 74, 0.2);
+  box-shadow: 0 8px 24px rgba(46, 107, 74, 0.08);
+  transform: scale(1.05);
+}
+
+.exercise-card:hover .product-image-asset {
+  transform: scale(1.08);
 }
 
 .text-justify {
@@ -1363,7 +1360,7 @@ section {
 }
 
 .about-content {
-  padding-left: 24px;
+  padding-left: 0;
 }
 
 .about-text-lead {
@@ -1859,14 +1856,7 @@ section {
     font-size: 0.9rem;
   }
   
-  .about-content {
-    padding-left: 0;
-    margin-top: 24px;
-  }
-  
-  .about-visual {
-    margin-bottom: 24px;
-  }
+
   
   .footer-grid {
     grid-template-columns: 1fr;

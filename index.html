@@ -145,75 +145,45 @@
       </div>
     </section>
 
-    <!-- SECTION 2: SOBRE O PROJETO (SOBRE + PANFLETO DIGITAL) -->
+    <!-- SECTION 2: SOBRE O PROJETO (SOBRE + BENEFÍCIOS) -->
     <section id="sobre" class="about-section">
-      <div class="container grid grid-2 gap-lg align-center">
-        <!-- Digital Brochure Viewer (Left) -->
-        <div class="about-visual flex flex-column flex-center">
-          <span class="badge mb-sm">Visualizar Folder Físico</span>
-          <div class="brochure-viewer shadow-lg">
-            <!-- Swipable/Draggable Carousel Container -->
-            <div class="brochure-carousel-container">
-              <div class="brochure-carousel" id="brochure-carousel">
-                <div class="brochure-slide" data-side="frente">
-                  <img src="img/folder_verso.jpg" alt="Folder Ergofisio Frente (Capa)" class="brochure-carousel-img">
-                </div>
-                <div class="brochure-slide" data-side="verso">
-                  <img src="img/folder_frente.jpg" alt="Folder Ergofisio Verso (Conteúdo)" class="brochure-carousel-img">
-                </div>
-              </div>
-            </div>
-            
-            <!-- Carousel dot indicators -->
-            <div class="carousel-dots">
-              <span class="carousel-dot active" data-slide="0"></span>
-              <span class="carousel-dot" data-slide="1"></span>
-            </div>
-
-            <div class="brochure-download-link text-center mt-sm">
-              <a href="img/folder_verso.jpg" target="_blank" class="btn btn-text btn-sm" id="brochure-download-btn">
-                <i data-lucide="external-link"></i> Visualizar em Alta Resolução
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Text Content (Right) -->
-        <div class="about-content">
+      <div class="container about-container">
+        <!-- Text Content -->
+        <div class="about-content text-center">
           <span class="badge">Ergofisio Fisioterapia</span>
           <h2 class="section-title">Você sabe qual o objetivo da Ergonomia?</h2>
-          <p class="about-text-lead text-justify">
+          <p class="about-text-lead text-justify" style="max-width: 800px; margin: 0 auto 32px auto;">
             A ergonomia tem como objetivo principal modificar as ferramentas, os móveis e o ambiente para que você trabalhe com conforto, segurança e eficiência, evitando dores e lesões.
           </p>
           
-          <h3 class="mt-lg mb-sm text-primary font-semibold">Benefícios do Alongamento:</h3>
-          <div class="benefits-list grid mt-sm gap-xs" style="grid-template-columns: 1fr;">
-            <div class="value-item">
-              <i data-lucide="check" class="text-primary"></i>
+          <h3 class="mt-lg mb-md text-primary font-semibold">Benefícios do Alongamento:</h3>
+          <div class="benefits-list flex flex-wrap flex-center gap-sm mt-sm">
+            <div class="benefit-tag">
+              <i data-lucide="check"></i>
               <span>Alivia dores e previne lesões</span>
             </div>
-            <div class="value-item">
-              <i data-lucide="check" class="text-primary"></i>
+            <div class="benefit-tag">
+              <i data-lucide="check"></i>
               <span>Alivia o estresse</span>
             </div>
-            <div class="value-item">
-              <i data-lucide="check" class="text-primary"></i>
+            <div class="benefit-tag">
+              <i data-lucide="check"></i>
               <span>Corrige a postura</span>
             </div>
-            <div class="value-item">
-              <i data-lucide="check" class="text-primary"></i>
+            <div class="benefit-tag">
+              <i data-lucide="check"></i>
               <span>Reduz a rigidez muscular</span>
             </div>
-            <div class="value-item">
-              <i data-lucide="check" class="text-primary"></i>
+            <div class="benefit-tag">
+              <i data-lucide="check"></i>
               <span>Melhora a circulação sanguínea</span>
             </div>
-            <div class="value-item">
-              <i data-lucide="check" class="text-primary"></i>
+            <div class="benefit-tag">
+              <i data-lucide="check"></i>
               <span>Reduz o cansaço</span>
             </div>
-            <div class="value-item">
-              <i data-lucide="check" class="text-primary"></i>
+            <div class="benefit-tag">
+              <i data-lucide="check"></i>
               <span>Traz mais disposição</span>
             </div>
           </div>
@@ -328,8 +298,8 @@
         <div class="grid grid-2 gap-lg mt-md">
           <!-- 1. Cadeira Ergonômica -->
           <div class="exercise-card flex flex-row align-center gap-md p-lg">
-            <div class="icon-circle-lg bg-accent-light text-primary" style="flex-shrink: 0; width: 64px; height: 64px;">
-              <i data-lucide="armchair"></i>
+            <div class="product-image-frame" style="flex-shrink: 0; width: 80px; height: 80px;">
+              <img src="img/cadeira.png" alt="Cadeira Ergonômica" class="product-image-asset">
             </div>
             <div>
               <h3 class="exercise-title" style="margin-bottom: 6px;">Cadeira Ergonômica</h3>
@@ -341,8 +311,8 @@
 
           <!-- 2. Suporte para Notebook -->
           <div class="exercise-card flex flex-row align-center gap-md p-lg">
-            <div class="icon-circle-lg bg-accent-light text-primary" style="flex-shrink: 0; width: 64px; height: 64px;">
-              <i data-lucide="laptop"></i>
+            <div class="product-image-frame" style="flex-shrink: 0; width: 80px; height: 80px;">
+              <img src="img/suporte_notebook.png" alt="Suporte para Notebook" class="product-image-asset">
             </div>
             <div>
               <h3 class="exercise-title" style="margin-bottom: 6px;">Suporte para Notebook</h3>
@@ -354,8 +324,8 @@
 
           <!-- 3. Suporte para os Pés -->
           <div class="exercise-card flex flex-row align-center gap-md p-lg">
-            <div class="icon-circle-lg bg-accent-light text-primary" style="flex-shrink: 0; width: 64px; height: 64px;">
-              <i data-lucide="footprints"></i>
+            <div class="product-image-frame" style="flex-shrink: 0; width: 80px; height: 80px;">
+              <img src="img/suporte_pes.png" alt="Suporte para os Pés" class="product-image-asset">
             </div>
             <div>
               <h3 class="exercise-title" style="margin-bottom: 6px;">Suporte para os Pés</h3>
@@ -367,8 +337,8 @@
 
           <!-- 4. Mouse Pad e Teclado Pad -->
           <div class="exercise-card flex flex-row align-center gap-md p-lg">
-            <div class="icon-circle-lg bg-accent-light text-primary" style="flex-shrink: 0; width: 64px; height: 64px;">
-              <i data-lucide="keyboard"></i>
+            <div class="product-image-frame" style="flex-shrink: 0; width: 80px; height: 80px;">
+              <img src="img/mouse_teclado_pad.png" alt="Mouse Pad e Teclado Pad" class="product-image-asset">
             </div>
             <div>
               <h3 class="exercise-title" style="margin-bottom: 6px;">Mouse Pad e Teclado Pad</h3>
@@ -620,7 +590,7 @@
             <circle cx="60" cy="60" r="52" class="ex-fill" id="ex-timer-stroke" stroke-dasharray="326.7" stroke-dashoffset="0" />
           </svg>
           <div class="ex-center">
-            <span class="ex-countdown-number" id="ex-timer-countdown">30</span>
+            <span class="ex-countdown-number" id="ex-timer-countdown">10</span>
             <span class="ex-countdown-label">Segundos</span>
           </div>
         </div>
