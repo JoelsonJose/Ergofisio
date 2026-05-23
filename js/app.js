@@ -481,42 +481,77 @@ document.addEventListener('DOMContentLoaded', () => {
     switch(id) {
       case "ex-1": // Alongamento Vertical de Braços
         animStyles = `
-          @keyframes ex1-deep-stretch {
+          @keyframes ex1-deep-stretch-3d {
             0%, 100% { transform: translateY(0) scaleY(1); }
-            50% { transform: translateY(-5px) scaleY(1.06); }
+            50% { transform: translateY(-5px) scaleY(1.05); }
           }
-          .ex1-upper-body {
+          @keyframes ex1-shadow-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.65; }
+          }
+          .ex1-upper-body-3d {
             transform-origin: 50px 66px;
-            animation: ex1-deep-stretch 3s ease-in-out infinite;
+            animation: ex1-deep-stretch-3d 3s ease-in-out infinite;
+          }
+          .ex1-shadow-3d {
+            transform-origin: 50px 85px;
+            animation: ex1-shadow-pulse 3s ease-in-out infinite;
           }
         `;
         svgContent = `
-          <!-- Pernas e Quadril (Estáticos na base) -->
-          <line x1="50" y1="66" x2="45" y2="85" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <line x1="50" y1="66" x2="55" y2="85" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <line x1="42" y1="85" x2="48" y2="85" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" />
-          <line x1="52" y1="85" x2="58" y2="85" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" />
-          
+          <defs>
+            <radialGradient id="ex1-head-grad" cx="35%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#a3d9b8" />
+              <stop offset="60%" stop-color="var(--primary)" />
+              <stop offset="100%" stop-color="#143020" />
+            </radialGradient>
+            <radialGradient id="ex1-shadow-grad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="rgba(46, 107, 74, 0.25)" />
+              <stop offset="100%" stop-color="rgba(0, 0, 0, 0)" />
+            </radialGradient>
+          </defs>
+
+          <!-- Sombra Projetada no Chão (Efeito 3D de profundidade) -->
+          <ellipse cx="50" cy="85" rx="18" ry="4" fill="url(#ex1-shadow-grad)" class="ex1-shadow-3d" />
+
+          <!-- Membros Traseiros (Em segundo plano / Sombreados) -->
+          <!-- Perna Esquerda (Traseira) -->
+          <path d="M 47 66 L 44 76 L 45 84" fill="none" stroke="#48785c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M 42 84 L 46 84" fill="none" stroke="#48785c" stroke-width="3" stroke-linecap="round" />
+
           <!-- Tronco superior que realiza o alongamento profundo para cima -->
-          <g class="ex1-upper-body">
-            <!-- Coluna -->
-            <line x1="50" y1="46" x2="50" y2="66" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex1-upper-body-3d">
+            <!-- Braço Esquerdo (Traseiro - Esticado para cima) -->
+            <path d="M 44 46 L 46 28 L 48 16" fill="none" stroke="#48785c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            
+            <!-- Coluna / Eixo Central 3D -->
+            <line x1="50" y1="46" x2="50" y2="66" stroke="var(--primary)" stroke-width="4.5" stroke-linecap="round" />
+            
+            <!-- Costelas (Gaiola Torácica 3D / Efeito de profundidade de Manequim) -->
+            <path d="M 45 51 Q 50 49 55 51" fill="none" stroke="rgba(46, 107, 74, 0.25)" stroke-width="2" stroke-linecap="round" />
+            <path d="M 45 56 Q 50 54 55 56" fill="none" stroke="rgba(46, 107, 74, 0.25)" stroke-width="2" stroke-linecap="round" />
+            <path d="M 46 61 Q 50 59 54 61" fill="none" stroke="rgba(46, 107, 74, 0.25)" stroke-width="2" stroke-linecap="round" />
+            
+            <!-- Ombros (Alinhamento em perspectiva 3D) -->
+            <line x1="43" y1="46" x2="57" y2="46" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            
             <!-- Pescoço -->
             <line x1="50" y1="40" x2="50" y2="46" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-            <!-- Cabeça -->
-            <circle cx="50" cy="34" r="5" fill="var(--primary)" />
             
-            <!-- Ombros (Clavícula) -->
-            <line x1="44" y1="46" x2="56" y2="46" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <!-- Cabeça Esférica (Com gradiente 3D) -->
+            <circle cx="50" cy="33" r="5.5" fill="url(#ex1-head-grad)" />
             
-            <!-- Braço Esquerdo (Esticado verticalmente acima) -->
-            <path d="M 44 46 L 46 28 L 48 16" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-            <!-- Braço Direito (Esticado verticalmente acima) -->
+            <!-- Braço Direito (Dianteiro - Esticado para cima) -->
             <path d="M 56 46 L 54 28 L 52 16" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
             
             <!-- Mãos Entrelaçadas no Topo -->
-            <path d="M 47 16 C 48 14, 52 14, 53 16" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <path d="M 47 16 C 48 13, 52 13, 53 16" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
           </g>
+
+          <!-- Membros Dianteiros (Em primeiro plano / Cores vivas) -->
+          <!-- Perna Direita (Dianteira) -->
+          <path d="M 53 66 L 55 76 L 54 85" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M 51 85 L 56 85" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" />
         `;
         break;
         
