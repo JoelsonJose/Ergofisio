@@ -404,6 +404,18 @@ document.addEventListener('DOMContentLoaded', () => {
       dificuldade: "Fácil"
     },
     {
+      id: "ex-7",
+      titulo: "7. Alongamento de Cadeia Posterior",
+      categoria: "coluna-tronco",
+      categoriaLbl: "Coluna e Tronco",
+      foco: "Coluna e Posterior",
+      duracao: "10 segundos",
+      desc: "Alongamento global que relaxa a lombar, glúteos e a parte de trás das pernas de uma só vez.",
+      instrucao: "De pé, com os joelhos destravados, incline o tronco para a frente a partir do quadril, deixando os braços e a cabeça caírem relaxados em direção ao chão.",
+      tempoSegundos: 10,
+      dificuldade: "Médio"
+    },
+    {
       id: "ex-8",
       titulo: "8. Alongamento Lateral do Tronco",
       categoria: "coluna-tronco",
