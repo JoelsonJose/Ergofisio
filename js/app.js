@@ -877,7 +877,6 @@ document.addEventListener('DOMContentLoaded', () => {
     exerciseFilters.addEventListener('click', (e) => {
       const tab = e.target.closest('.filter-tab');
       if (!tab) return;
-
       // Atualizar classe ativa
       exerciseFilters.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
@@ -894,142 +893,132 @@ document.addEventListener('DOMContentLoaded', () => {
   // 6. MODAL DO CRONÔMETRO DE ALONGAMENTO ATIVO
   // ==========================================
   // ==========================================
-  // 3D WEBGL INTERACTIVE MUSCULAR MANNEQUIN (THREE.JS - PLAN B)
+  // CUSTOM 2D CANVAS 3D INTERACTIVE MUSCULAR MANNEQUIN ENGINE
   // ==========================================
-  let renderer3D = null;
-  let scene3D = null;
-  let camera3D = null;
-  let mannequinGroup = null;
+  class Vector3 {
+    constructor(x = 0, y = 0, z = 0) {
+      this.x = x;
+      this.y = y;
+      this.z = z;
+    }
+    set(x, y, z) {
+      this.x = x;
+      this.y = y;
+      this.z = z;
+      return this;
+    }
+    copy(v) {
+      this.x = v.x;
+      this.y = v.y;
+      this.z = v.z;
+      return this;
+    }
+    add(v) {
+      this.x += v.x;
+      this.y += v.y;
+      this.z += v.z;
+      return this;
+    }
+    multiplyScalar(s) {
+      this.x *= s;
+      this.y *= s;
+      this.z *= s;
+      return this;
+    }
+    addVectors(a, b) {
+      this.x = a.x + b.x;
+      this.y = a.y + b.y;
+      this.z = a.z + b.z;
+      return this;
+    }
+  }
+
   let animFrameId3D = null;
-  let threeJSLoadingPromise = null;
-  
-  // Drag rotation variables for modal
   let isDragging3D = false;
   let previousMousePosition = { x: 0, y: 0 };
+  let modalAngleY = 0.5;
+  let modalAngleX = 0.0;
+  let activeModalCtx = null;
+  let activeModalCanvas = null;
 
   const cardSceneControllers = {};
-  // cardObserver já foi declarado no escopo inicial do DOMContentLoaded
-
-  function loadThreeJS() {
-    if (window.THREE) return Promise.resolve();
-    if (threeJSLoadingPromise) return threeJSLoadingPromise;
-
-    threeJSLoadingPromise = new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-      script.onload = () => resolve();
-      script.onerror = () => reject(new Error('Failed to load Three.js'));
-      document.head.appendChild(script);
-    });
-    return threeJSLoadingPromise;
-  }
-
-  function alignCylinder(cylinder, p1, p2) {
-    const direction = new THREE.Vector3().subVectors(p2, p1);
-    const length = direction.length();
-    
-    // Scale cylinder height to match distance
-    cylinder.scale.set(1, length, 1);
-    
-    // Position at midpoint
-    const midpoint = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
-    cylinder.position.copy(midpoint);
-    
-    // Align with vector orientation
-    const up = new THREE.Vector3(0, 1, 0);
-    cylinder.quaternion.setFromUnitVectors(up, direction.clone().normalize());
-  }
 
   function getJointPositions(exId, t) {
-    // Base standing coordinates
     const pos = {
-      pelvis: new THREE.Vector3(0, 0, 0),
-      head: new THREE.Vector3(0, 2.3, 0),
-      l_shoulder: new THREE.Vector3(-0.45, 1.8, 0),
-      r_shoulder: new THREE.Vector3(0.45, 1.8, 0),
-      l_elbow: new THREE.Vector3(-0.8, 1.3, 0),
-      r_elbow: new THREE.Vector3(0.8, 1.3, 0),
-      l_wrist: new THREE.Vector3(-1.1, 0.8, 0),
-      r_wrist: new THREE.Vector3(1.1, 0.8, 0),
-      l_hip: new THREE.Vector3(-0.25, 0, 0),
-      r_hip: new THREE.Vector3(0.25, 0, 0),
-      l_knee: new THREE.Vector3(-0.25, -0.9, 0),
-      r_knee: new THREE.Vector3(0.25, -0.9, 0),
-      l_ankle: new THREE.Vector3(-0.25, -1.8, 0),
-      r_ankle: new THREE.Vector3(0.25, -1.8, 0)
+      pelvis: new Vector3(0, 0, 0),
+      head: new Vector3(0, 2.3, 0),
+      l_shoulder: new Vector3(-0.45, 1.8, 0),
+      r_shoulder: new Vector3(0.45, 1.8, 0),
+      l_elbow: new Vector3(-0.8, 1.3, 0),
+      r_elbow: new Vector3(0.8, 1.3, 0),
+      l_wrist: new Vector3(-1.1, 0.8, 0),
+      r_wrist: new Vector3(1.1, 0.8, 0),
+      l_hip: new Vector3(-0.25, 0, 0),
+      r_hip: new Vector3(0.25, 0, 0),
+      l_knee: new Vector3(-0.25, -0.9, 0),
+      r_knee: new Vector3(0.25, -0.9, 0),
+      l_ankle: new Vector3(-0.25, -1.8, 0),
+      r_ankle: new Vector3(0.25, -1.8, 0)
     };
 
-    const cycle = (Math.sin(t * Math.PI * 2 / 3) + 1) / 2; // Stretches/Breathes every 3 seconds
+    const cycle = (Math.sin(t * Math.PI * 2 / 3) + 1) / 2;
 
     switch(exId) {
-      case "ex-1": // Alongamento Vertical de Braços
+      case "ex-1":
         const spineStretch = cycle * 0.12;
         pos.head.y += spineStretch;
         pos.l_shoulder.y += spineStretch;
         pos.r_shoulder.y += spineStretch;
-        
         pos.l_elbow.set(-0.12, 2.4 + spineStretch, 0.08);
         pos.l_wrist.set(-0.02, 2.9 + spineStretch, 0.08);
         pos.r_elbow.set(0.12, 2.4 + spineStretch, 0.08);
         pos.r_wrist.set(0.02, 2.9 + spineStretch, 0.08);
         break;
-
-      case "ex-2": // Alongamento de Deltoide e Ombros
+      case "ex-2":
         const deltoidCycle = cycle;
         pos.l_elbow.set(-0.45 + deltoidCycle * 0.65, 1.7, 0.25);
         pos.l_wrist.set(-0.45 + deltoidCycle * 1.05, 1.65, 0.3);
-        
         pos.r_elbow.set(0.3, 1.45, 0.25);
-        pos.r_wrist.copy(pos.l_elbow).add(new THREE.Vector3(-0.05, -0.05, 0.05));
+        pos.r_wrist.copy(pos.l_elbow).add(new Vector3(-0.05, -0.05, 0.05));
         break;
-
-      case "ex-3": // Alongamento de Peitoral e Ombros
+      case "ex-3":
         const chestCycle = cycle;
         pos.l_elbow.set(-0.35 + chestCycle * 0.15, 1.3 - chestCycle * 0.1, -chestCycle * 0.35);
         pos.l_wrist.set(-0.15 + chestCycle * 0.1, 0.9 - chestCycle * 0.1, -chestCycle * 0.45);
-        
         pos.r_elbow.set(0.35 - chestCycle * 0.15, 1.3 - chestCycle * 0.1, -chestCycle * 0.35);
         pos.r_wrist.set(0.15 - chestCycle * 0.1, 0.9 - chestCycle * 0.1, -chestCycle * 0.45);
         break;
-
-      case "ex-4": // Alongamento de Tríceps atrás da Nuca
+      case "ex-4":
         const tricepsCycle = cycle;
         pos.l_elbow.set(-0.45 + tricepsCycle * 0.35, 1.8 + tricepsCycle * 0.55, -tricepsCycle * 0.15);
         pos.l_wrist.set(-0.45 + tricepsCycle * 0.6, 1.8 + tricepsCycle * 0.25, -tricepsCycle * 0.2);
-        
         pos.r_elbow.set(0.45 - tricepsCycle * 0.25, 1.8 + tricepsCycle * 0.35, 0.1);
-        pos.r_wrist.copy(pos.l_elbow).add(new THREE.Vector3(0.05, 0, 0.05));
+        pos.r_wrist.copy(pos.l_elbow).add(new Vector3(0.05, 0, 0.05));
         break;
-
-      case "ex-5": // Alongamento Cervical Lateral
+      case "ex-5":
         const tiltCycle = Math.sin(t * Math.PI * 2 / 3) * 0.35;
         pos.head.set(tiltCycle * 0.35, 2.3 - Math.abs(tiltCycle) * 0.05, 0);
-        
         if (tiltCycle > 0) {
           pos.r_elbow.set(0.5, 2.1, 0.1);
-          pos.r_wrist.copy(pos.head).add(new THREE.Vector3(0.1, 0.05, 0.05));
+          pos.r_wrist.copy(pos.head).add(new Vector3(0.1, 0.05, 0.05));
         } else {
           pos.l_elbow.set(-0.5, 2.1, 0.1);
-          pos.l_wrist.copy(pos.head).add(new THREE.Vector3(-0.1, 0.05, 0.05));
+          pos.l_wrist.copy(pos.head).add(new Vector3(-0.1, 0.05, 0.05));
         }
         break;
-
-      case "ex-6": // Alongamento cruzado de Ombro
+      case "ex-6":
         const crossCycle = cycle;
         pos.r_elbow.set(0.45 - crossCycle * 0.65, 1.7, 0.25);
         pos.r_wrist.set(0.45 - crossCycle * 1.05, 1.65, 0.3);
         pos.l_elbow.set(-0.3, 1.45, 0.25);
-        pos.l_wrist.copy(pos.r_elbow).add(new THREE.Vector3(0.05, -0.05, 0.05));
+        pos.l_wrist.copy(pos.r_elbow).add(new Vector3(0.05, -0.05, 0.05));
         break;
-
-      case "ex-8": // Alongamento Lateral do Tronco
+      case "ex-8":
         const latCycle = Math.sin(t * Math.PI * 2 / 3) * 0.25;
         const trunkStretch = Math.abs(latCycle) * 0.05;
-        
         pos.head.set(latCycle * 0.7, 2.3 - trunkStretch, 0);
         pos.l_shoulder.set(-0.45 + latCycle * 0.5, 1.8 - trunkStretch, 0);
         pos.r_shoulder.set(0.45 + latCycle * 0.5, 1.8 - trunkStretch, 0);
-        
         if (latCycle > 0) {
           pos.l_elbow.set(-0.2 + latCycle * 0.8, 2.3, 0.1);
           pos.l_wrist.set(0.1 + latCycle * 0.9, 2.5, 0.15);
@@ -1042,418 +1031,519 @@ document.addEventListener('DOMContentLoaded', () => {
           pos.l_wrist.set(-0.25, 0.2, 0.1);
         }
         break;
-
-      case "ex-9": // Alongamento de Quadríceps de Pé
+      case "ex-9":
         const quadCycle = cycle;
         pos.l_knee.set(-0.25, -0.9, -quadCycle * 0.45);
         pos.l_ankle.set(-0.25, -1.0 + quadCycle * 0.75, -0.45 - quadCycle * 0.3);
-        
         pos.l_elbow.set(-0.55, 1.0, -0.2);
-        pos.l_wrist.copy(pos.l_ankle).add(new THREE.Vector3(0.05, 0.05, 0.05));
-        
+        pos.l_wrist.copy(pos.l_ankle).add(new Vector3(0.05, 0.05, 0.05));
         pos.r_elbow.set(0.6, 1.5, 0.3);
         pos.r_wrist.set(0.9, 1.6, 0.4);
         break;
-
-      case "ex-10": // Alongamento de Panturrilha
+      case "ex-10":
         const lungeCycle = cycle;
         pos.pelvis.set(lungeCycle * 0.25, -lungeCycle * 0.15, 0);
         pos.head.set(lungeCycle * 0.25, 2.3 - lungeCycle * 0.15, 0);
         pos.l_shoulder.set(-0.45 + lungeCycle * 0.25, 1.8 - lungeCycle * 0.15, 0);
         pos.r_shoulder.set(0.45 + lungeCycle * 0.25, 1.8 - lungeCycle * 0.15, 0);
-        
         pos.l_hip.set(-0.25 + lungeCycle * 0.25, -lungeCycle * 0.15, 0);
         pos.l_knee.set(-0.15 + lungeCycle * 0.55, -0.9 - lungeCycle * 0.25, 0);
         pos.l_ankle.set(0.15 + lungeCycle * 0.65, -1.8, 0);
-        
         pos.r_hip.set(0.25 + lungeCycle * 0.25, -lungeCycle * 0.15, 0);
         pos.r_knee.set(0.4 - lungeCycle * 0.1, -0.9 - lungeCycle * 0.2, 0);
         pos.r_ankle.set(0.6 - lungeCycle * 0.2, -1.8, 0);
         break;
-
-      case "ex-11": // Alongamento de Isquiotibiais Com Apoio
+      case "ex-11":
         const hamCycle = cycle;
         pos.pelvis.set(-hamCycle * 0.15, hamCycle * 0.05, 0);
-        
         pos.l_hip.set(-0.25 - hamCycle * 0.15, hamCycle * 0.05, 0);
         pos.l_knee.set(-0.6 - hamCycle * 0.15, -0.3 + hamCycle * 0.2, 0);
         pos.l_ankle.set(-1.0 - hamCycle * 0.2, -0.6 + hamCycle * 0.45, 0);
-        
         pos.head.set(-hamCycle * 0.4, 2.3 - hamCycle * 0.35, 0.1);
         pos.l_shoulder.set(-0.45 - hamCycle * 0.25, 1.8 - hamCycle * 0.3, 0.05);
         pos.r_shoulder.set(0.45 - hamCycle * 0.25, 1.8 - hamCycle * 0.3, 0.05);
-        
         pos.l_elbow.set(-0.5 - hamCycle * 0.2, 1.2 - hamCycle * 0.4, 0.1);
-        pos.l_wrist.copy(pos.l_ankle).add(new THREE.Vector3(0.05, 0.05, 0.05));
+        pos.l_wrist.copy(pos.l_ankle).add(new Vector3(0.05, 0.05, 0.05));
         pos.r_elbow.set(-0.3 - hamCycle * 0.2, 1.2 - hamCycle * 0.4, 0.15);
-        pos.r_wrist.copy(pos.l_ankle).add(new THREE.Vector3(0.05, 0.05, 0.1));
+        pos.r_wrist.copy(pos.l_ankle).add(new Vector3(0.05, 0.05, 0.1));
         break;
-
-      case "ex-12": // Alongamento de Joelho ao Peito
+      case "ex-12":
         const kneeCycle = cycle;
         pos.r_knee.set(0.25 + kneeCycle * 0.15, -0.9 + kneeCycle * 1.45, 0.25);
         pos.r_ankle.set(0.25, -1.8 + kneeCycle * 1.55, 0.25);
-        
         pos.l_elbow.set(-0.15, 1.0 + kneeCycle * 0.3, 0.25);
-        pos.l_wrist.copy(pos.r_knee).add(new THREE.Vector3(-0.05, -0.05, 0.05));
+        pos.l_wrist.copy(pos.r_knee).add(new Vector3(-0.05, -0.05, 0.05));
         pos.r_elbow.set(0.55, 1.0 + kneeCycle * 0.3, 0.25);
-        pos.r_wrist.copy(pos.r_knee).add(new THREE.Vector3(0.05, -0.05, 0.05));
         break;
     }
-
     return pos;
   }
 
-  function getPartMaterial(partName, exerciseId, bodyMat, activeMat) {
-    let highlight = false;
-    switch(exerciseId) {
-      case "ex-1": // Alongamento Vertical de Braços
-        highlight = ["l_upper_arm", "r_upper_arm", "l_forearm", "r_forearm", "l_shoulder", "r_shoulder", "l_lats", "r_lats", "chest"].includes(partName);
-        break;
-      case "ex-2": // Alongamento de Deltoide e Ombros
-        highlight = ["l_shoulder", "r_shoulder", "l_upper_arm", "r_upper_arm", "chest"].includes(partName);
-        break;
-      case "ex-3": // Alongamento de Peitoral e Ombros
-        highlight = ["l_pectoral", "r_pectoral", "l_shoulder", "r_shoulder", "chest"].includes(partName);
-        break;
-      case "ex-4": // Alongamento de Tríceps atrás da Nuca
-        highlight = ["l_upper_arm", "r_upper_arm", "l_shoulder", "r_shoulder"].includes(partName);
-        break;
-      case "ex-5": // Alongamento Cervical Lateral
-        highlight = ["neck", "head"].includes(partName);
-        break;
-      case "ex-6": // Alongamento cruzado de Ombro
-        highlight = ["l_shoulder", "r_shoulder", "l_upper_arm", "r_upper_arm"].includes(partName);
-        break;
-      case "ex-8": // Alongamento Lateral do Tronco
-        highlight = ["l_lats", "r_lats", "chest", "abdomen"].includes(partName);
-        break;
-      case "ex-9": // Alongamento de Quadríceps de Pé
-        highlight = ["l_thigh", "r_thigh"].includes(partName);
-        break;
-      case "ex-10": // Alongamento de Panturrilha
-        highlight = ["l_calf", "r_calf"].includes(partName);
-        break;
-      case "ex-11": // Alongamento de Isquiotibiais Com Apoio
-        highlight = ["l_thigh", "r_thigh", "pelvis"].includes(partName);
-        break;
-      case "ex-12": // Alongamento de Joelho ao Peito
-        highlight = ["pelvis", "l_thigh", "r_thigh", "abdomen"].includes(partName);
-        break;
+  // Active muscle highlights for each exercise ID
+  const highlights = {
+    "ex-1": ["l_arm", "r_arm", "l_forearm", "r_forearm", "chest", "shoulders", "neck"],
+    "ex-2": ["l_arm", "shoulders"],
+    "ex-3": ["chest", "shoulders"],
+    "ex-4": ["l_arm", "r_arm", "shoulders"],
+    "ex-5": ["neck", "shoulders"],
+    "ex-6": ["r_arm", "shoulders"],
+    "ex-8": ["chest", "abdomen", "shoulders"],
+    "ex-9": ["l_thigh"],
+    "ex-10": ["r_calf", "l_calf"],
+    "ex-11": ["l_thigh", "r_thigh"],
+    "ex-12": ["pelvis", "r_thigh"]
+  };
+
+  /**
+   * Renderiza o manequim muscular 3D em um contexto de Canvas 2D.
+   * Utiliza matemática de projeção 3D com eixos rotacionais Y e X.
+   */
+  function drawMuscularMannequin(ctx, exId, t, width, height, angleX, angleY) {
+    // Limpar o canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Obter as posições das articulações em 3D
+    const pos = getJointPositions(exId, t);
+
+    // Pontos médios para ligamento do esqueleto
+    const mid_shoulder = new Vector3().addVectors(pos.l_shoulder, pos.r_shoulder).multiplyScalar(0.5);
+    const mid_torso = new Vector3().addVectors(pos.pelvis, mid_shoulder).multiplyScalar(0.5);
+
+    // Ajuste de enquadramento (offset vertical e escala dinâmica)
+    const centerYOffset = 0.6; // Ponto central da altura do corpo (lombar/abdômen)
+    const maxSpan = 5.2;       // Altura máxima segura para evitar cortes dos membros
+    
+    // Fator de escala seguro: ocupa cerca de 85% do menor eixo do viewport do canvas
+    const scale = Math.min(width, height) / maxSpan * 0.85;
+    
+    const cx = width / 2;
+    const cy = height / 2 + (scale * 0.25); // Desloca levemente para baixo para equilíbrio visual
+
+    // Projeção 3D em perspectiva com matrizes rotacionais X e Y
+    function project(v) {
+      // 1. Rotação em torno do eixo Y (lateral/horizontal)
+      const cosY = Math.cos(angleY);
+      const sinY = Math.sin(angleY);
+      const x1 = v.x * cosY - v.z * sinY;
+      const z1 = v.x * sinY + v.z * cosY;
+
+      // 2. Rotação em torno do eixo X (inclinação vertical)
+      const cosX = Math.cos(angleX);
+      const sinX = Math.sin(angleX);
+      const x2 = x1;
+      const y2 = (v.y - centerYOffset) * cosX - z1 * sinX;
+      const z2 = (v.y - centerYOffset) * sinX + z1 * cosX;
+
+      return {
+        x: cx + x2 * scale,
+        y: cy - y2 * scale,
+        z: z2
+      };
     }
-    return highlight ? activeMat : bodyMat;
-  }
 
-  function buildMuscularMannequin(THREE, parentGroup, exerciseId) {
-    const bodyColor = 0xd5d8db; // Silver-gray platinado
-    const activeColor = 0xe2583e; // Coral-red ativo
-    const activeEmissive = 0x58160a;
-
-    const bodyMat = new THREE.MeshLambertMaterial({
-      color: bodyColor,
-      flatShading: true
-    });
-
-    const activeMat = new THREE.MeshLambertMaterial({
-      color: activeColor,
-      emissive: activeEmissive,
-      flatShading: true
-    });
-
-    const getMat = (name) => getPartMaterial(name, exerciseId, bodyMat, activeMat);
-
-    const jointGeom = new THREE.SphereGeometry(0.035, 8, 8);
-    const jointMat = new THREE.MeshBasicMaterial({ color: 0xa8abb0 });
-
-    const joints = {};
+    // Projetar todos os pontos chave do esqueleto
+    const p = {};
     const jointNames = [
       'pelvis', 'head', 'l_shoulder', 'r_shoulder', 'l_elbow', 'r_elbow',
       'l_wrist', 'r_wrist', 'l_hip', 'r_hip', 'l_knee', 'r_knee', 'l_ankle', 'r_ankle'
     ];
-
     jointNames.forEach(name => {
-      const mesh = new THREE.Mesh(jointGeom, jointMat);
-      parentGroup.add(mesh);
-      joints[name] = mesh;
+      p[name] = project(pos[name]);
+    });
+    p.mid_shoulder = project(mid_shoulder);
+    p.mid_torso = project(mid_torso);
+
+    const activeParts = highlights[exId] || [];
+    const isPartActive = (partName) => activeParts.includes(partName);
+
+    // Gerador de gradientes volumétricos de iluminação e profundidade muscular
+    function getMuscleGradient(isActive, w_max) {
+      if (isActive) {
+        const grad = ctx.createLinearGradient(0, -w_max, 0, w_max);
+        grad.addColorStop(0, "#ffa085");   // Luz brilhante incandescente
+        grad.addColorStop(0.3, "#ff5f43"); // Coral vibrante ativo
+        grad.addColorStop(0.8, "#d6361b"); // Sombra de compressão
+        grad.addColorStop(1, "#8e1706");   // Profundidade escura
+        return grad;
+      } else {
+        const grad = ctx.createLinearGradient(0, -w_max, 0, w_max);
+        grad.addColorStop(0, "#ffffff");   // Brilho prateado do metalizado
+        grad.addColorStop(0.2, "#e6e8eb"); // Tom base platinado claro
+        grad.addColorStop(0.6, "#bdc1c7"); // Sombra média anatômica
+        grad.addColorStop(1, "#8d929c");   // Oclusão de sombra inferior
+        return grad;
+      }
+    }
+
+    // Aplicação das propriedades visuais (preenchimento, contorno e glow neon)
+    function setStyle(isActive, w_max) {
+      ctx.fillStyle = getMuscleGradient(isActive, w_max);
+      ctx.strokeStyle = isActive ? "#ff3c17" : "#a1a6b0";
+      ctx.lineWidth = isActive ? 1.5 : 1.0;
+      if (isActive) {
+        ctx.shadowColor = "rgba(255, 60, 23, 0.65)";
+        ctx.shadowBlur = 10;
+      } else {
+        ctx.shadowColor = "transparent";
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    // Desenha membros com volumetria anatômica cônicos e arredondados
+    function drawMuscleLimb(jointA, jointB, name, w_start, w_mid, w_end) {
+      const pA = p[jointA];
+      const pB = p[jointB];
+      if (!pA || !pB) return;
+
+      const dx = pB.x - pA.x;
+      const dy = pB.y - pA.y;
+      const len = Math.sqrt(dx * dx + dy * dy);
+      if (len < 1) return;
+
+      const angle = Math.atan2(dy, dx);
+      const active = isPartActive(name);
+      
+      // Adaptabilidade de espessura conforme a escala do canvas
+      const sizeMultiplier = scale / 45;
+      const ws = w_start * sizeMultiplier;
+      const wm = w_mid * sizeMultiplier;
+      const we = w_end * sizeMultiplier;
+
+      ctx.save();
+      ctx.translate(pA.x, pA.y);
+      ctx.rotate(angle);
+
+      setStyle(active, wm);
+
+      ctx.beginPath();
+      // Silhueta muscular volumosa (gorda no meio, afilada nas extremidades)
+      ctx.moveTo(0, -ws);
+      ctx.quadraticCurveTo(len / 2, -wm, len, -we);
+      ctx.arc(len, 0, we, -Math.PI / 2, Math.PI / 2);
+      ctx.quadraticCurveTo(len / 2, wm, 0, ws);
+      ctx.arc(0, 0, ws, Math.PI / 2, -Math.PI / 2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // Desenha articulações esféricas (ombros, joelhos)
+    function drawJointCap(jointName, name, radius) {
+      const pt = p[jointName];
+      if (!pt) return;
+
+      const active = isPartActive(name);
+      const r = radius * (scale / 45);
+
+      ctx.save();
+      setStyle(active, r);
+
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // 1. Sombra de profundidade projetada no plano do chão (sob o manequim)
+    const l_ank = p.l_ankle;
+    const r_ank = p.r_ankle;
+    if (l_ank && r_ank) {
+      const shadowX = (l_ank.x + r_ank.x) / 2;
+      const shadowY = (l_ank.y + r_ank.y) / 2 + (6 * (scale / 45));
+      const rx = 36 * (scale / 45);
+      const ry = 8 * (scale / 45);
+
+      ctx.save();
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = "transparent";
+      const shadowGrad = ctx.createRadialGradient(shadowX, shadowY, 0, shadowX, shadowY, rx);
+      shadowGrad.addColorStop(0, "rgba(35, 45, 40, 0.16)");
+      shadowGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = shadowGrad;
+      ctx.beginPath();
+      ctx.ellipse(shadowX, shadowY, rx, ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // 2. Pernas (Coxas e Panturrilhas robustas)
+    drawMuscleLimb('l_hip', 'l_knee', 'l_thigh', 12, 13.5, 9);
+    drawMuscleLimb('r_hip', 'r_knee', 'r_thigh', 12, 13.5, 9);
+    drawMuscleLimb('l_knee', 'l_ankle', 'l_calf', 9, 11, 6);
+    drawMuscleLimb('r_knee', 'r_ankle', 'r_calf', 9, 11, 6);
+
+    // Patelas (Articulação dos joelhos)
+    drawJointCap('l_knee', 'l_calf', 7);
+    drawJointCap('r_knee', 'r_calf', 7);
+
+    // Pés volumétricos com caixas de projeção
+    const footScale = scale / 45;
+    ['l_ankle', 'r_ankle'].forEach(ankleName => {
+      const ank = p[ankleName];
+      const active = isPartActive(ankleName === 'l_ankle' ? 'l_calf' : 'r_calf');
+      if (ank) {
+        ctx.save();
+        setStyle(active, 6 * footScale);
+        ctx.beginPath();
+        ctx.ellipse(
+          ank.x + (ankleName === 'l_ankle' ? -4 : 4) * footScale,
+          ank.y + 4 * footScale,
+          9 * footScale,
+          5 * footScale,
+          ankleName === 'l_ankle' ? -0.2 : 0.2,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+      }
     });
 
-    const parts = {};
+    // 3. Cintura Pélvica (Pelvis sólida)
+    const pelvisActive = isPartActive('pelvis');
+    const pelvisW = 17 * (scale / 45);
+    const pelvisH = 9 * (scale / 45);
+    ctx.save();
+    setStyle(pelvisActive, pelvisH);
+    ctx.beginPath();
+    ctx.ellipse(p.pelvis.x, p.pelvis.y, pelvisW, pelvisH, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
 
-    // HEAD
-    const headGeom = new THREE.SphereGeometry(0.14, 16, 16);
-    parts.head = new THREE.Mesh(headGeom, getMat('head'));
-    parts.head.scale.set(1, 1.25, 1);
-    parentGroup.add(parts.head);
+    // 4. Região Abdominal / Core muscular
+    const abActive = isPartActive('abdomen');
+    const abW_top = 16 * (scale / 45);
+    const abW_bot = 14 * (scale / 45);
+    ctx.save();
+    setStyle(abActive, 14 * (scale / 45));
+    ctx.beginPath();
+    ctx.moveTo(p.mid_torso.x - abW_top, p.mid_torso.y);
+    ctx.lineTo(p.pelvis.x - abW_bot, p.pelvis.y);
+    ctx.lineTo(p.pelvis.x + abW_bot, p.pelvis.y);
+    ctx.lineTo(p.mid_torso.x + abW_top, p.mid_torso.y);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
 
-    // NECK (created with height 1 for perfect end-to-end connection)
-    const neckGeom = new THREE.CylinderGeometry(0.05, 0.06, 1, 12);
-    parts.neck = new THREE.Mesh(neckGeom, getMat('neck'));
-    parentGroup.add(parts.neck);
+    // Detalhar gomos do Abdômen (Six-pack realista)
+    if (p.mid_torso.z > -0.4) { // Renders only when facing forward
+      const gomoW = 4 * (scale / 45);
+      const gomoH = 3 * (scale / 45);
+      const dx_gomo = 5.2 * (scale / 45);
+      const dy_gomo = 5.8 * (scale / 45);
 
-    // CHEST (created with height 1 for perfect end-to-end connection)
-    const chestGeom = new THREE.CylinderGeometry(0.17, 0.13, 1, 16);
-    parts.chest = new THREE.Mesh(chestGeom, getMat('chest'));
-    parentGroup.add(parts.chest);
+      ctx.save();
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = "transparent";
+      ctx.fillStyle = abActive ? "rgba(255, 255, 255, 0.45)" : "rgba(255, 255, 255, 0.28)";
+      ctx.strokeStyle = abActive ? "rgba(214, 54, 27, 0.25)" : "rgba(141, 146, 156, 0.25)";
+      ctx.lineWidth = 1;
 
-    // Sub-pecs
-    const pecGeom = new THREE.SphereGeometry(0.075, 16, 16);
-    const lPec = new THREE.Mesh(pecGeom, getMat('l_pectoral'));
-    lPec.scale.set(1.3, 0.8, 0.6);
-    lPec.position.set(-0.075, 0.2, 0.12);
-    parts.chest.add(lPec);
+      for (let row = 0; row < 3; row++) {
+        const rowY = p.mid_torso.y + (row * dy_gomo) + (5 * (scale / 45));
+        if (rowY < p.pelvis.y) {
+          ctx.beginPath();
+          ctx.ellipse(p.mid_torso.x - dx_gomo / 2, rowY, gomoW, gomoH, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
 
-    const rPec = new THREE.Mesh(pecGeom, getMat('r_pectoral'));
-    rPec.scale.set(1.3, 0.8, 0.6);
-    rPec.position.set(0.075, 0.2, 0.12);
-    parts.chest.add(rPec);
+          ctx.beginPath();
+          ctx.ellipse(p.mid_torso.x + dx_gomo / 2, rowY, gomoW, gomoH, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+    }
 
-    // Sub-lats (taller to scale beautifully with the chest)
-    const latGeom = new THREE.BoxGeometry(0.035, 0.6, 0.09);
-    const lLat = new THREE.Mesh(latGeom, getMat('l_lats'));
-    lLat.position.set(-0.14, -0.1, -0.03);
-    lLat.rotation.z = 0.22;
-    parts.chest.add(lLat);
+    // 5. Caixa Torácica / Tórax Superior
+    const chestActive = isPartActive('chest');
+    const chestW_top = 22 * (scale / 45);
+    const chestW_bot = 16 * (scale / 45);
+    ctx.save();
+    setStyle(chestActive, 18 * (scale / 45));
+    ctx.beginPath();
+    ctx.moveTo(p.mid_shoulder.x - chestW_top, p.mid_shoulder.y);
+    ctx.lineTo(p.mid_torso.x - chestW_bot, p.mid_torso.y);
+    ctx.lineTo(p.mid_torso.x + chestW_bot, p.mid_torso.y);
+    ctx.lineTo(p.mid_shoulder.x + chestW_top, p.mid_shoulder.y);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
 
-    const rLat = new THREE.Mesh(latGeom, getMat('r_lats'));
-    rLat.position.set(0.14, -0.1, -0.03);
-    rLat.rotation.z = -0.22;
-    parts.chest.add(rLat);
+    // Detalhar Músculos Peitorais
+    if (p.mid_shoulder.z > -0.4) {
+      const pecW = 8 * (scale / 45);
+      const pecH = 7 * (scale / 45);
+      const pecXOffset = 8.5 * (scale / 45);
+      const pecYOffset = 6.2 * (scale / 45);
 
-    // ABDOMEN (created with height 1 for perfect end-to-end connection)
-    const abdGeom = new THREE.CylinderGeometry(0.13, 0.14, 1, 16);
-    parts.abdomen = new THREE.Mesh(abdGeom, getMat('abdomen'));
-    parentGroup.add(parts.abdomen);
+      ctx.save();
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = "transparent";
+      ctx.fillStyle = chestActive ? "rgba(255, 95, 67, 0.15)" : "rgba(255, 255, 255, 0.15)";
+      ctx.strokeStyle = chestActive ? "rgba(214, 54, 27, 0.35)" : "rgba(141, 146, 156, 0.35)";
+      ctx.lineWidth = 1.0;
 
-    // Sub-abs (six pack, distributed nicely along height of 1)
-    const packGeom = new THREE.SphereGeometry(0.026, 8, 8);
-    const absRows = [0.25, 0.0, -0.25];
-    absRows.forEach(yPos => {
-      const lAb = new THREE.Mesh(packGeom, getMat('abdomen'));
-      lAb.position.set(-0.04, yPos, 0.11);
-      lAb.scale.set(1.2, 0.8, 0.5);
-      parts.abdomen.add(lAb);
+      // Peitoral Esquerdo
+      ctx.beginPath();
+      ctx.ellipse(p.mid_shoulder.x - pecXOffset, p.mid_shoulder.y + pecYOffset, pecW, pecH, 0.05, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
 
-      const rAb = new THREE.Mesh(packGeom, getMat('abdomen'));
-      rAb.position.set(0.04, yPos, 0.11);
-      rAb.scale.set(1.2, 0.8, 0.5);
-      parts.abdomen.add(rAb);
-    });
+      // Peitoral Direito
+      ctx.beginPath();
+      ctx.ellipse(p.mid_shoulder.x + pecXOffset, p.mid_shoulder.y + pecYOffset, pecW, pecH, -0.05, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
 
-    // SHOULDER GIRDLE (Clavicles - horizontal connection between arms and chest)
-    const shoulderGirdleGeom = new THREE.CylinderGeometry(0.075, 0.075, 1, 12);
-    parts.shoulder_girdle = new THREE.Mesh(shoulderGirdleGeom, getMat('chest'));
-    parentGroup.add(parts.shoulder_girdle);
+    // 6. Pescoço (Cervical)
+    const neckActive = isPartActive('neck');
+    drawMuscleLimb('mid_shoulder', 'head', 'neck', 7, 7.5, 7);
 
-    // PELVIC GIRDLE (Hips - horizontal connection between legs and abdomen)
-    const pelvicGirdleGeom = new THREE.CylinderGeometry(0.11, 0.11, 1, 12);
-    parts.pelvic_girdle = new THREE.Mesh(pelvicGirdleGeom, getMat('pelvis'));
-    parentGroup.add(parts.pelvic_girdle);
+    // 7. Cabeça (Elipsoide estilizada e com gradiente suave)
+    const headActive = isPartActive('neck');
+    const headRadiusX = 10 * (scale / 45);
+    const headRadiusY = 13 * (scale / 45);
+    ctx.save();
+    setStyle(headActive, headRadiusY);
+    ctx.beginPath();
+    ctx.ellipse(p.head.x, p.head.y, headRadiusX, headRadiusY, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
 
-    // DELTOIDS
-    const shoulderGeom = new THREE.SphereGeometry(0.085, 16, 16);
-    parts.l_shoulder = new THREE.Mesh(shoulderGeom, getMat('l_shoulder'));
-    parts.l_shoulder.scale.set(1.1, 1.25, 1.1);
-    parentGroup.add(parts.l_shoulder);
+    // 8. Membros Superiores (Ombros amplos e braços volumétricos)
+    drawMuscleLimb('l_shoulder', 'l_elbow', 'l_arm', 8, 9.5, 6.5);
+    drawMuscleLimb('r_shoulder', 'r_elbow', 'r_arm', 8, 9.5, 6.5);
+    drawMuscleLimb('l_elbow', 'l_wrist', 'l_forearm', 6.5, 7, 4.5);
+    drawMuscleLimb('r_elbow', 'r_wrist', 'r_forearm', 6.5, 7, 4.5);
 
-    parts.r_shoulder = new THREE.Mesh(shoulderGeom, getMat('r_shoulder'));
-    parts.r_shoulder.scale.set(1.1, 1.25, 1.1);
-    parentGroup.add(parts.r_shoulder);
+    // Deltoides (Capas dos ombros)
+    drawJointCap('l_shoulder', 'shoulders', 9.5);
+    drawJointCap('r_shoulder', 'shoulders', 9.5);
 
-    // LIMBS (robust, muscular cylindrical segments created with height 1)
-    const limbs = [
-      { name: 'l_upper_arm', j1: 'l_shoulder', j2: 'l_elbow', geom: new THREE.CylinderGeometry(0.075, 0.06, 1, 12), matName: 'l_upper_arm' },
-      { name: 'r_upper_arm', j1: 'r_shoulder', j2: 'r_elbow', geom: new THREE.CylinderGeometry(0.075, 0.06, 1, 12), matName: 'r_upper_arm' },
-      { name: 'l_forearm', j1: 'l_elbow', j2: 'l_wrist', geom: new THREE.CylinderGeometry(0.06, 0.04, 1, 12), matName: 'l_forearm' },
-      { name: 'r_forearm', j1: 'r_elbow', j2: 'r_wrist', geom: new THREE.CylinderGeometry(0.06, 0.04, 1, 12), matName: 'r_forearm' },
-      { name: 'l_thigh', j1: 'l_hip', j2: 'l_knee', geom: new THREE.CylinderGeometry(0.125, 0.09, 1, 16), matName: 'l_thigh' },
-      { name: 'r_thigh', j1: 'r_hip', j2: 'r_knee', geom: new THREE.CylinderGeometry(0.125, 0.09, 1, 16), matName: 'r_thigh' },
-      { name: 'l_calf', j1: 'l_knee', j2: 'l_ankle', geom: new THREE.CylinderGeometry(0.09, 0.05, 1, 16), matName: 'l_calf' },
-      { name: 'r_calf', j1: 'r_knee', j2: 'r_ankle', geom: new THREE.CylinderGeometry(0.09, 0.05, 1, 16), matName: 'r_calf' }
-    ];
+    // Olecrâneos (Articulações dos cotovelos)
+    drawJointCap('l_elbow', 'l_arm', 5.5);
+    drawJointCap('r_elbow', 'r_arm', 5.5);
 
-    limbs.forEach(limb => {
-      parts[limb.name] = new THREE.Mesh(limb.geom, getMat(limb.matName));
-      parentGroup.add(parts[limb.name]);
-    });
-
-    // FEET
-    const footGeom = new THREE.BoxGeometry(0.06, 0.05, 0.16);
-    parts.l_foot = new THREE.Mesh(footGeom, getMat('l_calf'));
-    parts.r_foot = new THREE.Mesh(footGeom, getMat('r_calf'));
-    parentGroup.add(parts.l_foot);
-    parentGroup.add(parts.r_foot);
-
-    return {
-      joints,
-      parts,
-      limbs
-    };
+    // Punhos (Articulações das mãos)
+    drawJointCap('l_wrist', 'l_forearm', 4.0);
+    drawJointCap('r_wrist', 'r_forearm', 4.0);
   }
+
+  // Os módulos auxiliares buildMuscularMannequin e getPartMaterial do Three.js foram limpos e substituídos pela função modular nativa drawMuscularMannequin no Canvas 2D.
 
   function initCard3DScene(exId) {
     const container = document.getElementById(`3d-card-${exId}`);
     if (!container) return;
 
-    loadThreeJS().then(() => {
-      if (cardSceneControllers[exId]) return;
+    if (cardSceneControllers[exId]) return;
 
-      container.innerHTML = '';
-      const width = container.clientWidth || 250;
-      const height = container.clientHeight || 160;
+    container.innerHTML = '';
+    const canvas = document.createElement('canvas');
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.display = 'block';
+    container.appendChild(canvas);
 
-      const scene = new THREE.Scene();
+    const width = container.clientWidth || 250;
+    const height = container.clientHeight || 160;
+    
+    // Alta nitidez em telas retina/mobile
+    canvas.width = width * window.devicePixelRatio;
+    canvas.height = height * window.devicePixelRatio;
 
-      // Camera positioned back to frame the entire mannequin from head to toe beautifully without cut-offs
-      const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-      camera.position.set(0, 0.25, 5.0);
+    const ctx = canvas.getContext('2d');
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
-      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-      container.appendChild(renderer.domElement);
+    let angleY = 0.5;
+    let angleX = 0.0;
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
-      scene.add(ambientLight);
+    const onPointerDown = (e) => {
+      isDragging = true;
+      previousMousePosition = {
+        x: e.clientX || (e.touches && e.touches[0].clientX),
+        y: e.clientY || (e.touches && e.touches[0].clientY)
+      };
+    };
 
-      const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
-      dirLight.position.set(3, 8, 5);
-      scene.add(dirLight);
+    const onPointerMove = (e) => {
+      if (!isDragging) return;
 
-      const group = new THREE.Group();
-      scene.add(group);
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
 
-      group.rotation.y = 0.5;
-
-      const model = buildMuscularMannequin(THREE, group, exId);
-
-      let isDragging = false;
-      let previousMousePosition = { x: 0, y: 0 };
-
-      const onPointerDown = (e) => {
-        isDragging = true;
-        previousMousePosition = {
-          x: e.clientX || (e.touches && e.touches[0].clientX),
-          y: e.clientY || (e.touches && e.touches[0].clientY)
-        };
+      const deltaMove = {
+        x: clientX - previousMousePosition.x,
+        y: clientY - previousMousePosition.y
       };
 
-      const onPointerMove = (e) => {
-        if (!isDragging || !group) return;
+      angleY += deltaMove.x * 0.01;
+      angleX += deltaMove.y * 0.01;
 
-        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-        const deltaMove = {
-          x: clientX - previousMousePosition.x,
-          y: clientY - previousMousePosition.y
-        };
-
-        group.rotation.y += deltaMove.x * 0.01;
-        group.rotation.x += deltaMove.y * 0.01;
-
-        previousMousePosition = {
-          x: clientX,
-          y: clientY
-        };
+      previousMousePosition = {
+        x: clientX,
+        y: clientY
       };
+    };
 
-      const onPointerUp = () => {
-        isDragging = false;
-      };
+    const onPointerUp = () => {
+      isDragging = false;
+    };
 
-      container.addEventListener('mousedown', onPointerDown);
-      container.addEventListener('touchstart', onPointerDown, { passive: true });
-      window.addEventListener('mousemove', onPointerMove);
-      window.addEventListener('touchmove', onPointerMove, { passive: true });
-      window.addEventListener('mouseup', onPointerUp);
-      window.addEventListener('touchend', onPointerUp);
+    container.addEventListener('mousedown', onPointerDown);
+    container.addEventListener('touchstart', onPointerDown, { passive: true });
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('touchmove', onPointerMove, { passive: true });
+    window.addEventListener('mouseup', onPointerUp);
+    window.addEventListener('touchend', onPointerUp);
 
-      container.onPointerDown3D = onPointerDown;
-      container.onPointerMove3D = onPointerMove;
-      container.onPointerUp3D = onPointerUp;
+    container.onPointerDown3D = onPointerDown;
+    container.onPointerMove3D = onPointerMove;
+    container.onPointerUp3D = onPointerUp;
 
-      const startTime = performance.now();
-      let animFrameId = null;
-      let isFirstFrame = true;
+    const startTime = performance.now();
+    let animFrameId = null;
+    let isFirstFrame = true;
 
-      const animateCard = () => {
-        animFrameId = requestAnimationFrame(animateCard);
+    const animateCard = () => {
+      animFrameId = requestAnimationFrame(animateCard);
 
-        const t = (performance.now() - startTime) / 1000;
-        const pos = getJointPositions(exId, t);
+      const t = (performance.now() - startTime) / 1000;
+      drawMuscularMannequin(ctx, exId, t, width, height, angleX, angleY);
 
-        const jointNames = [
-          'pelvis', 'head', 'l_shoulder', 'r_shoulder', 'l_elbow', 'r_elbow',
-          'l_wrist', 'r_wrist', 'l_hip', 'r_hip', 'l_knee', 'r_knee', 'l_ankle', 'r_ankle'
-        ];
+      if (!isDragging) {
+        angleY += 0.007; // Auto-rotação suave
+      }
 
-        jointNames.forEach(name => {
-          if (model.joints[name] && pos[name]) {
-            model.joints[name].position.copy(pos[name]);
-          }
-        });
-
-        const midShoulder = new THREE.Vector3().addVectors(pos.l_shoulder, pos.r_shoulder).multiplyScalar(0.5);
-        const midTorso = new THREE.Vector3().addVectors(pos.pelvis, midShoulder).multiplyScalar(0.5);
-
-        // Volumetric vertical spine alignment - completely touching end-to-end
-        if (model.parts.head) model.parts.head.position.copy(pos.head);
-        if (model.parts.neck) alignCylinder(model.parts.neck, pos.head, midShoulder);
-        if (model.parts.chest) alignCylinder(model.parts.chest, midShoulder, midTorso);
-        if (model.parts.abdomen) alignCylinder(model.parts.abdomen, midTorso, pos.pelvis);
-
-        // Volumetric horizontal girdle locks - perfectly tying shoulders and hip joints together
-        if (model.parts.shoulder_girdle) alignCylinder(model.parts.shoulder_girdle, pos.l_shoulder, pos.r_shoulder);
-        if (model.parts.pelvic_girdle) alignCylinder(model.parts.pelvic_girdle, pos.l_hip, pos.r_hip);
-
-        if (model.parts.l_shoulder) model.parts.l_shoulder.position.copy(pos.l_shoulder);
-        if (model.parts.r_shoulder) model.parts.r_shoulder.position.copy(pos.r_shoulder);
-
-        model.limbs.forEach(limb => {
-          const p1 = pos[limb.j1];
-          const p2 = pos[limb.j2];
-          if (p1 && p2 && model.parts[limb.name]) {
-            alignCylinder(model.parts[limb.name], p1, p2);
-          }
-        });
-
-        if (model.parts.l_foot) model.parts.l_foot.position.copy(pos.l_ankle).add(new THREE.Vector3(0, -0.015, 0.03));
-        if (model.parts.r_foot) model.parts.r_foot.position.copy(pos.r_ankle).add(new THREE.Vector3(0, -0.015, 0.03));
-
-        if (!isDragging) {
-          group.rotation.y += 0.007;
+      if (isFirstFrame) {
+        const placeholder = container.nextElementSibling;
+        if (placeholder) {
+          placeholder.style.display = 'none';
         }
+        isFirstFrame = false;
+      }
+    };
 
-        renderer.render(scene, camera);
+    animateCard();
 
-        if (isFirstFrame) {
-          const placeholder = container.nextElementSibling;
-          if (placeholder) {
-            placeholder.style.display = 'none';
-          }
-          isFirstFrame = false;
-        }
-      };
-
-      animateCard();
-
-      cardSceneControllers[exId] = {
-        renderer,
-        scene,
-        camera,
-        group,
-        animFrameId,
-        container
-      };
-
-    }).catch(err => {
-      console.error("Failed to load Three.js card scene:", err);
-      container.innerHTML = `
-        <div style="font-size:0.7rem; color:var(--error); text-align:center; padding:8px;">
-          Erro ao renderizar 3D
-        </div>
-      `;
-    });
+    cardSceneControllers[exId] = {
+      canvas,
+      animFrameId,
+      container
+    };
   }
 
   function destroyCard3DScene(exId) {
@@ -1481,20 +1571,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if (ctrl.scene) {
-      ctrl.scene.traverse(obj => {
-        if (obj.geometry) obj.geometry.dispose();
-        if (obj.material) {
-          if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose());
-          else obj.material.dispose();
-        }
-      });
-    }
-
-    if (ctrl.renderer) {
-      ctrl.renderer.dispose();
-    }
-
     delete cardSceneControllers[exId];
   }
 
@@ -1502,156 +1578,93 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('exercise-3d-mannequin-container');
     if (!container) return;
 
-    loadThreeJS().then(() => {
-      container.innerHTML = '';
+    container.innerHTML = '';
+    const canvas = document.createElement('canvas');
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.display = 'block';
+    container.appendChild(canvas);
 
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+    const width = container.clientWidth || 400;
+    const height = container.clientHeight || 400;
 
-      scene3D = new THREE.Scene();
+    canvas.width = width * window.devicePixelRatio;
+    canvas.height = height * window.devicePixelRatio;
 
-      camera3D = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-      camera3D.position.set(0, 0.25, 4.8);
+    activeModalCtx = canvas.getContext('2d');
+    activeModalCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    activeModalCanvas = canvas;
 
-      renderer3D = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer3D.setSize(width, height);
-      renderer3D.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      container.appendChild(renderer3D.domElement);
+    modalAngleY = 0.5;
+    modalAngleX = 0.0;
+    isDragging3D = false;
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
-      scene3D.add(ambientLight);
+    const onPointerDown = (e) => {
+      isDragging3D = true;
+      previousMousePosition = {
+        x: e.clientX || (e.touches && e.touches[0].clientX),
+        y: e.clientY || (e.touches && e.touches[0].clientY)
+      };
+    };
 
-      const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
-      dirLight.position.set(5, 10, 7);
-      scene3D.add(dirLight);
+    const onPointerMove = (e) => {
+      if (!isDragging3D) return;
 
-      mannequinGroup = new THREE.Group();
-      scene3D.add(mannequinGroup);
-      
-      mannequinGroup.rotation.y = 0.5;
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
 
-      const model = buildMuscularMannequin(THREE, mannequinGroup, exerciseId);
-
-      const gridHelper = new THREE.GridHelper(6, 12, 0x2e6b4a, 0x1b402c);
-      gridHelper.position.y = -1.82;
-      gridHelper.material.opacity = 0.18;
-      gridHelper.material.transparent = true;
-      scene3D.add(gridHelper);
-
-      const onPointerDown = (e) => {
-        isDragging3D = true;
-        previousMousePosition = {
-          x: e.clientX || (e.touches && e.touches[0].clientX),
-          y: e.clientY || (e.touches && e.touches[0].clientY)
-        };
+      const deltaMove = {
+        x: clientX - previousMousePosition.x,
+        y: clientY - previousMousePosition.y
       };
 
-      const onPointerMove = (e) => {
-        if (!isDragging3D || !mannequinGroup) return;
+      modalAngleY += deltaMove.x * 0.008;
+      modalAngleX += deltaMove.y * 0.008;
 
-        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-        const deltaMove = {
-          x: clientX - previousMousePosition.x,
-          y: clientY - previousMousePosition.y
-        };
-
-        mannequinGroup.rotation.y += deltaMove.x * 0.008;
-        mannequinGroup.rotation.x += deltaMove.y * 0.008;
-
-        previousMousePosition = {
-          x: clientX,
-          y: clientY
-        };
+      previousMousePosition = {
+        x: clientX,
+        y: clientY
       };
+    };
 
-      const onPointerUp = () => {
-        isDragging3D = false;
-      };
+    const onPointerUp = () => {
+      isDragging3D = false;
+    };
 
-      container.addEventListener('mousedown', onPointerDown);
-      container.addEventListener('touchstart', onPointerDown, { passive: true });
-      window.addEventListener('mousemove', onPointerMove);
-      window.addEventListener('touchmove', onPointerMove, { passive: true });
-      window.addEventListener('mouseup', onPointerUp);
-      window.addEventListener('touchend', onPointerUp);
+    container.addEventListener('mousedown', onPointerDown);
+    container.addEventListener('touchstart', onPointerDown, { passive: true });
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('touchmove', onPointerMove, { passive: true });
+    window.addEventListener('mouseup', onPointerUp);
+    window.addEventListener('touchend', onPointerUp);
 
-      container.onPointerDown3D = onPointerDown;
-      container.onPointerMove3D = onPointerMove;
-      container.onPointerUp3D = onPointerUp;
+    container.onPointerDown3D = onPointerDown;
+    container.onPointerMove3D = onPointerMove;
+    container.onPointerUp3D = onPointerUp;
 
-      const startTime = performance.now();
-      let isFirstFrame = true;
-      
-      const animate3D = () => {
-        if (!scene3D || !renderer3D) return;
+    const startTime = performance.now();
+    let isFirstFrame = true;
+    
+    const animate3D = () => {
+      if (!activeModalCtx) return;
 
-        animFrameId3D = requestAnimationFrame(animate3D);
+      animFrameId3D = requestAnimationFrame(animate3D);
 
-        const t = (performance.now() - startTime) / 1000;
-        const pos = getJointPositions(exerciseId, t);
+      const t = (performance.now() - startTime) / 1000;
+      drawMuscularMannequin(activeModalCtx, exerciseId, t, width, height, modalAngleX, modalAngleY);
 
-        const jointNames = [
-          'pelvis', 'head', 'l_shoulder', 'r_shoulder', 'l_elbow', 'r_elbow',
-          'l_wrist', 'r_wrist', 'l_hip', 'r_hip', 'l_knee', 'r_knee', 'l_ankle', 'r_ankle'
-        ];
+      if (!isDragging3D) {
+        modalAngleY += 0.005; // Auto-rotação modal
+      }
 
-        jointNames.forEach(name => {
-          if (model.joints[name] && pos[name]) {
-            model.joints[name].position.copy(pos[name]);
-          }
-        });
+      if (isFirstFrame) {
+        const placeholder = container.querySelector('.loading-3d-text');
+        if (placeholder) placeholder.style.display = 'none';
+        isFirstFrame = false;
+      }
+    };
 
-        const midShoulder = new THREE.Vector3().addVectors(pos.l_shoulder, pos.r_shoulder).multiplyScalar(0.5);
-        const midTorso = new THREE.Vector3().addVectors(pos.pelvis, midShoulder).multiplyScalar(0.5);
-
-        // Volumetric vertical spine alignment - completely touching end-to-end
-        if (model.parts.head) model.parts.head.position.copy(pos.head);
-        if (model.parts.neck) alignCylinder(model.parts.neck, pos.head, midShoulder);
-        if (model.parts.chest) alignCylinder(model.parts.chest, midShoulder, midTorso);
-        if (model.parts.abdomen) alignCylinder(model.parts.abdomen, midTorso, pos.pelvis);
-
-        // Volumetric horizontal girdle locks - perfectly tying shoulders and hip joints together
-        if (model.parts.shoulder_girdle) alignCylinder(model.parts.shoulder_girdle, pos.l_shoulder, pos.r_shoulder);
-        if (model.parts.pelvic_girdle) alignCylinder(model.parts.pelvic_girdle, pos.l_hip, pos.r_hip);
-
-        if (model.parts.l_shoulder) model.parts.l_shoulder.position.copy(pos.l_shoulder);
-        if (model.parts.r_shoulder) model.parts.r_shoulder.position.copy(pos.r_shoulder);
-
-        model.limbs.forEach(limb => {
-          const p1 = pos[limb.j1];
-          const p2 = pos[limb.j2];
-          if (p1 && p2 && model.parts[limb.name]) {
-            alignCylinder(model.parts[limb.name], p1, p2);
-          }
-        });
-
-        if (model.parts.l_foot) model.parts.l_foot.position.copy(pos.l_ankle).add(new THREE.Vector3(0, -0.015, 0.03));
-        if (model.parts.r_foot) model.parts.r_foot.position.copy(pos.r_ankle).add(new THREE.Vector3(0, -0.015, 0.03));
-
-        if (!isDragging3D) {
-          mannequinGroup.rotation.y += 0.005;
-        }
-
-        renderer3D.render(scene3D, camera3D);
-
-        if (isFirstFrame) {
-          const placeholder = container.querySelector('.loading-3d-text');
-          if (placeholder) placeholder.style.display = 'none';
-          isFirstFrame = false;
-        }
-      };
-
-      animate3D();
-    }).catch(err => {
-      console.error(err);
-      container.innerHTML = `
-        <div style="font-size: 0.8rem; color: var(--error); text-align: center; padding: 16px;">
-          Erro ao carregar renderizador 3D interativo.
-        </div>
-      `;
-    });
+    animate3D();
   }
 
   function destroy3DScene() {
@@ -1678,30 +1691,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.lucide) window.lucide.createIcons();
     }
 
-    if (scene3D) {
-      scene3D.traverse(object => {
-        if (object.geometry) object.geometry.dispose();
-        if (object.material) {
-          if (Array.isArray(object.material)) {
-            object.material.forEach(m => m.dispose());
-          } else {
-            object.material.dispose();
-          }
-        }
-      });
-      scene3D = null;
-    }
-
-    if (renderer3D) {
-      renderer3D.dispose();
-      renderer3D = null;
-    }
-
-    camera3D = null;
-    mannequinGroup = null;
+    activeModalCtx = null;
+    activeModalCanvas = null;
   }
 
-  // Setup Global IntersectionObserver for Stretches Cards
+  // Configurar o observador global IntersectionObserver para pausar renderizadores fora da tela
   cardObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const container = entry.target;
@@ -1714,7 +1708,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.1 });
 
-  // Initial trigger to start observing all currently rendered cards
+  // Iniciar observação de todos os cards
   const initialCardContainers = document.querySelectorAll('.exercise-3d-card-container');
   initialCardContainers.forEach(container => {
     cardObserver.observe(container);
