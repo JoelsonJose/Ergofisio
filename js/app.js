@@ -481,31 +481,41 @@ document.addEventListener('DOMContentLoaded', () => {
     switch(id) {
       case "ex-1": // Alongamento Vertical de Braços
         animStyles = `
-          @keyframes ex1-arms-up {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(-150deg); }
+          @keyframes ex1-deep-stretch {
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-5px) scaleY(1.06); }
           }
-          @keyframes ex1-head {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-2px); }
+          .ex1-upper-body {
+            transform-origin: 50px 66px;
+            animation: ex1-deep-stretch 3s ease-in-out infinite;
           }
-          .ex1-arm-l { transform-origin: 50px 38px; animation: ex1-arms-up 3s ease-in-out infinite; }
-          .ex1-arm-r { transform-origin: 50px 38px; animation: ex1-arms-up 3s ease-in-out infinite; }
-          .ex1-head-neck { transform-origin: 50px 38px; animation: ex1-head 3s ease-in-out infinite; }
         `;
         svgContent = `
-          <g class="ex1-head-neck">
-            <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
-            <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          </g>
-          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <line x1="${spineEndX}" y1="${spineEndY}" x2="42" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <line x1="${spineEndX}" y1="${spineEndY}" x2="58" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <g class="ex1-arm-l" style="transform: scaleX(-1); transform-origin: 50px 38px;">
-            <line x1="50" y1="38" x2="35" y2="52" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
-          </g>
-          <g class="ex1-arm-r">
-            <line x1="50" y1="38" x2="65" y2="52" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+          <!-- Pernas e Quadril (Estáticos na base) -->
+          <line x1="50" y1="66" x2="45" y2="85" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="50" y1="66" x2="55" y2="85" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="42" y1="85" x2="48" y2="85" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" />
+          <line x1="52" y1="85" x2="58" y2="85" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" />
+          
+          <!-- Tronco superior que realiza o alongamento profundo para cima -->
+          <g class="ex1-upper-body">
+            <!-- Coluna -->
+            <line x1="50" y1="46" x2="50" y2="66" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <!-- Pescoço -->
+            <line x1="50" y1="40" x2="50" y2="46" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <!-- Cabeça -->
+            <circle cx="50" cy="34" r="5" fill="var(--primary)" />
+            
+            <!-- Ombros (Clavícula) -->
+            <line x1="44" y1="46" x2="56" y2="46" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            
+            <!-- Braço Esquerdo (Esticado verticalmente acima) -->
+            <path d="M 44 46 L 46 28 L 48 16" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            <!-- Braço Direito (Esticado verticalmente acima) -->
+            <path d="M 56 46 L 54 28 L 52 16" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            
+            <!-- Mãos Entrelaçadas no Topo -->
+            <path d="M 47 16 C 48 14, 52 14, 53 16" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
           </g>
         `;
         break;
