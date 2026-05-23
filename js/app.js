@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Inicialização de Ícones Lucide
   lucide.createIcons();
 
+  // Declarar cardObserver no escopo inicial para evitar erros de TDZ (Temporal Dead Zone) em renderExercises
+  let cardObserver = null;
+
   // ==========================================
   // 1. BANCO DE DADOS DE DICAS DIÁRIAS (31 Dicas)
   // Baseado estritamente e somente no conteúdo do panfleto
@@ -905,7 +908,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let previousMousePosition = { x: 0, y: 0 };
 
   const cardSceneControllers = {};
-  let cardObserver = null;
+  // cardObserver já foi declarado no escopo inicial do DOMContentLoaded
 
   function loadThreeJS() {
     if (window.THREE) return Promise.resolve();
