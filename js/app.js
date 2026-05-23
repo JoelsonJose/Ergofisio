@@ -174,6 +174,21 @@ document.addEventListener('DOMContentLoaded', () => {
       titulo: "Alongamento de Panturrilha (#10)",
       desc: "Alongamento 10: Dê um passo largo à frente, mantendo o calcanhar traseiro firme no chão para alongar a panturrilha.",
       icon: "activity"
+    },
+    {
+      titulo: "Técnica de Relaxamento: Biquinho",
+      desc: "Sente-se ereto. Puxe o ar de forma lenta pelo nariz. Na hora de soltar, faça um biquinho com a boca para soltar o ar devagar. Repita 10 vezes.",
+      icon: "wind"
+    },
+    {
+      titulo: "Técnica de Relaxamento: Respiração Diafragmática",
+      desc: "Coloque as mãos sobre a barriga. Respire devagar, inflando a barriga, contando até 5. Pause por 2 segundos e solte lentamente contando até 6.",
+      icon: "activity"
+    },
+    {
+      titulo: "Técnica de Relaxamento: Respiração Alternada",
+      desc: "Tampe a narina esquerda com o dedo e inspire pela direita contando até 5. Em seguida, solte o ar pela narina esquerda. Repita esse ciclo 5 vezes.",
+      icon: "waves"
     }
   ];
 
