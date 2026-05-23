@@ -472,8 +472,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  ];
-
   // ==========================================
   // 4.5. GERADOR DE ANIMAÇÕES VETORIAIS (SVG + CSS ANIMADOS)
   // Código nativo de alta performance para os bonecos de alongamento
@@ -802,7 +800,10 @@ document.addEventListener('DOMContentLoaded', () => {
       card.innerHTML = `
         <div class="exercise-visual-frame">
           <!-- Vídeo em loop de alta performance (WebM/MP4) -->
-          <video class="exercise-gif" src="img/${ex.id}.webm" autoplay loop muted playsinline style="display:none; width:100%; height:100%; object-fit:cover;" onloadeddata="this.style.display='block'; this.nextElementSibling.style.display='none';"></video>
+          <video class="exercise-gif" autoplay loop muted playsinline style="display:none; width:100%; height:100%; object-fit:cover;" onloadeddata="this.style.display='block'; this.nextElementSibling.style.display='none';">
+            <source src="img/${ex.id}.webm" type="video/webm">
+            <source src="img/${ex.id}.mp4" type="video/mp4">
+          </video>
           <!-- Boneco minimalista animado via código nativo (SVG + CSS) como fallback de altíssima performance -->
           <div class="exercise-gif-placeholder" style="display:flex; width:100%; height:100%;">
             ${generateExerciseSVG(ex.id)}

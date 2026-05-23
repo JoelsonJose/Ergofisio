@@ -192,6 +192,13 @@ a {
   white-space: nowrap;
 }
 
+.btn i,
+.btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
 .btn-primary {
   background-color: var(--primary);
   color: var(--white);
@@ -762,9 +769,11 @@ section {
   justify-content: center;
 }
 
-.icon-circle-lg i {
+.icon-circle-lg i,
+.icon-circle-lg svg {
   width: 32px;
   height: 32px;
+  flex-shrink: 0;
 }
 
 .flip-card-front h3 {
@@ -878,6 +887,8 @@ section {
 */
 .filter-tabs-container {
   display: flex;
+  justify-content: center;
+  width: 100%;
   margin-top: 24px;
 }
 
@@ -992,8 +1003,12 @@ section {
   color: var(--text-muted);
 }
 
-.exercise-meta i {
+.exercise-meta i,
+.exercise-meta svg {
   color: var(--primary);
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .exercise-action-btn {
@@ -1008,6 +1023,13 @@ section {
   align-items: center;
   justify-content: center;
   transition: var(--transition-fast);
+}
+
+.exercise-action-btn i,
+.exercise-action-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .exercise-action-btn:hover {
@@ -1370,11 +1392,13 @@ section {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.benefit-tag i {
+.benefit-tag i,
+.benefit-tag svg {
   width: 16px;
   height: 16px;
   stroke-width: 3px;
   color: var(--primary);
+  flex-shrink: 0;
 }
 
 .benefit-tag:hover {
@@ -1385,7 +1409,8 @@ section {
   box-shadow: 0 8px 20px rgba(46, 107, 74, 0.15);
 }
 
-.benefit-tag:hover i {
+.benefit-tag:hover i,
+.benefit-tag:hover svg {
   color: var(--white);
 }
 
@@ -1456,7 +1481,8 @@ section {
   font-size: 0.95rem;
 }
 
-.value-item i {
+.value-item i,
+.value-item svg {
   background-color: var(--accent-light);
   width: 24px;
   height: 24px;
@@ -1465,6 +1491,7 @@ section {
   align-items: center;
   justify-content: center;
   font-size: 0.75rem;
+  flex-shrink: 0;
 }
 
 
