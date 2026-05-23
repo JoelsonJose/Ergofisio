@@ -493,22 +493,33 @@ document.addEventListener('DOMContentLoaded', () => {
       card.setAttribute('data-id', ex.id);
       
       card.innerHTML = `
-        <div class="exercise-header">
-          <span class="exercise-category">${ex.categoriaLbl}</span>
-          <span class="exercise-body-target">${ex.foco}</span>
-        </div>
-        <h3 class="exercise-title">${ex.titulo}</h3>
-        <p class="exercise-desc">${ex.desc}</p>
-        <div class="exercise-footer">
-          <div class="exercise-meta">
-            <i data-lucide="clock"></i>
-            <span>${ex.duracao}</span>
-            <span style="opacity:0.3; margin:0 4px;">•</span>
-            <span>${ex.dificuldade}</span>
+        <div class="exercise-visual-frame">
+          <img src="img/${ex.id}.gif" alt="${ex.titulo}" class="exercise-gif" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="exercise-gif-placeholder">
+            <i data-lucide="accessibility" class="animate-pulse"></i>
+            <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.7; margin-top: 6px;">Visualizar Alongamento</span>
           </div>
-          <button class="exercise-action-btn" aria-label="Iniciar timer para ${ex.titulo}">
-            <i data-lucide="play"></i>
-          </button>
+        </div>
+        <div class="exercise-body">
+          <div>
+            <div class="exercise-header">
+              <span class="exercise-category">${ex.categoriaLbl}</span>
+              <span class="exercise-body-target">${ex.foco}</span>
+            </div>
+            <h3 class="exercise-title">${ex.titulo}</h3>
+            <p class="exercise-desc">${ex.desc}</p>
+          </div>
+          <div class="exercise-footer">
+            <div class="exercise-meta">
+              <i data-lucide="clock"></i>
+              <span>${ex.duracao}</span>
+              <span style="opacity:0.3; margin:0 4px;">•</span>
+              <span>${ex.dificuldade}</span>
+            </div>
+            <button class="exercise-action-btn" aria-label="Iniciar timer para ${ex.titulo}">
+              <i data-lucide="play"></i>
+            </button>
+          </div>
         </div>
       `;
       

@@ -425,10 +425,26 @@
 
         <div class="grid grid-2 gap-lg">
           <!-- Posture Graphic (Left) -->
-          <div class="exercise-card p-lg flex flex-column flex-center">
-            <h3 class="exercise-title mb-md">Postura Ergonômica Sentado</h3>
-            <div class="posture-image-container w-full mt-sm" style="overflow: hidden; border-radius: var(--radius-md); border: 1px solid rgba(46, 107, 74, 0.08); background-color: var(--white); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);">
+          <div class="exercise-card p-lg flex flex-column flex-center gap-md">
+            <h3 class="exercise-title mb-xs">Postura Ergonômica Sentado</h3>
+            
+            <!-- Posture Comparison Graphic -->
+            <div class="posture-image-container w-full" style="overflow: hidden; border-radius: var(--radius-md); border: 1px solid rgba(46, 107, 74, 0.08); background-color: var(--white); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); max-width: 440px; margin: 0 auto;">
               <img src="img/postura_sentado.jpg" alt="Comparativo de Postura Ergonômica Correta e Incorreta ao Sentar" class="posture-image-asset" style="width: 100%; height: auto; display: block; object-fit: contain;">
+            </div>
+            
+            <!-- Correct and Incorrect Details -->
+            <div class="flex gap-md w-full justify-around flex-wrap mt-xs">
+              <div class="text-center p-sm" style="border: 2px solid var(--success); border-radius: var(--radius-md); background: rgba(40, 167, 69, 0.05); width: 46%;">
+                <i data-lucide="check-circle" class="text-success mb-xs" style="width: 28px; height: 28px; display: inline-block;"></i>
+                <h4 class="text-success font-semibold">Correto</h4>
+                <p style="font-size: 0.75rem;" class="mt-xs">Coluna ereta, pernas e coxas a 90°, pés apoiados, tela na altura dos olhos.</p>
+              </div>
+              <div class="text-center p-sm" style="border: 2px solid var(--error); border-radius: var(--radius-md); background: rgba(220, 53, 69, 0.05); width: 46%;">
+                <i data-lucide="x-circle" class="text-error mb-xs" style="width: 28px; height: 28px; display: inline-block;"></i>
+                <h4 class="text-error font-semibold">Incorreto</h4>
+                <p style="font-size: 0.75rem;" class="mt-xs">Coluna curvada, pescoço flexionado olhando para baixo, bacia desalinhada.</p>
+              </div>
             </div>
           </div>
 
