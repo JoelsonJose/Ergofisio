@@ -815,8 +815,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <source src="img/${ex.id}.mp4" type="video/mp4">
           </video>
           <!-- Boneco minimalista animado via código nativo (SVG + CSS) como fallback de altíssima performance -->
-          <div class="exercise-gif-placeholder" style="display:flex; width:100%; height:100%;">
-            ${generateExerciseSVG(ex.id)}
+          <div class="exercise-gif-placeholder" style="display:flex; width:100%; height:100%; flex-direction:column; align-items:center; justify-content:center; color:var(--primary); background:linear-gradient(135deg, rgba(46, 107, 74, 0.03) 0%, rgba(46, 107, 74, 0.08) 100%);">
+            <i data-lucide="accessibility" class="animate-pulse" style="width:36px; height:36px; opacity:0.85; margin-bottom:8px;"></i>
+            <span style="font-size:0.75rem; font-weight:500; opacity:0.75;">Visualizar Alongamento</span>
           </div>
         </div>
         <div class="exercise-body">
@@ -879,6 +880,426 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // 6. MODAL DO CRONÔMETRO DE ALONGAMENTO ATIVO
   // ==========================================
+  // ==========================================
+  // 3D WEBGL INTERACTIVE MANNEQUIN (THREE.JS)
+  // ==========================================
+  let renderer3D = null;
+  let scene3D = null;
+  let camera3D = null;
+  let mannequinGroup = null;
+  let animFrameId3D = null;
+  let threeJSLoadingPromise = null;
+  
+  // Drag rotation variables
+  let isDragging3D = false;
+  let previousMousePosition = { x: 0, y: 0 };
+
+  const BONE_CONNECTIONS = [
+    ['pelvis', 'l_hip'], ['pelvis', 'r_hip'],
+    ['l_hip', 'l_knee'], ['l_knee', 'l_ankle'],
+    ['r_hip', 'r_knee'], ['r_knee', 'r_ankle'],
+    ['l_shoulder', 'r_shoulder'],
+    ['l_shoulder', 'l_elbow'], ['l_elbow', 'l_wrist'],
+    ['r_shoulder', 'r_elbow'], ['r_elbow', 'r_wrist'],
+    ['l_shoulder', 'head'], ['r_shoulder', 'head']
+  ];
+
+  function loadThreeJS() {
+    if (window.THREE) return Promise.resolve();
+    if (threeJSLoadingPromise) return threeJSLoadingPromise;
+
+    threeJSLoadingPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('Failed to load Three.js'));
+      document.head.appendChild(script);
+    });
+    return threeJSLoadingPromise;
+  }
+
+  function alignCylinder(cylinder, p1, p2) {
+    const direction = new THREE.Vector3().subVectors(p2, p1);
+    const length = direction.length();
+    
+    // Scale cylinder height to match distance
+    cylinder.scale.set(1, length, 1);
+    
+    // Position at midpoint
+    const midpoint = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+    cylinder.position.copy(midpoint);
+    
+    // Align with vector orientation
+    const up = new THREE.Vector3(0, 1, 0);
+    cylinder.quaternion.setFromUnitVectors(up, direction.clone().normalize());
+  }
+
+  function getJointPositions(exId, t) {
+    // Base standing coordinates
+    const pos = {
+      pelvis: new THREE.Vector3(0, 0, 0),
+      head: new THREE.Vector3(0, 2.3, 0),
+      l_shoulder: new THREE.Vector3(-0.45, 1.8, 0),
+      r_shoulder: new THREE.Vector3(0.45, 1.8, 0),
+      l_elbow: new THREE.Vector3(-0.8, 1.3, 0),
+      r_elbow: new THREE.Vector3(0.8, 1.3, 0),
+      l_wrist: new THREE.Vector3(-1.1, 0.8, 0),
+      r_wrist: new THREE.Vector3(1.1, 0.8, 0),
+      l_hip: new THREE.Vector3(-0.25, 0, 0),
+      r_hip: new THREE.Vector3(0.25, 0, 0),
+      l_knee: new THREE.Vector3(-0.25, -0.9, 0),
+      r_knee: new THREE.Vector3(0.25, -0.9, 0),
+      l_ankle: new THREE.Vector3(-0.25, -1.8, 0),
+      r_ankle: new THREE.Vector3(0.25, -1.8, 0)
+    };
+
+    const cycle = (Math.sin(t * Math.PI * 2 / 3) + 1) / 2; // Stretches/Breathes every 3 seconds
+
+    switch(exId) {
+      case "ex-1": // Alongamento Vertical de Braços
+        const spineStretch = cycle * 0.1;
+        pos.head.y += spineStretch;
+        pos.l_shoulder.y += spineStretch;
+        pos.r_shoulder.y += spineStretch;
+        
+        pos.l_elbow.set(-0.15, 2.4 + spineStretch, 0.1);
+        pos.l_wrist.set(-0.02, 2.9 + spineStretch, 0.1);
+        pos.r_elbow.set(0.15, 2.4 + spineStretch, 0.1);
+        pos.r_wrist.set(0.02, 2.9 + spineStretch, 0.1);
+        break;
+
+      case "ex-2": // Alongamento de Deltoide e Ombros
+        const deltoidCycle = cycle;
+        pos.l_elbow.set(-0.45 + deltoidCycle * 0.65, 1.7, 0.25);
+        pos.l_wrist.set(-0.45 + deltoidCycle * 1.05, 1.65, 0.3);
+        
+        pos.r_elbow.set(0.3, 1.45, 0.25);
+        pos.r_wrist.copy(pos.l_elbow).add(new THREE.Vector3(-0.05, -0.05, 0.05));
+        break;
+
+      case "ex-3": // Alongamento de Peitoral e Ombros
+        const chestCycle = cycle;
+        pos.l_elbow.set(-0.35 + chestCycle * 0.15, 1.3 - chestCycle * 0.1, -chestCycle * 0.35);
+        pos.l_wrist.set(-0.15 + chestCycle * 0.1, 0.9 - chestCycle * 0.1, -chestCycle * 0.45);
+        
+        pos.r_elbow.set(0.35 - chestCycle * 0.15, 1.3 - chestCycle * 0.1, -chestCycle * 0.35);
+        pos.r_wrist.set(0.15 - chestCycle * 0.1, 0.9 - chestCycle * 0.1, -chestCycle * 0.45);
+        break;
+
+      case "ex-4": // Alongamento de Tríceps atrás da Nuca
+        const tricepsCycle = cycle;
+        pos.l_elbow.set(-0.45 + tricepsCycle * 0.35, 1.8 + tricepsCycle * 0.55, -tricepsCycle * 0.15);
+        pos.l_wrist.set(-0.45 + tricepsCycle * 0.6, 1.8 + tricepsCycle * 0.25, -tricepsCycle * 0.2);
+        
+        pos.r_elbow.set(0.45 - tricepsCycle * 0.25, 1.8 + tricepsCycle * 0.35, 0.1);
+        pos.r_wrist.copy(pos.l_elbow).add(new THREE.Vector3(0.05, 0, 0.05));
+        break;
+
+      case "ex-5": // Alongamento Cervical Lateral
+        const tiltCycle = Math.sin(t * Math.PI * 2 / 3) * 0.35;
+        pos.head.set(tiltCycle * 0.35, 2.3 - Math.abs(tiltCycle) * 0.05, 0);
+        
+        if (tiltCycle > 0) {
+          pos.r_elbow.set(0.5, 2.1, 0.1);
+          pos.r_wrist.copy(pos.head).add(new THREE.Vector3(0.1, 0.05, 0.05));
+        } else {
+          pos.l_elbow.set(-0.5, 2.1, 0.1);
+          pos.l_wrist.copy(pos.head).add(new THREE.Vector3(-0.1, 0.05, 0.05));
+        }
+        break;
+
+      case "ex-6": // Alongamento cruzado de Ombro
+        const crossCycle = cycle;
+        pos.r_elbow.set(0.45 - crossCycle * 0.65, 1.7, 0.25);
+        pos.r_wrist.set(0.45 - crossCycle * 1.05, 1.65, 0.3);
+        pos.l_elbow.set(-0.3, 1.45, 0.25);
+        pos.l_wrist.copy(pos.r_elbow).add(new THREE.Vector3(0.05, -0.05, 0.05));
+        break;
+
+      case "ex-8": // Alongamento Lateral do Tronco
+        const latCycle = Math.sin(t * Math.PI * 2 / 3) * 0.25;
+        const trunkStretch = Math.abs(latCycle) * 0.05;
+        
+        pos.head.set(latCycle * 0.7, 2.3 - trunkStretch, 0);
+        pos.l_shoulder.set(-0.45 + latCycle * 0.5, 1.8 - trunkStretch, 0);
+        pos.r_shoulder.set(0.45 + latCycle * 0.5, 1.8 - trunkStretch, 0);
+        
+        if (latCycle > 0) {
+          pos.l_elbow.set(-0.2 + latCycle * 0.8, 2.3, 0.1);
+          pos.l_wrist.set(0.1 + latCycle * 0.9, 2.5, 0.15);
+          pos.r_elbow.set(0.6, 0.9, 0.1);
+          pos.r_wrist.set(0.25, 0.2, 0.1);
+        } else {
+          pos.r_elbow.set(0.2 + latCycle * 0.8, 2.3, 0.1);
+          pos.r_wrist.set(-0.1 + latCycle * 0.9, 2.5, 0.15);
+          pos.l_elbow.set(-0.6, 0.9, 0.1);
+          pos.l_wrist.set(-0.25, 0.2, 0.1);
+        }
+        break;
+
+      case "ex-9": // Alongamento de Quadríceps de Pé
+        const quadCycle = cycle;
+        pos.l_knee.set(-0.25, -0.9, -quadCycle * 0.45);
+        pos.l_ankle.set(-0.25, -1.0 + quadCycle * 0.75, -0.45 - quadCycle * 0.3);
+        
+        pos.l_elbow.set(-0.55, 1.0, -0.2);
+        pos.l_wrist.copy(pos.l_ankle).add(new THREE.Vector3(0.05, 0.05, 0.05));
+        
+        pos.r_elbow.set(0.6, 1.5, 0.3);
+        pos.r_wrist.set(0.9, 1.6, 0.4);
+        break;
+
+      case "ex-10": // Alongamento de Panturrilha
+        const lungeCycle = cycle;
+        pos.pelvis.set(lungeCycle * 0.25, -lungeCycle * 0.15, 0);
+        pos.head.set(lungeCycle * 0.25, 2.3 - lungeCycle * 0.15, 0);
+        pos.l_shoulder.set(-0.45 + lungeCycle * 0.25, 1.8 - lungeCycle * 0.15, 0);
+        pos.r_shoulder.set(0.45 + lungeCycle * 0.25, 1.8 - lungeCycle * 0.15, 0);
+        
+        pos.l_hip.set(-0.25 + lungeCycle * 0.25, -lungeCycle * 0.15, 0);
+        pos.l_knee.set(-0.15 + lungeCycle * 0.55, -0.9 - lungeCycle * 0.25, 0);
+        pos.l_ankle.set(0.15 + lungeCycle * 0.65, -1.8, 0);
+        
+        pos.r_hip.set(0.25 + lungeCycle * 0.25, -lungeCycle * 0.15, 0);
+        pos.r_knee.set(0.4 - lungeCycle * 0.1, -0.9 - lungeCycle * 0.2, 0);
+        pos.r_ankle.set(0.6 - lungeCycle * 0.2, -1.8, 0);
+        break;
+
+      case "ex-11": // Alongamento de Isquiotibiais Com Apoio
+        const hamCycle = cycle;
+        pos.pelvis.set(-hamCycle * 0.15, hamCycle * 0.05, 0);
+        
+        pos.l_hip.set(-0.25 - hamCycle * 0.15, hamCycle * 0.05, 0);
+        pos.l_knee.set(-0.6 - hamCycle * 0.15, -0.3 + hamCycle * 0.2, 0);
+        pos.l_ankle.set(-1.0 - hamCycle * 0.2, -0.6 + hamCycle * 0.45, 0);
+        
+        pos.head.set(-hamCycle * 0.4, 2.3 - hamCycle * 0.35, 0.1);
+        pos.l_shoulder.set(-0.45 - hamCycle * 0.25, 1.8 - hamCycle * 0.3, 0.05);
+        pos.r_shoulder.set(0.45 - hamCycle * 0.25, 1.8 - hamCycle * 0.3, 0.05);
+        
+        pos.l_elbow.set(-0.5 - hamCycle * 0.2, 1.2 - hamCycle * 0.4, 0.1);
+        pos.l_wrist.copy(pos.l_ankle).add(new THREE.Vector3(0.05, 0.05, 0.05));
+        pos.r_elbow.set(-0.3 - hamCycle * 0.2, 1.2 - hamCycle * 0.4, 0.15);
+        pos.r_wrist.copy(pos.l_ankle).add(new THREE.Vector3(0.05, 0.05, 0.1));
+        break;
+
+      case "ex-12": // Alongamento de Joelho ao Peito
+        const kneeCycle = cycle;
+        pos.r_knee.set(0.25 + kneeCycle * 0.15, -0.9 + kneeCycle * 1.45, 0.25);
+        pos.r_ankle.set(0.25, -1.8 + kneeCycle * 1.55, 0.25);
+        
+        pos.l_elbow.set(-0.15, 1.0 + kneeCycle * 0.3, 0.25);
+        pos.l_wrist.copy(pos.r_knee).add(new THREE.Vector3(-0.05, -0.05, 0.05));
+        pos.r_elbow.set(0.55, 1.0 + kneeCycle * 0.3, 0.25);
+        pos.r_wrist.copy(pos.r_knee).add(new THREE.Vector3(0.05, -0.05, 0.05));
+        break;
+    }
+
+    return pos;
+  }
+
+  function init3DScene(exerciseId) {
+    const container = document.getElementById('exercise-3d-mannequin-container');
+    if (!container) return;
+
+    loadThreeJS().then(() => {
+      container.innerHTML = '';
+
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      scene3D = new THREE.Scene();
+
+      camera3D = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+      camera3D.position.set(0, 0.6, 4.2);
+
+      renderer3D = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer3D.setSize(width, height);
+      renderer3D.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer3D.domElement);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      scene3D.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      dirLight.position.set(5, 10, 7);
+      scene3D.add(dirLight);
+
+      mannequinGroup = new THREE.Group();
+      scene3D.add(mannequinGroup);
+
+      const jointMaterial = new THREE.MeshBasicMaterial({ color: 0xEDE7D9 });
+      const headMaterial = new THREE.MeshBasicMaterial({ color: 0xEDE7D9 });
+      const boneMaterial = new THREE.MeshLambertMaterial({ 
+        color: 0x2E6B4A,
+        emissive: 0x143020,
+        flatShading: true
+      });
+
+      const jointGeom = new THREE.SphereGeometry(0.06, 16, 16);
+      const headGeom = new THREE.SphereGeometry(0.18, 16, 16);
+      const boneGeom = new THREE.CylinderGeometry(0.024, 0.024, 1, 8);
+
+      const parts = {
+        joints: {},
+        bones: []
+      };
+
+      const jointNames = [
+        'pelvis', 'head', 'l_shoulder', 'r_shoulder', 'l_elbow', 'r_elbow',
+        'l_wrist', 'r_wrist', 'l_hip', 'r_hip', 'l_knee', 'r_knee', 'l_ankle', 'r_ankle'
+      ];
+
+      jointNames.forEach(name => {
+        const mesh = new THREE.Mesh(name === 'head' ? headGeom : jointGeom, name === 'head' ? headMaterial : jointMaterial);
+        mannequinGroup.add(mesh);
+        parts.joints[name] = mesh;
+      });
+
+      BONE_CONNECTIONS.forEach(([j1, j2]) => {
+        const mesh = new THREE.Mesh(boneGeom, boneMaterial);
+        mannequinGroup.add(mesh);
+        parts.bones.push({ mesh, j1, j2 });
+      });
+
+      const gridHelper = new THREE.GridHelper(6, 12, 0x2E6B4A, 0x1b402c);
+      gridHelper.position.y = -1.82;
+      gridHelper.material.opacity = 0.25;
+      gridHelper.material.transparent = true;
+      scene3D.add(gridHelper);
+
+      const onPointerDown = (e) => {
+        isDragging3D = true;
+        previousMousePosition = {
+          x: e.clientX || (e.touches && e.touches[0].clientX),
+          y: e.clientY || (e.touches && e.touches[0].clientY)
+        };
+      };
+
+      const onPointerMove = (e) => {
+        if (!isDragging3D || !mannequinGroup) return;
+
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+        const deltaMove = {
+          x: clientX - previousMousePosition.x,
+          y: clientY - previousMousePosition.y
+        };
+
+        mannequinGroup.rotation.y += deltaMove.x * 0.008;
+        mannequinGroup.rotation.x += deltaMove.y * 0.008;
+
+        previousMousePosition = {
+          x: clientX,
+          y: clientY
+        };
+      };
+
+      const onPointerUp = () => {
+        isDragging3D = false;
+      };
+
+      container.addEventListener('mousedown', onPointerDown);
+      container.addEventListener('touchstart', onPointerDown, { passive: true });
+      window.addEventListener('mousemove', onPointerMove);
+      window.addEventListener('touchmove', onPointerMove, { passive: true });
+      window.addEventListener('mouseup', onPointerUp);
+      window.addEventListener('touchend', onPointerUp);
+
+      container.onPointerDown3D = onPointerDown;
+      container.onPointerMove3D = onPointerMove;
+      container.onPointerUp3D = onPointerUp;
+
+      const startTime = performance.now();
+      
+      const animate3D = () => {
+        if (!scene3D || !renderer3D) return;
+
+        animFrameId3D = requestAnimationFrame(animate3D);
+
+        const t = (performance.now() - startTime) / 1000;
+        const positions = getJointPositions(exerciseId, t);
+
+        jointNames.forEach(name => {
+          if (parts.joints[name] && positions[name]) {
+            parts.joints[name].position.copy(positions[name]);
+          }
+        });
+
+        parts.bones.forEach(({ mesh, j1, j2 }) => {
+          const p1 = positions[j1];
+          const p2 = positions[j2];
+          if (p1 && p2) {
+            alignCylinder(mesh, p1, p2);
+          }
+        });
+
+        if (!isDragging3D) {
+          mannequinGroup.rotation.y += 0.005;
+        }
+
+        renderer3D.render(scene3D, camera3D);
+      };
+
+      animate3D();
+    }).catch(err => {
+      console.error(err);
+      container.innerHTML = `
+        <div style="font-size: 0.8rem; color: var(--error); text-align: center; padding: 16px;">
+          Erro ao carregar renderizador 3D interativo.
+        </div>
+      `;
+    });
+  }
+
+  function destroy3DScene() {
+    if (animFrameId3D) {
+      cancelAnimationFrame(animFrameId3D);
+      animFrameId3D = null;
+    }
+
+    const container = document.getElementById('exercise-3d-mannequin-container');
+    if (container) {
+      container.removeEventListener('mousedown', container.onPointerDown3D);
+      container.removeEventListener('touchstart', container.onPointerDown3D);
+      window.removeEventListener('mousemove', container.onPointerMove3D);
+      window.removeEventListener('touchmove', container.onPointerMove3D);
+      window.removeEventListener('mouseup', container.onPointerUp3D);
+      window.removeEventListener('touchend', container.onPointerUp3D);
+
+      container.innerHTML = `
+        <div class="loading-3d-text" style="font-size: 0.85rem; font-weight: 500; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="loader" class="animate-spin" style="width: 16px; height: 16px;"></i>
+          Carregando Interativo 3D...
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    if (scene3D) {
+      scene3D.traverse(object => {
+        if (object.geometry) object.geometry.dispose();
+        if (object.material) {
+          if (Array.isArray(object.material)) {
+            object.material.forEach(m => m.dispose());
+          } else {
+            object.material.dispose();
+          }
+        }
+      });
+      scene3D = null;
+    }
+
+    if (renderer3D) {
+      renderer3D.dispose();
+      renderer3D = null;
+    }
+
+    camera3D = null;
+    mannequinGroup = null;
+  }
+
   const exTimerModal = document.getElementById('exercise-timer-modal');
   const closeExTimerBtn = document.getElementById('close-exercise-timer-btn');
   const exTimerCategory = document.getElementById('ex-timer-category');
@@ -917,6 +1338,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (exTimerModal) {
       exTimerModal.classList.add('active');
     }
+
+    // Inicializar Manequim 3D Real-time interativo
+    init3DScene(id);
   }
 
   function closeExerciseTimer() {
@@ -926,6 +1350,9 @@ document.addEventListener('DOMContentLoaded', () => {
     clearInterval(exTimerInterval);
     isExTimerRunning = false;
     activeExObj = null;
+
+    // Destruir e liberar memória do Manequim 3D
+    destroy3DScene();
   }
 
   function setPlayBtnIcon(running) {

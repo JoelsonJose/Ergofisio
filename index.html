@@ -599,6 +599,14 @@
       </div>
 
       <div class="exercise-timer-visual-area flex flex-center flex-column">
+        <!-- 3D real-time mannequin canvas will be loaded here dynamically! -->
+        <div id="exercise-3d-mannequin-container" style="width: 100%; height: 220px; border-radius: var(--radius-md); overflow: hidden; margin-bottom: 24px; background: linear-gradient(135deg, rgba(46, 107, 74, 0.02) 0%, rgba(46, 107, 74, 0.08) 100%); border: 1px solid rgba(46, 107, 74, 0.06); position: relative; display: flex; align-items: center; justify-content: center; cursor: grab;">
+          <div class="loading-3d-text" style="font-size: 0.85rem; font-weight: 500; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="loader" class="animate-spin" style="width: 16px; height: 16px;"></i>
+            Carregando Interativo 3D...
+          </div>
+        </div>
+
         <!-- Interactive Countdown Wheel -->
         <div class="ex-countdown-wheel">
           <svg viewBox="0 0 120 120" class="ex-circle-svg">
