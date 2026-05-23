@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 4. BANCO DE DADOS DE EXERCÍCIOS PREVENTIVOS (11 Alongamentos Oficiais)
+  // 4. BANCO DE DADOS DE EXERCÍCIOS PREVENTIVOS (12 Alongamentos Oficiais)
   // ==========================================
   const EXERCICIOS = [
     {
@@ -339,19 +339,19 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Braços e Ombros",
       duracao: "10 segundos",
       desc: "Estende toda a cadeia muscular superior e laterais do tronco, ajudando a realinhar a coluna após horas de postura sentada.",
-      instrucao: "Entrelace os dedos das mãos e empurre os braços verticalmente para cima, acima da cabeça, mantendo os cotovelos esticados e a coluna bem alinhada.",
+      instrucao: "Levante os braços verticalmente para cima, acima da cabeça,  entrelace os dedos das mãos mantendo os cotovelos esticados e a coluna bem alinhada. Pode ser feito em pé ou sentado",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
       id: "ex-2",
-      titulo: "2. Alongamento de Deltoide e Ombros",
+      titulo: "2. Alongamento de Punhos",
       categoria: "membros-sup",
       categoriaLbl: "Membros Superiores",
-      foco: "Ombros e Costas",
+      foco: "Punhos e Dedos",
       duracao: "10s cada lado",
-      desc: "Alonga os músculos dos ombros, da parte superior das costas e da região posterior do braço e reduz o acúmulo de tensão na região",
-      instrucao: "Estenda um braço horizontalmente à frente do peito e, com a outra mão, puxe suavemente o cotovelo em direção ao corpo, mantendo o ombro relaxado.",
+      desc: "Alonga os músculos flexores dos punhos e dedos, prevenindo lesões por esforço repetitivo (LER/DORT).",
+      instrucao: "Alongamento de Punhos - Estenda um dos braços à frente com a palma da mão voltada para fora., com a outra mão puxe os dedos suavemente para trás (incluindo o dedão). Depois repita no outro lado. Pode ser feito em pé ou sentado",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Peitoral e Ombros",
       duracao: "10 segundos",
       desc: "Melhora a mobilidade dos braços, alivia tensões e melhora a postura",
-      instrucao: "Em pé ou sentado, entrelace as mãos atrás das costas e estique os braços, abrindo bem o peito e elevando suavemente as mãos.",
+      instrucao: "Entrelace as mãos atrás das costas e estique os braços, abrindo bem o peito e elevando suavemente as mãos. Pode ser feito em pé ou sentado.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
@@ -375,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Região Superior",
       duracao: "10s cada lado",
       desc: "Melhorar a mobilidade dos ombros e aliviar tensões musculares da região superior",
-      instrucao: "Dobre o cotovelo atrás da cabeça e use a outra mão para puxar suavemente o cotovelo para baixo. Mantenha o tronco reto e respire fundo.",
+      instrucao: "Leve um dos braços atrás da cabeça e use a outra mão para empurrar suavemente o cotovelo para baixo. Mantenha o tronco reto e respire fundo. Depois repita no outro lado. Pode ser feito em pé ou sentado.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Pescoço e Cervical",
       duracao: "10s cada lado",
       desc: "Diminui as tensões cervicais provocada pela inclinação constante da cabeça",
-      instrucao: "Sentado ereto, puxe suavemente a cabeça com a mão em direção ao ombro correspondente até sentir alongar a lateral oposta do pescoço. Repita do outro lado.",
+      instrucao: "Puxe suavemente a cabeça com a mão em direção ao ombro correspondente até sentir alongar a lateral oposta do pescoço. Repita do outro lado. Pode ser feito em pé ou sentado.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Ombros e Articulações",
       duracao: "10s cada lado",
       desc: "Evita a fadiga e desconfortos musculares na região, previne dores e lesões causadas por movimento repetitivo",
-      instrucao: "Estenda um braço horizontalmente à frente do peito e, com a outra mão, puxe suavemente o cotovelo em direção ao corpo, mantendo o ombro relaxado.",
+      instrucao: "Estenda um braço horizontalmente à frente do peito e, com a outra mão, puxe suavemente o cotovelo em direção ao corpo, mantendo o ombro relaxado. Pode ser feito em pé ou sentado.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Coluna e Posterior",
       duracao: "10 segundos",
       desc: "Alongamento global que relaxa a lombar, glúteos e a parte de trás das pernas de uma só vez.",
-      instrucao: "De pé, com os joelhos destravados, incline o tronco para a frente a partir do quadril, deixando os braços e a cabeça caírem relaxados em direção ao chão.",
+      instrucao: "Em pé, mantenha as pernas levemente afastadas e incline o tronco para frente tentando alcançar os pés.",
       tempoSegundos: 10,
       dificuldade: "Médio"
     },
@@ -423,7 +423,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Oblíquos e Lombar",
       duracao: "10s cada lado",
       desc: "Promove o aumento do espaço intercostal e melhora a mobilidade lateral da lombar e cintura",
-      instrucao: "De pé, eleve um braço acima da cabeça e incline o tronco para o lado oposto, apoiando a outra mão no quadril para estabilização.",
+      instrucao: "Em pé, eleve um braço acima da cabeça e incline o tronco para o lado oposto, apoiando a outra mão no quadril para estabilização.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Coxas e Quadril",
       duracao: "10s cada perna",
       desc: "Alonga a parte anterior da coxa e melhorar a flexibilidade das pernas e postura enquanto ajuda a combater o encurtamento causado por passar muito tempo sentado",
-      instrucao: "Apoie uma das mãos na parede ou cadeira. Com a outra, flexione o joelho e puxe o pé de trás em direção ao glúteo, mantendo os joelhos alinhados.",
+      instrucao: "Em pé, segure o pé atrás do corpo em direção ao glúteo, mantendo os joelhos alinhados. Apoie uma das mãos na parede ou cadeira se necessitar de apoio.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
@@ -447,7 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Panturrilhas e Pés",
       duracao: "10s cada perna",
       desc: "elimina a assimetria do corpo e alongar os músculos da panturrilha e pés",
-      instrucao: "Dê um passo largo à frente flexionando o joelho dianteiro. Mantenha a perna traseira estendida com o calcanhar totalmente apoiado no chão.",
+      instrucao: "Em pé, fique de frente para uma parede e apoie as mãos nela. Coloque uma perna à frente flexionada e a outra atrás estendida, mantendo o calcanhar da perna de trás apoiado no chão. Incline o corpo levemente para frente até sentir o alongamento na parte posterior da perna.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
@@ -459,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Posterior de Coxa",
       duracao: "10s cada perna",
       desc: "Ajuda a liberar a tensão ciática e lombar ao alongar os isquiotibiais e aumenta a flexibilidade e mobilidade da articulação do quadril",
-      instrucao: "Apoie o calcanhar de uma perna estendida sobre um degrau ou cadeira baixa. Incline o tronco à frente a partir do quadril, mantendo as costas retas.",
+      instrucao: "Estenda uma perna à frente apoiando o calcanhar em uma superfície. Incline levemente o tronco para frente mantendo as costas retas.",
       tempoSegundos: 10,
       dificuldade: "Médio"
     },
@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
       foco: "Glúteos e Lombar",
       duracao: "10s cada perna",
       desc: "Melhora equilíbrio e estabilidade, alivia a tensão e melhora a postura",
-      instrucao: "De pé ou deitado, puxe um joelho em direção ao peito com as duas mãos, mantendo a outra perna estendida e a coluna alinhada.",
+      instrucao: "Puxe um joelho em direção ao peito com as duas mãos, mantendo a outra perna estendida e a coluna alinhada. Pode ser feito de pé ou deitado.",
       tempoSegundos: 10,
       dificuldade: "Médio"
     }
