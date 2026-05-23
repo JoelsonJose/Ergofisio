@@ -1185,13 +1185,13 @@ document.addEventListener('DOMContentLoaded', () => {
     parts.head.scale.set(1, 1.25, 1);
     parentGroup.add(parts.head);
 
-    // NECK
-    const neckGeom = new THREE.CylinderGeometry(0.05, 0.06, 0.2, 12);
+    // NECK (created with height 1 for perfect end-to-end connection)
+    const neckGeom = new THREE.CylinderGeometry(0.05, 0.06, 1, 12);
     parts.neck = new THREE.Mesh(neckGeom, getMat('neck'));
     parentGroup.add(parts.neck);
 
-    // CHEST
-    const chestGeom = new THREE.CylinderGeometry(0.17, 0.13, 0.4, 16);
+    // CHEST (created with height 1 for perfect end-to-end connection)
+    const chestGeom = new THREE.CylinderGeometry(0.17, 0.13, 1, 16);
     parts.chest = new THREE.Mesh(chestGeom, getMat('chest'));
     parentGroup.add(parts.chest);
 
@@ -1199,34 +1199,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const pecGeom = new THREE.SphereGeometry(0.075, 16, 16);
     const lPec = new THREE.Mesh(pecGeom, getMat('l_pectoral'));
     lPec.scale.set(1.3, 0.8, 0.6);
-    lPec.position.set(-0.075, 0.08, 0.1);
+    lPec.position.set(-0.075, 0.2, 0.12);
     parts.chest.add(lPec);
 
     const rPec = new THREE.Mesh(pecGeom, getMat('r_pectoral'));
     rPec.scale.set(1.3, 0.8, 0.6);
-    rPec.position.set(0.075, 0.08, 0.1);
+    rPec.position.set(0.075, 0.2, 0.12);
     parts.chest.add(rPec);
 
-    // Sub-lats
-    const latGeom = new THREE.BoxGeometry(0.035, 0.24, 0.09);
+    // Sub-lats (taller to scale beautifully with the chest)
+    const latGeom = new THREE.BoxGeometry(0.035, 0.6, 0.09);
     const lLat = new THREE.Mesh(latGeom, getMat('l_lats'));
-    lLat.position.set(-0.14, -0.05, -0.03);
+    lLat.position.set(-0.14, -0.1, -0.03);
     lLat.rotation.z = 0.22;
     parts.chest.add(lLat);
 
     const rLat = new THREE.Mesh(latGeom, getMat('r_lats'));
-    rLat.position.set(0.14, -0.05, -0.03);
+    rLat.position.set(0.14, -0.1, -0.03);
     rLat.rotation.z = -0.22;
     parts.chest.add(rLat);
 
-    // ABDOMEN
-    const abdGeom = new THREE.CylinderGeometry(0.13, 0.14, 0.3, 16);
+    // ABDOMEN (created with height 1 for perfect end-to-end connection)
+    const abdGeom = new THREE.CylinderGeometry(0.13, 0.14, 1, 16);
     parts.abdomen = new THREE.Mesh(abdGeom, getMat('abdomen'));
     parentGroup.add(parts.abdomen);
 
-    // Sub-abs (six pack)
+    // Sub-abs (six pack, distributed nicely along height of 1)
     const packGeom = new THREE.SphereGeometry(0.026, 8, 8);
-    const absRows = [0.06, 0.0, -0.06];
+    const absRows = [0.25, 0.0, -0.25];
     absRows.forEach(yPos => {
       const lAb = new THREE.Mesh(packGeom, getMat('abdomen'));
       lAb.position.set(-0.04, yPos, 0.11);
@@ -1239,14 +1239,18 @@ document.addEventListener('DOMContentLoaded', () => {
       parts.abdomen.add(rAb);
     });
 
-    // PELVIS
-    const pelvisGeom = new THREE.CylinderGeometry(0.15, 0.15, 0.12, 16);
-    parts.pelvis = new THREE.Mesh(pelvisGeom, getMat('pelvis'));
-    parts.pelvis.rotation.z = Math.PI / 2;
-    parentGroup.add(parts.pelvis);
+    // SHOULDER GIRDLE (Clavicles - horizontal connection between arms and chest)
+    const shoulderGirdleGeom = new THREE.CylinderGeometry(0.075, 0.075, 1, 12);
+    parts.shoulder_girdle = new THREE.Mesh(shoulderGirdleGeom, getMat('chest'));
+    parentGroup.add(parts.shoulder_girdle);
+
+    // PELVIC GIRDLE (Hips - horizontal connection between legs and abdomen)
+    const pelvicGirdleGeom = new THREE.CylinderGeometry(0.11, 0.11, 1, 12);
+    parts.pelvic_girdle = new THREE.Mesh(pelvicGirdleGeom, getMat('pelvis'));
+    parentGroup.add(parts.pelvic_girdle);
 
     // DELTOIDS
-    const shoulderGeom = new THREE.SphereGeometry(0.075, 16, 16);
+    const shoulderGeom = new THREE.SphereGeometry(0.085, 16, 16);
     parts.l_shoulder = new THREE.Mesh(shoulderGeom, getMat('l_shoulder'));
     parts.l_shoulder.scale.set(1.1, 1.25, 1.1);
     parentGroup.add(parts.l_shoulder);
@@ -1255,16 +1259,16 @@ document.addEventListener('DOMContentLoaded', () => {
     parts.r_shoulder.scale.set(1.1, 1.25, 1.1);
     parentGroup.add(parts.r_shoulder);
 
-    // LIMBS
+    // LIMBS (robust, muscular cylindrical segments created with height 1)
     const limbs = [
-      { name: 'l_upper_arm', j1: 'l_shoulder', j2: 'l_elbow', geom: new THREE.CylinderGeometry(0.06, 0.05, 1, 12), matName: 'l_upper_arm' },
-      { name: 'r_upper_arm', j1: 'r_shoulder', j2: 'r_elbow', geom: new THREE.CylinderGeometry(0.06, 0.05, 1, 12), matName: 'r_upper_arm' },
-      { name: 'l_forearm', j1: 'l_elbow', j2: 'l_wrist', geom: new THREE.CylinderGeometry(0.05, 0.035, 1, 12), matName: 'l_forearm' },
-      { name: 'r_forearm', j1: 'r_elbow', j2: 'r_wrist', geom: new THREE.CylinderGeometry(0.05, 0.035, 1, 12), matName: 'r_forearm' },
-      { name: 'l_thigh', j1: 'l_hip', j2: 'l_knee', geom: new THREE.CylinderGeometry(0.1, 0.075, 1, 16), matName: 'l_thigh' },
-      { name: 'r_thigh', j1: 'r_hip', j2: 'r_knee', geom: new THREE.CylinderGeometry(0.1, 0.075, 1, 16), matName: 'r_thigh' },
-      { name: 'l_calf', j1: 'l_knee', j2: 'l_ankle', geom: new THREE.CylinderGeometry(0.075, 0.045, 1, 16), matName: 'l_calf' },
-      { name: 'r_calf', j1: 'r_knee', j2: 'r_ankle', geom: new THREE.CylinderGeometry(0.075, 0.045, 1, 16), matName: 'r_calf' }
+      { name: 'l_upper_arm', j1: 'l_shoulder', j2: 'l_elbow', geom: new THREE.CylinderGeometry(0.075, 0.06, 1, 12), matName: 'l_upper_arm' },
+      { name: 'r_upper_arm', j1: 'r_shoulder', j2: 'r_elbow', geom: new THREE.CylinderGeometry(0.075, 0.06, 1, 12), matName: 'r_upper_arm' },
+      { name: 'l_forearm', j1: 'l_elbow', j2: 'l_wrist', geom: new THREE.CylinderGeometry(0.06, 0.04, 1, 12), matName: 'l_forearm' },
+      { name: 'r_forearm', j1: 'r_elbow', j2: 'r_wrist', geom: new THREE.CylinderGeometry(0.06, 0.04, 1, 12), matName: 'r_forearm' },
+      { name: 'l_thigh', j1: 'l_hip', j2: 'l_knee', geom: new THREE.CylinderGeometry(0.125, 0.09, 1, 16), matName: 'l_thigh' },
+      { name: 'r_thigh', j1: 'r_hip', j2: 'r_knee', geom: new THREE.CylinderGeometry(0.125, 0.09, 1, 16), matName: 'r_thigh' },
+      { name: 'l_calf', j1: 'l_knee', j2: 'l_ankle', geom: new THREE.CylinderGeometry(0.09, 0.05, 1, 16), matName: 'l_calf' },
+      { name: 'r_calf', j1: 'r_knee', j2: 'r_ankle', geom: new THREE.CylinderGeometry(0.09, 0.05, 1, 16), matName: 'r_calf' }
     ];
 
     limbs.forEach(limb => {
@@ -1299,8 +1303,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const scene = new THREE.Scene();
 
+      // Camera positioned back to frame the entire mannequin from head to toe beautifully without cut-offs
       const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-      camera.position.set(0, 0.4, 3.8);
+      camera.position.set(0, 0.25, 5.0);
 
       const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
       renderer.setSize(width, height);
@@ -1390,13 +1395,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const midShoulder = new THREE.Vector3().addVectors(pos.l_shoulder, pos.r_shoulder).multiplyScalar(0.5);
         const midTorso = new THREE.Vector3().addVectors(pos.pelvis, midShoulder).multiplyScalar(0.5);
-        const pelvisBase = new THREE.Vector3().addVectors(pos.l_hip, pos.r_hip).multiplyScalar(0.5);
 
+        // Volumetric vertical spine alignment - completely touching end-to-end
         if (model.parts.head) model.parts.head.position.copy(pos.head);
         if (model.parts.neck) alignCylinder(model.parts.neck, pos.head, midShoulder);
         if (model.parts.chest) alignCylinder(model.parts.chest, midShoulder, midTorso);
         if (model.parts.abdomen) alignCylinder(model.parts.abdomen, midTorso, pos.pelvis);
-        if (model.parts.pelvis) alignCylinder(model.parts.pelvis, pos.pelvis, pelvisBase);
+
+        // Volumetric horizontal girdle locks - perfectly tying shoulders and hip joints together
+        if (model.parts.shoulder_girdle) alignCylinder(model.parts.shoulder_girdle, pos.l_shoulder, pos.r_shoulder);
+        if (model.parts.pelvic_girdle) alignCylinder(model.parts.pelvic_girdle, pos.l_hip, pos.r_hip);
 
         if (model.parts.l_shoulder) model.parts.l_shoulder.position.copy(pos.l_shoulder);
         if (model.parts.r_shoulder) model.parts.r_shoulder.position.copy(pos.r_shoulder);
@@ -1503,7 +1511,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scene3D = new THREE.Scene();
 
       camera3D = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-      camera3D.position.set(0, 0.5, 4.0);
+      camera3D.position.set(0, 0.25, 4.8);
 
       renderer3D = new THREE.WebGLRenderer({ alpha: true, antialias: true });
       renderer3D.setSize(width, height);
@@ -1597,13 +1605,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const midShoulder = new THREE.Vector3().addVectors(pos.l_shoulder, pos.r_shoulder).multiplyScalar(0.5);
         const midTorso = new THREE.Vector3().addVectors(pos.pelvis, midShoulder).multiplyScalar(0.5);
-        const pelvisBase = new THREE.Vector3().addVectors(pos.l_hip, pos.r_hip).multiplyScalar(0.5);
 
+        // Volumetric vertical spine alignment - completely touching end-to-end
         if (model.parts.head) model.parts.head.position.copy(pos.head);
         if (model.parts.neck) alignCylinder(model.parts.neck, pos.head, midShoulder);
         if (model.parts.chest) alignCylinder(model.parts.chest, midShoulder, midTorso);
         if (model.parts.abdomen) alignCylinder(model.parts.abdomen, midTorso, pos.pelvis);
-        if (model.parts.pelvis) alignCylinder(model.parts.pelvis, pos.pelvis, pelvisBase);
+
+        // Volumetric horizontal girdle locks - perfectly tying shoulders and hip joints together
+        if (model.parts.shoulder_girdle) alignCylinder(model.parts.shoulder_girdle, pos.l_shoulder, pos.r_shoulder);
+        if (model.parts.pelvic_girdle) alignCylinder(model.parts.pelvic_girdle, pos.l_hip, pos.r_hip);
 
         if (model.parts.l_shoulder) model.parts.l_shoulder.position.copy(pos.l_shoulder);
         if (model.parts.r_shoulder) model.parts.r_shoulder.position.copy(pos.r_shoulder);
