@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       titulo: "O que é o Ergofisio?",
-      desc: "É um projeto desenvolvido pelo curso de fisioterapia com o foco principal de preservar a integridade física e mental dos educadores da UNIFG.",
+      desc: "É um projeto desenvolvido pelo curso de fisioterapia com o foco principal de preservar a integridade física e mental dos colaboradores da UNIFG.",
       icon: "activity"
     },
     {

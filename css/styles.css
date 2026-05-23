@@ -718,6 +718,8 @@ section {
   background: linear-gradient(135deg, var(--white) 0%, var(--bg-light) 100%);
   color: var(--text-dark);
   box-shadow: var(--shadow-lg);
+  z-index: 2;
+  pointer-events: auto;
 }
 
 .card-watermark {
@@ -792,6 +794,18 @@ section {
   color: var(--white);
   transform: rotateY(180deg);
   box-shadow: var(--shadow-lg);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.flip-card-container.flipped .flip-card-front {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.flip-card-container.flipped .flip-card-back {
+  z-index: 2;
+  pointer-events: auto;
 }
 
 .card-back-header {
