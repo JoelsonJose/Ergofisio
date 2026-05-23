@@ -151,18 +151,23 @@ document.addEventListener('DOMContentLoaded', () => {
       icon: "activity"
     },
     {
-      titulo: "Alongamento de Tríceps (#3)",
-      desc: "Alongamento 3: Dobre o cotovelo atrás da cabeça e puxe-o suavemente com a outra mão para alongar o tríceps.",
+      titulo: "Alongamento de Peitoral (#3)",
+      desc: "Alongamento 3: Em pé ou sentado, entrelace as mãos atrás das costas e estique os braços, abrindo bem o peito.",
       icon: "heart"
     },
     {
-      titulo: "Alongamento de Pescoço (#5)",
+      titulo: "Alongamento de Tríceps (#4)",
+      desc: "Alongamento 4: Dobre o cotovelo atrás da cabeça e use a outra mão para puxar suavemente o cotovelo para baixo.",
+      icon: "heart"
+    },
+    {
+      titulo: "Alongamento Cervical (#5)",
       desc: "Alongamento 5: Puxe suavemente a cabeça com a mão em direção ao ombro lateral para aliviar a tensão cervical.",
       icon: "smile"
     },
     {
-      titulo: "Alongamento de Costas (#6)",
-      desc: "Alongamento 6: Entrelace os dedos à frente e empurre os braços para frente, curvando suavemente a coluna alta.",
+      titulo: "Alongamento cruzado (#6)",
+      desc: "Alongamento 6: Estenda um braço horizontalmente à frente do peito e puxe o cotovelo para evitar fadiga e dores.",
       icon: "user"
     },
     {
@@ -323,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 4. BANCO DE DADOS DE EXERCÍCIOS PREVENTIVOS (12 Alongamentos Oficiais)
+  // 4. BANCO DE DADOS DE EXERCÍCIOS PREVENTIVOS (11 Alongamentos Oficiais)
   // ==========================================
   const EXERCICIOS = [
     {
@@ -333,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
       categoriaLbl: "Membros Superiores",
       foco: "Braços e Ombros",
       duracao: "10 segundos",
-      desc: "Estende toda a cadeia muscular superior e ajuda a realinhar a coluna após horas de postura sentada.",
+      desc: "Estende toda a cadeia muscular superior e laterais do tronco, ajudando a realinhar a coluna após horas de postura sentada.",
       instrucao: "Entrelace os dedos das mãos e empurre os braços verticalmente para cima, acima da cabeça, mantendo os cotovelos esticados e a coluna bem alinhada.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
@@ -343,34 +348,34 @@ document.addEventListener('DOMContentLoaded', () => {
       titulo: "2. Alongamento de Deltoide e Ombros",
       categoria: "membros-sup",
       categoriaLbl: "Membros Superiores",
-      foco: "Articulação do Ombro",
+      foco: "Ombros e Costas",
       duracao: "10s cada lado",
-      desc: "Reduz o acúmulo de tensão na articulação do ombro e na parte superior das costas.",
+      desc: "Alonga os músculos dos ombros, da parte superior das costas e da região posterior do braço e reduz o acúmulo de tensão na região",
       instrucao: "Estenda um braço horizontalmente à frente do peito e, com a outra mão, puxe suavemente o cotovelo em direção ao corpo, mantendo o ombro relaxado.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
       id: "ex-3",
-      titulo: "3. Alongamento de Tríceps",
+      titulo: "3. Alongamento de Peitoral e Ombros",
       categoria: "membros-sup",
       categoriaLbl: "Membros Superiores",
-      foco: "Tríceps e Dorsal",
-      duracao: "10s cada lado",
-      desc: "Melhora a flexibilidade dos braços e alivia a compressão na parte alta e lateral do tronco.",
-      instrucao: "Eleve um braço, dobre o cotovelo atrás da cabeça e use a outra mão para puxar suavemente o cotovelo para baixo. Mantenha o pescoço livre.",
+      foco: "Peitoral e Ombros",
+      duracao: "10 segundos",
+      desc: "Melhora a mobilidade dos braços, alivia tensões e melhora a postura",
+      instrucao: "Em pé ou sentado, entrelace as mãos atrás das costas e estique os braços, abrindo bem o peito e elevando suavemente as mãos.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
       id: "ex-4",
-      titulo: "4. Alongamento Posterior de Pescoço",
+      titulo: "4. Alongamento de Tríceps atrás da Nuca",
       categoria: "membros-sup",
       categoriaLbl: "Membros Superiores",
-      foco: "Nuca e Cervical",
-      duracao: "10 segundos",
-      desc: "Diminui a rigidez na base do crânio provocada pela inclinação constante da cabeça ao olhar telas.",
-      instrucao: "Entrelace as mãos atrás da nuca e puxe a cabeça suavemente para a frente, aproximando o queixo do peito sem curvar o tronco.",
+      foco: "Região Superior",
+      duracao: "10s cada lado",
+      desc: "Melhorar a mobilidade dos ombros e aliviar tensões musculares da região superior",
+      instrucao: "Dobre o cotovelo atrás da cabeça e use a outra mão para puxar suavemente o cotovelo para baixo. Mantenha o tronco reto e respire fundo.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
@@ -379,36 +384,24 @@ document.addEventListener('DOMContentLoaded', () => {
       titulo: "5. Alongamento Cervical Lateral",
       categoria: "membros-sup",
       categoriaLbl: "Membros Superiores",
-      foco: "Pescoço e Trapézio",
+      foco: "Pescoço e Cervical",
       duracao: "10s cada lado",
-      desc: "Combate torcicolos e tensões acumuladas nos ombros por estresse ou telas baixas.",
+      desc: "Diminui as tensões cervicais provocada pela inclinação constante da cabeça",
       instrucao: "Sentado ereto, puxe suavemente a cabeça com a mão em direção ao ombro correspondente até sentir alongar a lateral oposta do pescoço. Repita do outro lado.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
       id: "ex-6",
-      titulo: "6. Alongamento Escapular e Costas",
-      categoria: "coluna-tronco",
-      categoriaLbl: "Coluna e Tronco",
-      foco: "Região Torácica",
-      duracao: "10 segundos",
-      desc: "Arredonda a coluna alta e afasta as escápulas, liberando a rigidez muscular dorsal.",
-      instrucao: "Entrelace os dedos à frente e empurre as mãos para a frente com as palmas voltadas para fora, curvando suavemente as costas e abaixando a cabeça.",
+      titulo: "6. Alongamento cruzado de Ombro",
+      categoria: "membros-sup",
+      categoriaLbl: "Membros Superiores",
+      foco: "Ombros e Articulações",
+      duracao: "10s cada lado",
+      desc: "Evita a fadiga e desconfortos musculares na região, previne dores e lesões causadas por movimento repetitivo",
+      instrucao: "Estenda um braço horizontalmente à frente do peito e, com a outra mão, puxe suavemente o cotovelo em direção ao corpo, mantendo o ombro relaxado.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
-    },
-    {
-      id: "ex-7",
-      titulo: "7. Alongamento de Cadeia Posterior",
-      categoria: "coluna-tronco",
-      categoriaLbl: "Coluna e Tronco",
-      foco: "Coluna e Posterior",
-      duracao: "10 segundos",
-      desc: "Alongamento global que relaxa a lombar, glúteos e a parte de trás das pernas de uma só vez.",
-      instrucao: "De pé, com os joelhos destravados, incline o tronco para a frente a partir do quadril, deixando os braços e a cabeça caírem relaxados em direção ao chão.",
-      tempoSegundos: 10,
-      dificuldade: "Médio"
     },
     {
       id: "ex-8",
@@ -417,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
       categoriaLbl: "Coluna e Tronco",
       foco: "Oblíquos e Lombar",
       duracao: "10s cada lado",
-      desc: "Abre espaço nas costelas e melhora a mobilidade lateral da lombar e cintura.",
+      desc: "Promove o aumento do espaço intercostal e melhora a mobilidade lateral da lombar e cintura",
       instrucao: "De pé, eleve um braço acima da cabeça e incline o tronco para o lado oposto, apoiando a outra mão no quadril para estabilização.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
@@ -429,44 +422,44 @@ document.addEventListener('DOMContentLoaded', () => {
       categoriaLbl: "Membros Inferiores",
       foco: "Coxas e Quadril",
       duracao: "10s cada perna",
-      desc: "Descarrega o estresse acumulado na parte anterior da coxa pelo longo tempo sentado na cadeira.",
+      desc: "Alonga a parte anterior da coxa e melhorar a flexibilidade das pernas e postura enquanto ajuda a combater o encurtamento causado por passar muito tempo sentado",
       instrucao: "Apoie uma das mãos na parede ou cadeira. Com a outra, flexione o joelho e puxe o pé de trás em direção ao glúteo, mantendo os joelhos alinhados.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
       id: "ex-10",
-      titulo: "10. Alongamento de Panturrilha em Lunge",
+      titulo: "10. Alongamento de Panturrilha",
       categoria: "membros-inf",
       categoriaLbl: "Membros Inferiores",
-      foco: "Panturrilhas",
+      foco: "Panturrilhas e Pés",
       duracao: "10s cada perna",
-      desc: "Estimula a circulação de retorno venoso das pernas e previne dores e encurtamentos musculares.",
+      desc: "elimina a assimetria do corpo e alongar os músculos da panturrilha e pés",
       instrucao: "Dê um passo largo à frente flexionando o joelho dianteiro. Mantenha a perna traseira estendida com o calcanhar totalmente apoiado no chão.",
       tempoSegundos: 10,
       dificuldade: "Fácil"
     },
     {
       id: "ex-11",
-      titulo: "11. Alongamento Posterior Apoiado",
+      titulo: "11. Alongamento de Isquiotibiais Com Apoio",
       categoria: "membros-inf",
       categoriaLbl: "Membros Inferiores",
       foco: "Posterior de Coxa",
       duracao: "10s cada perna",
-      desc: "Ajuda a liberar a tensão ciática e lombar ao alongar os isquiotibiais.",
+      desc: "Ajuda a liberar a tensão ciática e lombar ao alongar os isquiotibiais e aumenta a flexibilidade e mobilidade da articulação do quadril",
       instrucao: "Apoie o calcanhar de uma perna estendida sobre um degrau ou cadeira baixa. Incline o tronco à frente a partir do quadril, mantendo as costas retas.",
       tempoSegundos: 10,
       dificuldade: "Médio"
     },
     {
       id: "ex-12",
-      titulo: "12. Alongamento de Glúteo e Quadril",
+      titulo: "12. Alongamento de Joelho ao Peito",
       categoria: "membros-inf",
       categoriaLbl: "Membros Inferiores",
-      foco: "Glúteos e Quadril",
+      foco: "Glúteos e Lombar",
       duracao: "10s cada perna",
-      desc: "Descomprime a articulação do quadril e relaxa a musculatura glútea após longos períodos sentado.",
-      instrucao: "Sentado na cadeira, apoie o calcanhar de uma perna sobre o joelho oposto. Mantendo a coluna ereta, incline suavemente o tronco para a frente.",
+      desc: "Melhora equilíbrio e estabilidade, alivia a tensão e melhora a postura",
+      instrucao: "De pé ou deitado, puxe um joelho em direção ao peito com as duas mãos, mantendo a outra perna estendida e a coluna alinhada.",
       tempoSegundos: 10,
       dificuldade: "Médio"
     }
@@ -538,13 +531,34 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         break;
 
-      case "ex-3": // Alongamento de Tríceps
+      case "ex-3": // Alongamento de Peitoral e Ombros
         animStyles = `
-          @keyframes ex3-pulse {
+          @keyframes ex3-peitoral {
+            0%, 100% { transform: scaleX(1); }
+            50% { transform: scaleX(0.85) translateX(3px); }
+          }
+          .ex3-arms-back { transform-origin: 50px 38px; animation: ex3-peitoral 2.8s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
+          <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="44" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="56" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex3-arms-back">
+            <path d="M 50 38 L 36 46 L 40 56" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M 50 38 L 64 46 L 60 56" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+        `;
+        break;
+
+      case "ex-4": // Alongamento de Tríceps atrás da Nuca
+        animStyles = `
+          @keyframes ex4-triceps {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(2px) scaleY(0.97); }
           }
-          .ex3-triceps { transform-origin: 50px 38px; animation: ex3-pulse 2.5s ease-in-out infinite; }
+          .ex4-triceps-arms { transform-origin: 50px 38px; animation: ex4-triceps 2.5s ease-in-out infinite; }
         `;
         svgContent = `
           <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
@@ -552,31 +566,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
           <line x1="${spineEndX}" y1="${spineEndY}" x2="42" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
           <line x1="${spineEndX}" y1="${spineEndY}" x2="58" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <g class="ex3-triceps">
+          <g class="ex4-triceps-arms">
             <path d="M 50 38 L 56 22 L 48 18" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M 50 38 L 62 38 L 56 22" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-          </g>
-        `;
-        break;
-
-      case "ex-4": // Alongamento Posterior de Pescoço
-        animStyles = `
-          @keyframes ex4-head-flex {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(25deg); }
-          }
-          .ex4-head { transform-origin: 50px 36px; animation: ex4-head-flex 3s ease-in-out infinite; }
-        `;
-        svgContent = `
-          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <line x1="${spineEndX}" y1="${spineEndY}" x2="42" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <line x1="${spineEndX}" y1="${spineEndY}" x2="58" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <line x1="50" y1="38" x2="42" y2="52" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <line x1="50" y1="38" x2="58" y2="52" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <g class="ex4-head">
-            <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--secondary)" />
-            <line x1="50" y1="36" x2="50" y2="30" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
-            <path d="M 42 42 L 48 24 L 52 24" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
           </g>
         `;
         break;
@@ -602,51 +594,24 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         break;
 
-      case "ex-6": // Alongamento Escapular e Costas
+      case "ex-6": // Alongamento cruzado de Ombro
         animStyles = `
-          @keyframes ex6-spine-bend {
+          @keyframes ex6-shoulder {
             0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(12deg); }
+            50% { transform: rotate(-8deg); }
           }
-          @keyframes ex6-arms-front {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(-4px, 1px); }
-          }
-          .ex6-torso { transform-origin: 50px 60px; animation: ex6-spine-bend 2.8s ease-in-out infinite; }
-          .ex6-arms { animation: ex6-arms-front 2.8s ease-in-out infinite; }
+          .ex6-arm-across { transform-origin: 50px 38px; animation: ex6-shoulder 2.5s ease-in-out infinite; }
         `;
         svgContent = `
-          <g class="ex6-torso">
-            <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
-            <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-            <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-            <g class="ex6-arms">
-              <line x1="50" y1="38" x2="34" y2="38" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
-              <line x1="50" y1="38" x2="34" y2="42" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
-            </g>
-          </g>
+          <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
+          <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
           <line x1="${spineEndX}" y1="${spineEndY}" x2="42" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
           <line x1="${spineEndX}" y1="${spineEndY}" x2="58" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-        `;
-        break;
-
-      case "ex-7": // Alongamento de Cadeia Posterior
-        animStyles = `
-          @keyframes ex7-bend-down {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(70deg); }
-          }
-          .ex7-body-upper { transform-origin: 50px 60px; animation: ex7-bend-down 3.2s ease-in-out infinite; }
-        `;
-        svgContent = `
-          <line x1="50" y1="60" x2="45" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <line x1="50" y1="60" x2="55" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-          <g class="ex7-body-upper">
-            <line x1="50" y1="38" x2="50" y2="60" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
-            <circle cx="50" cy="30" r="${headR}" fill="var(--primary)" />
-            <line x1="50" y1="36" x2="50" y2="38" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-            <line x1="50" y1="38" x2="50" y2="18" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex6-arm-across">
+            <line x1="50" y1="38" x2="72" y2="38" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
           </g>
+          <path d="M 50 38 L 60 45 L 65 34" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
         `;
         break;
 
@@ -739,23 +704,23 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         break;
 
-      case "ex-12": // Alongamento de Glúteo e Quadril
+      case "ex-12": // Alongamento de Joelho ao Peito
         animStyles = `
-          @keyframes ex12-glute-bend {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(14deg); }
+          @keyframes ex12-knee-up {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-4px) rotate(-10deg); }
           }
-          .ex12-upper { transform-origin: 48px 62px; animation: ex12-glute-bend 3s ease-in-out infinite; }
+          .ex12-leg-up { transform-origin: 50px 60px; animation: ex12-knee-up 2.8s ease-in-out infinite; }
         `;
         svgContent = `
-          <path d="M 40 62 L 60 62 M 56 62 L 56 82 M 44 62 L 44 82 M 40 45 L 40 62" fill="none" stroke="rgba(46, 107, 74, 0.2)" stroke-width="3" stroke-linecap="round" />
-          <path d="M 48 62 L 56 82" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M 48 62 L 58 62 L 52 54 L 46 62" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-          <g class="ex12-upper">
-            <line x1="48" y1="42" x2="48" y2="62" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
-            <circle cx="48" cy="34" r="${headR}" fill="var(--primary)" />
-            <path d="M 48 42 L 52 54" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
+          <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="44" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex12-leg-up">
+            <path d="M 50 60 L 62 50 L 58 38" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
           </g>
+          <path d="M 50 38 L 56 46 L 58 38" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
         `;
         break;
     }
