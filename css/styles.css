@@ -1066,7 +1066,8 @@ section {
   transition: transform 0.5s ease;
 }
 
-.exercises-grid .exercise-card:hover .exercise-gif {
+.exercises-grid .exercise-card:hover .exercise-gif,
+.exercises-grid .exercise-card:hover .exercise-illustration {
   transform: scale(1.05);
 }
 
