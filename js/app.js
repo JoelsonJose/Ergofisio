@@ -472,6 +472,313 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
+  ];
+
+  // ==========================================
+  // 4.5. GERADOR DE ANIMAÇÕES VETORIAIS (SVG + CSS ANIMADOS)
+  // Código nativo de alta performance para os bonecos de alongamento
+  // ==========================================
+  function generateExerciseSVG(id) {
+    let animStyles = '';
+    let svgContent = '';
+    
+    // Coordenadas base
+    const headX = 50, headY = 30, headR = 6;
+    const spineStartX = 50, spineStartY = 36;
+    const spineEndX = 50, spineEndY = 60;
+    
+    switch(id) {
+      case "ex-1": // Alongamento Vertical de Braços
+        animStyles = `
+          @keyframes ex1-arms-up {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-150deg); }
+          }
+          @keyframes ex1-head {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+          }
+          .ex1-arm-l { transform-origin: 50px 38px; animation: ex1-arms-up 3s ease-in-out infinite; }
+          .ex1-arm-r { transform-origin: 50px 38px; animation: ex1-arms-up 3s ease-in-out infinite; }
+          .ex1-head-neck { transform-origin: 50px 38px; animation: ex1-head 3s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <g class="ex1-head-neck">
+            <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
+            <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          </g>
+          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="42" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="58" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex1-arm-l" style="transform: scaleX(-1); transform-origin: 50px 38px;">
+            <line x1="50" y1="38" x2="35" y2="52" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+          </g>
+          <g class="ex1-arm-r">
+            <line x1="50" y1="38" x2="65" y2="52" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+          </g>
+        `;
+        break;
+        
+      case "ex-2": // Alongamento de Deltoide
+        animStyles = `
+          @keyframes ex2-pulse {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(8deg); }
+          }
+          .ex2-arm-across { transform-origin: 47px 38px; animation: ex2-pulse 2.5s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
+          <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="42" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="58" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex2-arm-across">
+            <line x1="50" y1="38" x2="28" y2="38" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+          </g>
+          <path d="M 50 38 L 40 45 L 35 34" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        `;
+        break;
+
+      case "ex-3": // Alongamento de Tríceps
+        animStyles = `
+          @keyframes ex3-pulse {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(2px) scaleY(0.97); }
+          }
+          .ex3-triceps { transform-origin: 50px 38px; animation: ex3-pulse 2.5s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
+          <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="42" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="58" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex3-triceps">
+            <path d="M 50 38 L 56 22 L 48 18" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M 50 38 L 62 38 L 56 22" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+        `;
+        break;
+
+      case "ex-4": // Alongamento Posterior de Pescoço
+        animStyles = `
+          @keyframes ex4-head-flex {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(25deg); }
+          }
+          .ex4-head { transform-origin: 50px 36px; animation: ex4-head-flex 3s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="42" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="58" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="50" y1="38" x2="42" y2="52" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="50" y1="38" x2="58" y2="52" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex4-head">
+            <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--secondary)" />
+            <line x1="50" y1="36" x2="50" y2="30" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+            <path d="M 42 42 L 48 24 L 52 24" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+        `;
+        break;
+
+      case "ex-5": // Alongamento Cervical Lateral
+        animStyles = `
+          @keyframes ex5-head-tilt {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(28deg); }
+          }
+          .ex5-head { transform-origin: 50px 36px; animation: ex5-head-tilt 2.5s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="42" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="58" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="50" y1="38" x2="40" y2="54" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex5-head">
+            <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--secondary)" />
+            <line x1="50" y1="36" x2="50" y2="30" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+            <path d="M 50 38 L 60 28 L 54 24" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+        `;
+        break;
+
+      case "ex-6": // Alongamento Escapular e Costas
+        animStyles = `
+          @keyframes ex6-spine-bend {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(12deg); }
+          }
+          @keyframes ex6-arms-front {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-4px, 1px); }
+          }
+          .ex6-torso { transform-origin: 50px 60px; animation: ex6-spine-bend 2.8s ease-in-out infinite; }
+          .ex6-arms { animation: ex6-arms-front 2.8s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <g class="ex6-torso">
+            <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
+            <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <g class="ex6-arms">
+              <line x1="50" y1="38" x2="34" y2="38" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+              <line x1="50" y1="38" x2="34" y2="42" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+            </g>
+          </g>
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="42" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="58" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+        `;
+        break;
+
+      case "ex-7": // Alongamento de Cadeia Posterior
+        animStyles = `
+          @keyframes ex7-bend-down {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(70deg); }
+          }
+          .ex7-body-upper { transform-origin: 50px 60px; animation: ex7-bend-down 3.2s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <line x1="50" y1="60" x2="45" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="50" y1="60" x2="55" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex7-body-upper">
+            <line x1="50" y1="38" x2="50" y2="60" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+            <circle cx="50" cy="30" r="${headR}" fill="var(--primary)" />
+            <line x1="50" y1="36" x2="50" y2="38" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <line x1="50" y1="38" x2="50" y2="18" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+          </g>
+        `;
+        break;
+
+      case "ex-8": // Alongamento Lateral do Tronco
+        animStyles = `
+          @keyframes ex8-lateral-bend {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(18deg); }
+          }
+          @keyframes ex8-arm-over {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(40deg); }
+          }
+          .ex8-torso { transform-origin: 50px 60px; animation: ex8-lateral-bend 2.8s ease-in-out infinite; }
+          .ex8-arm-r-group { transform-origin: 50px 38px; animation: ex8-arm-over 2.8s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <g class="ex8-torso">
+            <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
+            <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+            <path d="M 50 38 L 42 44 L 47 48" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            <g class="ex8-arm-r-group">
+              <path d="M 50 38 L 58 18 L 44 14" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+          </g>
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="43" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineEndX}" y1="${spineEndY}" x2="57" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+        `;
+        break;
+
+      case "ex-9": // Alongamento de Quadríceps
+        animStyles = `
+          @keyframes ex9-pulse {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-5deg); }
+          }
+          .ex9-quadriceps { transform-origin: 50px 60px; animation: ex9-pulse 2.5s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <circle cx="${headX}" cy="${headY}" r="${headR}" fill="var(--primary)" />
+          <line x1="50" y1="36" x2="50" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="${spineStartX}" y1="38" x2="${spineEndX}" y2="${spineEndY}" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="50" y1="38" x2="35" y2="38" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <line x1="50" y1="60" x2="46" y2="82" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          <g class="ex9-quadriceps">
+            <path d="M 50 60 L 58 72 L 52 72" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M 50 38 L 60 50 L 52 72" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+        `;
+        break;
+
+      case "ex-10": // Alongamento de Panturrilha
+        animStyles = `
+          @keyframes ex10-lunge-pulse {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-3px, 1px); }
+          }
+          .ex10-body-pulse { animation: ex10-lunge-pulse 2.5s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <g class="ex10-body-pulse">
+            <circle cx="46" cy="30" r="${headR}" fill="var(--primary)" />
+            <line x1="46" y1="36" x2="46" y2="39" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <line x1="46" y1="38" x2="46" y2="60" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <path d="M 46 38 L 38 46 L 44 50" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M 46 60 L 36 68 L 36 82" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M 46 60 L 64 72 L 68 82" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+        `;
+        break;
+
+      case "ex-11": // Alongamento Posterior Apoiado
+        animStyles = `
+          @keyframes ex11-hamstrings-reach {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+          }
+          .ex11-upper { transform-origin: 48px 60px; animation: ex11-hamstrings-reach 2.8s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <rect x="62" y="72" width="16" height="10" fill="rgba(46, 107, 74, 0.1)" stroke="var(--primary)" stroke-width="2" rx="2" />
+          <path d="M 48 60 L 44 70 L 44 82" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M 48 60 L 68 72" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <g class="ex11-upper">
+            <line x1="48" y1="38" x2="48" y2="60" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <circle cx="48" cy="30" r="${headR}" fill="var(--primary)" />
+            <line x1="48" y1="38" x2="62" y2="46" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" />
+          </g>
+        `;
+        break;
+
+      case "ex-12": // Alongamento de Glúteo e Quadril
+        animStyles = `
+          @keyframes ex12-glute-bend {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(14deg); }
+          }
+          .ex12-upper { transform-origin: 48px 62px; animation: ex12-glute-bend 3s ease-in-out infinite; }
+        `;
+        svgContent = `
+          <path d="M 40 62 L 60 62 M 56 62 L 56 82 M 44 62 L 44 82 M 40 45 L 40 62" fill="none" stroke="rgba(46, 107, 74, 0.2)" stroke-width="3" stroke-linecap="round" />
+          <path d="M 48 62 L 56 82" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M 48 62 L 58 62 L 52 54 L 46 62" fill="none" stroke="var(--secondary)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <g class="ex12-upper">
+            <line x1="48" y1="42" x2="48" y2="62" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+            <circle cx="48" cy="34" r="${headR}" fill="var(--primary)" />
+            <path d="M 48 42 L 52 54" fill="none" stroke="var(--primary)" stroke-width="4" stroke-linecap="round" />
+          </g>
+        `;
+        break;
+    }
+
+    return `
+      <svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+        <style>
+          .stretching-bg-circle {
+            fill: none;
+            stroke: rgba(46, 107, 74, 0.02);
+            stroke-width: 2;
+          }
+          ${animStyles}
+        </style>
+        <circle cx="50" cy="50" r="44" class="stretching-bg-circle" />
+        <line x1="15" y1="82" x2="85" y2="82" stroke="rgba(46, 107, 74, 0.06)" stroke-width="3" stroke-linecap="round" />
+        ${svgContent}
+      </svg>
+    `;
+  }
+
   // ==========================================
   // 5. RENDERIZAÇÃO E FILTRO DE EXERCÍCIOS
   // ==========================================
@@ -494,10 +801,11 @@ document.addEventListener('DOMContentLoaded', () => {
       
       card.innerHTML = `
         <div class="exercise-visual-frame">
-          <img src="img/${ex.id}.gif" alt="${ex.titulo}" class="exercise-gif" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div class="exercise-gif-placeholder">
-            <i data-lucide="accessibility" class="animate-pulse"></i>
-            <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.7; margin-top: 6px;">Visualizar Alongamento</span>
+          <!-- Vídeo em loop de alta performance (WebM/MP4) -->
+          <video class="exercise-gif" src="img/${ex.id}.webm" autoplay loop muted playsinline style="display:none; width:100%; height:100%; object-fit:cover;" onloadeddata="this.style.display='block'; this.nextElementSibling.style.display='none';"></video>
+          <!-- Boneco minimalista animado via código nativo (SVG + CSS) como fallback de altíssima performance -->
+          <div class="exercise-gif-placeholder" style="display:flex; width:100%; height:100%;">
+            ${generateExerciseSVG(ex.id)}
           </div>
         </div>
         <div class="exercise-body">
