@@ -234,14 +234,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const shareTipBtn = document.getElementById('share-tip-btn');
   const drawTipBtn = document.getElementById('draw-tip-btn');
 
-  // Determinar dica do dia com base no dia do mês atual (1-31)
+  // Determinar dica do dia com base nos dias absolutos para não quebrar em meses curtos ou com o limite de 31 dias
   const hoje = new Date();
-  const diaDoMes = hoje.getDate(); // 1 a 31
+  const diaDoMes = hoje.getDate(); 
   const mesesText = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
   const dataFormatada = `${diaDoMes} de ${mesesText[hoje.getMonth()]} de ${hoje.getFullYear()}`;
   
-  // Selecionar a dica baseada no índice do array (prevenir estouro usando operador módulo)
-  const tipIndex = (diaDoMes - 1) % DICAS_ERGONOMIA.length;
+  // Calcular dias totais corridos (Epoch) garante rotação contínua perfeita por todo o array de 34 dicas
+  const diasCorridos = Math.floor(hoje.getTime() / (1000 * 60 * 60 * 24));
+  const tipIndex = diasCorridos % DICAS_ERGONOMIA.length;
   const dicaDeHoje = DICAS_ERGONOMIA[tipIndex];
   
   // Rastrear a dica exibida no momento para copiar/compartilhar
@@ -250,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Injetar dados na carta se os elementos existirem
   if (tipDateBadge && tipNumber && tipTitleText && tipDescriptionText && tipIcon) {
     tipDateBadge.textContent = dataFormatada;
-    tipNumber.textContent = `Dica #${diaDoMes}`;
+    tipNumber.textContent = `Dica #${tipIndex + 1}`;
     tipTitleText.textContent = dicaDeHoje.titulo;
     tipDescriptionText.textContent = dicaDeHoje.desc;
     tipIcon.setAttribute('data-lucide', dicaDeHoje.icon);
