@@ -586,6 +586,30 @@ document.addEventListener('DOMContentLoaded', () => {
       instrucao: "Puxe um joelho em direção ao peito com as duas mãos, mantendo a outra perna estendida e a coluna alinhada. Pode ser feito de pé ou deitado.",
       tempoSegundos: 10,
       dificuldade: "Médio"
+    },
+    {
+      id: "ex-13",
+      titulo: "13. Alongamento Cervical (Extensão)",
+      categoria: "pescoco-ombros",
+      categoriaLbl: "Pescoço e Ombros",
+      foco: "Cervical Anterior",
+      duracao: "10s",
+      desc: "Alonga a musculatura anterior do pescoço e alivia tensões cervicais causadas por longos períodos olhando para telas, postura inadequada ou estresse muscular.",
+      instrucao: "Coloque uma das mãos na região do queixo e incline lentamente a cabeça para trás empurrando suavemente, olhando para cima. Mantenha os ombros relaxados. Pode ser feito em pé ou sentado.",
+      tempoSegundos: 10,
+      dificuldade: "Fácil"
+    },
+    {
+      id: "ex-14",
+      titulo: "14. Alongamento Cervical (Flexão)",
+      categoria: "pescoco-ombros",
+      categoriaLbl: "Pescoço e Ombros",
+      foco: "Cervical Posterior",
+      duracao: "10s",
+      desc: "Alonga a região posterior do pescoço e parte superior das costas, ajudando no relaxamento muscular e na redução da tensão cervical.",
+      instrucao: "Entrelace as mãos atrás da cabeça e incline lentamente o pescoço para frente, aproximando o queixo do peito. Faça uma leve pressão com as mãos sem forçar. Pode ser feito em pé ou sentado.",
+      tempoSegundos: 10,
+      dificuldade: "Fácil"
     }
   ];
 
