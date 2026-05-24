@@ -241,7 +241,7 @@
             <span class="badge">Alongamentos</span>
             <h2 class="section-title">Alongamentos</h2>
             <p class="section-description">
-              Rotina física preventiva para os colaboradores. Execute cada um dos 11 alongamentos ilustrados no panfleto físico.
+              Rotina física preventiva para os colaboradores. Execute cada um dos 12 alongamentos ilustrados no panfleto físico.
             </p>
           </div>
           
@@ -308,39 +308,54 @@
 
         <div class="grid grid-3 gap-lg mt-md">
           <!-- Técnica 1 -->
-          <div class="glass-card card-hover p-lg" style="background-color: var(--bg-light); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center;">
+          <div class="glass-card card-hover" style="background-color: var(--bg-light); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; padding: 2.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
             <div class="icon-circle mb-sm" style="background-color: rgba(46, 107, 74, 0.1); color: var(--primary); padding: 15px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center;">
               <i data-lucide="wind" style="width: 32px; height: 32px;"></i>
             </div>
             <h3 class="exercise-title" style="margin-bottom: 16px; font-size: 1.15rem; width: 100%;">Técnica 1</h3>
-            <p class="exercise-desc" style="font-size: 0.95rem; text-align: left; line-height: 1.5; color: var(--text-light); width: 100%;">
+            <p class="exercise-desc" style="font-size: 0.95rem; text-align: left; line-height: 1.6; color: var(--text-light); width: 100%;">
               Sente em posição ereta. Pode ser no chão ou em uma cadeira.<br><br>
-              Puxe o ar pelo nariz, de forma lenta e profunda. Na hora de soltar, faça um biquinho com a boca, pois isso diminui o atrito do dente e da língua para a saída do ar e faz com que a respiração seja mais harmônica. Repita 10 vezes.
+              Puxe o ar pelo nariz, de forma lenta e profunda. Na hora de soltar, faça um biquinho com a boca, pois isso diminui o atrito do dente e da língua para a saída do ar e faz com que a respiração seja mais harmônica. Repita entre 5 e 10 vezes.
             </p>
+            <div class="counter-widget" style="margin-top: auto; padding-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 15px;">
+              <button onclick="updateCounter('count-t1', -1)" aria-label="Diminuir" style="background: rgba(46, 107, 74, 0.1); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">-</button>
+              <span id="count-t1" style="font-weight: 600; color: var(--text); font-size: 1.1rem; min-width: 20px;">0</span>
+              <button onclick="updateCounter('count-t1', 1)" aria-label="Aumentar" style="background: rgba(46, 107, 74, 0.1); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">+</button>
+            </div>
           </div>
 
           <!-- Técnica 2 -->
-          <div class="glass-card card-hover p-lg" style="background-color: var(--bg-light); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center;">
+          <div class="glass-card card-hover" style="background-color: var(--bg-light); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; padding: 2.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
             <div class="icon-circle mb-sm" style="background-color: rgba(46, 107, 74, 0.1); color: var(--primary); padding: 15px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center;">
               <i data-lucide="activity" style="width: 32px; height: 32px;"></i>
             </div>
             <h3 class="exercise-title" style="margin-bottom: 16px; font-size: 1.15rem; width: 100%;">Técnica 2</h3>
-            <p class="exercise-desc" style="font-size: 0.95rem; text-align: left; line-height: 1.5; color: var(--text-light); width: 100%;">
+            <p class="exercise-desc" style="font-size: 0.95rem; text-align: left; line-height: 1.6; color: var(--text-light); width: 100%;">
               Sente-se com as costas eretas ou deite. Coloque as mãos sobre a barriga.<br><br>
-              Respire devagar, aumentando a barriga, contando até cinco. Dê uma pausa de dois segundos. Exale lentamente, contando até seis. Pratique esse padrão de 10 a 20 minutos por dia.
+              Respire devagar, aumentando a barriga, contando até cinco. Dê uma pausa de dois segundos. Exale lentamente, contando até seis. Repita entre 5 e 10 vezes.
             </p>
+            <div class="counter-widget" style="margin-top: auto; padding-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 15px;">
+              <button onclick="updateCounter('count-t2', -1)" aria-label="Diminuir" style="background: rgba(46, 107, 74, 0.1); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">-</button>
+              <span id="count-t2" style="font-weight: 600; color: var(--text); font-size: 1.1rem; min-width: 20px;">0</span>
+              <button onclick="updateCounter('count-t2', 1)" aria-label="Aumentar" style="background: rgba(46, 107, 74, 0.1); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">+</button>
+            </div>
           </div>
 
           <!-- Técnica 3 -->
-          <div class="glass-card card-hover p-lg" style="background-color: var(--bg-light); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center;">
+          <div class="glass-card card-hover" style="background-color: var(--bg-light); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; padding: 2.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.02);">
             <div class="icon-circle mb-sm" style="background-color: rgba(46, 107, 74, 0.1); color: var(--primary); padding: 15px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center;">
               <i data-lucide="waves" style="width: 32px; height: 32px;"></i>
             </div>
             <h3 class="exercise-title" style="margin-bottom: 16px; font-size: 1.15rem; width: 100%;">Técnica 3</h3>
-            <p class="exercise-desc" style="font-size: 0.95rem; text-align: left; line-height: 1.5; color: var(--text-light); width: 100%;">
+            <p class="exercise-desc" style="font-size: 0.95rem; text-align: left; line-height: 1.6; color: var(--text-light); width: 100%;">
               Com a ajuda do dedo indicador tampe a narina esquerda e inspire pela outra narina (contando até cinco).<br><br>
-              Na sequência, a narina que "puxou" o ar deve ser usada para "soltá-lo". Repita o procedimento cinco vezes.
+              Na sequência, a narina que "puxou" o ar deve ser usada para "soltá-lo". Repita entre 5 e 10 vezes.
             </p>
+            <div class="counter-widget" style="margin-top: auto; padding-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 15px;">
+              <button onclick="updateCounter('count-t3', -1)" aria-label="Diminuir" style="background: rgba(46, 107, 74, 0.1); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">-</button>
+              <span id="count-t3" style="font-weight: 600; color: var(--text); font-size: 1.1rem; min-width: 20px;">0</span>
+              <button onclick="updateCounter('count-t3', 1)" aria-label="Aumentar" style="background: rgba(46, 107, 74, 0.1); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1.2rem; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">+</button>
+            </div>
           </div>
         </div>
       </div>

@@ -16,181 +16,118 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   const DICAS_ERGONOMIA = [
     {
-      titulo: "Objetivo da Ergonomia",
-      desc: "A ergonomia tem como objetivo principal modificar as ferramentas, os móveis e o ambiente para que você trabalhe com conforto, segurança e eficiência, evitando dores e lesões.",
-      icon: "shield"
-    },
-    {
-      titulo: "O que é o Ergofisio?",
-      desc: "É um projeto desenvolvido pelo curso de fisioterapia com o foco principal de preservar a integridade física e mental dos colaboradores da UNIFG.",
-      icon: "activity"
-    },
-    {
-      titulo: "Cadeira Ergonômica",
-      desc: "O uso da cadeira ergonômica ajuda a reduzir a sobrecarga lombar durante a jornada laboral.",
-      icon: "armchair"
-    },
-    {
-      titulo: "Suporte para Notebook",
-      desc: "Ajustar a altura do monitor para ficar na linha dos olhos, e assim evitar a flexão da cervical e sobrecarga lombar.",
-      icon: "laptop"
-    },
-    {
-      titulo: "Suporte para os Pés",
-      desc: "Adicionar o apoio aos pés para garantir o retorno venoso, alinhamento adequado da coluna e quadril e evitar a compressão vascular.",
-      icon: "footprints"
-    },
-    {
-      titulo: "Mouse Pad e Teclado Pad",
-      desc: "Usar esses equipamentos evita a fadiga muscular e aumenta a estabilidade do punho.",
+      titulo: "Postura Neutra do Punho",
+      desc: "Evite manter o punho dobrado por muito tempo. O uso de mouse pad e teclado pad com apoio em gel ajuda a estabilizar o punho, prevenindo lesões.",
       icon: "keyboard"
     },
     {
-      titulo: "Alívio de Dores e Lesões",
-      desc: "Um dos grandes benefícios do alongamento é que ele alivia dores e previne lesões no seu dia a dia.",
-      icon: "heart"
-    },
-    {
-      titulo: "Alívio do Estresse",
-      desc: "Realizar alongamentos periodicamente alivia o estresse gerado pela rotina de trabalho.",
-      icon: "smile"
-    },
-    {
-      titulo: "Correção de Postura",
-      desc: "Fazer pausas ativas para se alongar corrige a postura e evita vícios posturais nocivos.",
-      icon: "accessibility"
-    },
-    {
-      titulo: "Redução da Rigidez",
-      desc: "O alongamento sistemático reduz a rigidez muscular, devolvendo a flexibilidade ao corpo.",
-      icon: "activity"
-    },
-    {
-      titulo: "Circulação Sanguínea",
-      desc: "Os exercícios fisioterapêuticos do Ergofisio melhoram a circulação sanguínea, oxigenando os músculos.",
-      icon: "refresh-cw"
-    },
-    {
-      titulo: "Redução do Cansaço",
-      desc: "Alongar-se ao longo da jornada laboral reduz significativamente o cansaço físico geral.",
-      icon: "zap"
-    },
-    {
-      titulo: "Mais Disposição",
-      desc: "A prática diária dos alongamentos do panfleto traz mais disposição para as suas atividades.",
-      icon: "sparkles"
-    },
-    {
-      titulo: "Prevenção de Tendinites",
-      desc: "A falta de ergonomia no trabalho pode levar a Lesões por Esforço Repetitivo (LER), como as dolorosas tendinites.",
-      icon: "alert-triangle"
-    },
-    {
-      titulo: "Prevenção de Bursites",
-      desc: "Trabalhar sem as adaptações adequadas no posto de trabalho pode causar bursites (LER).",
-      icon: "alert-triangle"
-    },
-    {
-      titulo: "Síndrome do Túnel do Carpo",
-      desc: "O esforço repetitivo sem o uso de mouse pad e teclado pad pode ocasionar a Síndrome do Túnel do Carpo.",
-      icon: "alert-circle"
-    },
-    {
-      titulo: "Lombalgia e Cervicalgia",
-      desc: "Sentar-se de forma incorreta ou sem suporte cervical sobrecarrega a coluna, gerando lombalgia e cervicalgia.",
-      icon: "shield-alert"
-    },
-    {
-      titulo: "Prevenção de Varizes",
-      desc: "Ficar longos períodos sem movimentar as pernas ou sem apoio para os pés pode gerar problemas circulatórios, como varizes.",
-      icon: "heart"
-    },
-    {
-      titulo: "Prevenção de Fadiga Visual",
-      desc: "Ajustar a altura da tela na linha dos olhos evita a fadiga visual e a flexão constante do pescoço.",
-      icon: "eye"
-    },
-    {
-      titulo: "Ansiedade e Depressão",
-      desc: "A falta de ergonomia e pausas saudáveis pode colaborar para transtornos psicológicos ocupacionais, como ansiedade e depressão.",
-      icon: "brain"
-    },
-    {
-      titulo: "Síndrome de Burnout",
-      desc: "Preservar a integridade física e mental é vital para evitar o esgotamento extremo ou Síndrome de Burnout.",
-      icon: "flame"
-    },
-    {
-      titulo: "Postura para Levantar Peso",
-      desc: "Ao levantar peso, dobre os joelhos e use a força das pernas mantendo a coluna totalmente ereta e a carga próxima ao corpo.",
-      icon: "arrow-up"
-    },
-    {
-      titulo: "Alinhamento Corporal de Pé",
-      desc: "Mantenha o alinhamento adequado dos ombros, pescoço e coluna durante a realização de atividades em pé.",
-      icon: "accessibility"
-    },
-    {
-      titulo: "Ajustes do Computador",
-      desc: "Ajuste seus móveis e ferramentas ergonômicas (como cadeira, monitor e suportes) de acordo com seu biotipo.",
+      titulo: "Ajuste a Altura do Monitor",
+      desc: "A borda superior da tela deve estar na altura dos seus olhos. Isso previne a fadiga visual e evita que você flexione constantemente o pescoço.",
       icon: "monitor"
     },
     {
-      titulo: "Postura na Direção",
-      desc: "Ao dirigir, mantenha braços e pernas levemente flexionados, quadris apoiados e o encosto firme na coluna.",
-      icon: "car"
+      titulo: "Uso do Suporte para os Pés",
+      desc: "Seus pés não devem ficar balançando. O suporte para pés melhora o retorno venoso, previne varizes e garante o alinhamento adequado do quadril.",
+      icon: "footprints"
     },
     {
-      titulo: "Alongamento Vertical (#1)",
-      desc: "Alongamento 1: Entrelace os dedos e estenda os braços verticalmente acima da cabeça para alongar braços e ombros.",
+      titulo: "Cadeira Ergonômica é Prevenção",
+      desc: "Sentar de forma incorreta sobrecarrega a coluna. Use o apoio lombar da sua cadeira para preservar a curvatura natural das costas e evitar a lombalgia.",
+      icon: "armchair"
+    },
+    {
+      titulo: "Descanse os Olhos (Regra 20-20-20)",
+      desc: "A cada 20 minutos olhando para a tela, olhe para algo a 6 metros de distância por 20 segundos. Isso previne a fadiga visual e o ressecamento.",
+      icon: "eye"
+    },
+    {
+      titulo: "Alinhamento ao Ficar em Pé",
+      desc: "Trabalha muito em pé? Seu peso deve estar distribuído igualmente nos dois pés. Mantenha os ombros relaxados e a coluna ereta.",
+      icon: "accessibility"
+    },
+    {
+      titulo: "Levantamento de Peso Seguro",
+      desc: "Sempre dobre os joelhos e use a força das pernas para levantar caixas ou pesos. Mantenha a carga o mais próxima possível do corpo.",
       icon: "arrow-up"
     },
     {
-      titulo: "Alongamento de Ombros (#2)",
-      desc: "Alongamento 2: Estenda um braço horizontalmente à frente do peito e puxe-o com a outra mão para alongar o ombro.",
-      icon: "activity"
+      titulo: "Atenção à LER e DORT",
+      desc: "As Lesões por Esforço Repetitivo surgem silenciosamente. Fazer pausas ativas e os alongamentos preventivos é o seu melhor remédio.",
+      icon: "alert-triangle"
     },
     {
-      titulo: "Alongamento de Peitoral (#3)",
-      desc: "Alongamento 3: Em pé ou sentado, entrelace as mãos atrás das costas e estique os braços, abrindo bem o peito.",
-      icon: "heart"
+      titulo: "A Postura na Direção",
+      desc: "Ao dirigir até o trabalho, não estique os braços totalmente. Mantenha-os levemente flexionados e encoste toda a coluna no banco.",
+      icon: "car"
     },
     {
-      titulo: "Alongamento de Tríceps (#4)",
-      desc: "Alongamento 4: Dobre o cotovelo atrás da cabeça e use a outra mão para puxar suavemente o cotovelo para baixo.",
-      icon: "heart"
-    },
-    {
-      titulo: "Alongamento Cervical (#5)",
-      desc: "Alongamento 5: Puxe suavemente a cabeça com a mão em direção ao ombro lateral para aliviar a tensão cervical.",
+      titulo: "Alongamento: Relaxando o Pescoço",
+      desc: "Sentindo tensão na nuca? Use o Alongamento Cervical (Alongamento 5). Puxe suavemente a cabeça em direção ao ombro e segure por 10 segundos.",
       icon: "smile"
     },
     {
-      titulo: "Alongamento cruzado (#6)",
-      desc: "Alongamento 6: Estenda um braço horizontalmente à frente do peito e puxe o cotovelo para evitar fadiga e dores.",
-      icon: "user"
-    },
-    {
-      titulo: "Alongamento de Panturrilha (#10)",
-      desc: "Alongamento 10: Dê um passo largo à frente, mantendo o calcanhar traseiro firme no chão para alongar a panturrilha.",
+      titulo: "Alongamento: Soltando os Punhos",
+      desc: "Digitou muito? Faça o Alongamento de Punhos (Alongamento 2). Estique o braço, e puxe a palma da mão e os dedos em sua direção para aliviar os tendões.",
       icon: "activity"
     },
     {
-      titulo: "Técnica de Relaxamento: Biquinho",
-      desc: "Sente-se ereto. Puxe o ar de forma lenta pelo nariz. Na hora de soltar, faça um biquinho com a boca para soltar o ar devagar. Repita 10 vezes.",
+      titulo: "Alongamento: Abrindo o Peitoral",
+      desc: "Nossa postura no PC tende a nos curvar para frente. O Alongamento de Peitoral (Alongamento 3) ajuda a realinhar a postura e abrir a caixa torácica.",
+      icon: "heart"
+    },
+    {
+      titulo: "Alongamento: Descomprimindo a Coluna",
+      desc: "O Alongamento Vertical (Alongamento 1) estende toda a cadeia muscular superior e laterais do tronco, realinhando a coluna após horas sentado.",
+      icon: "arrow-up"
+    },
+    {
+      titulo: "Alongamento: Membros Inferiores",
+      desc: "Sente as pernas pesadas? O Alongamento de Panturrilha (Alongamento 10) estimula a circulação sanguínea, reduzindo o cansaço no fim do dia.",
+      icon: "activity"
+    },
+    {
+      titulo: "Relaxamento: Biquinho (Técnica 1)",
+      desc: "Quando o estresse bater, puxe o ar lentamente pelo nariz e solte fazendo um biquinho com a boca. Isso harmoniza a saída do ar. Repita de 5 a 10 vezes.",
       icon: "wind"
     },
     {
-      titulo: "Técnica de Relaxamento: Respiração Diafragmática",
-      desc: "Coloque as mãos sobre a barriga. Respire devagar, inflando a barriga, contando até 5. Pause por 2 segundos e solte lentamente contando até 6.",
+      titulo: "Relaxamento: Respiração Diafragmática (Técnica 2)",
+      desc: "A respiração peitoral curta aumenta a ansiedade. Coloque as mãos na barriga e respire inflando-a. Solte devagar. Ajuda a reduzir a frequência cardíaca.",
       icon: "activity"
     },
     {
-      titulo: "Técnica de Relaxamento: Respiração Alternada",
-      desc: "Tampe a narina esquerda com o dedo e inspire pela direita contando até 5. Em seguida, solte o ar pela narina esquerda. Repita esse ciclo 5 vezes.",
+      titulo: "Relaxamento: Respiração Alternada (Técnica 3)",
+      desc: "Perdendo o foco? Tampe uma narina e inspire pela outra. Solte o ar pela primeira narina. Essa técnica melhora muito a concentração no trabalho.",
       icon: "waves"
+    },
+    {
+      titulo: "Saúde Mental Importa",
+      desc: "A Síndrome de Burnout é o esgotamento ocupacional extremo. Faça suas pausas preventivas e nunca ignore sinais constantes de exaustão.",
+      icon: "brain"
+    },
+    {
+      titulo: "O Poder da Circulação Sanguínea",
+      desc: "Você sabia que realizar os alongamentos oxigena os músculos e manda mais sangue para o seu cérebro? O resultado é muito mais disposição!",
+      icon: "refresh-cw"
+    },
+    {
+      titulo: "Benefícios Imediatos",
+      desc: "Lembre-se: o alongamento sistemático quebra a rigidez muscular quase que instantaneamente, devolvendo a flexibilidade ao seu corpo.",
+      icon: "sparkles"
     }
   ];
+
+  // ==========================================
+  // 1.B FUNÇÃO PARA CONTADOR DE RESPIRAÇÕES
+  // ==========================================
+  window.updateCounter = function(counterId, change) {
+    const counterElement = document.getElementById(counterId);
+    if (!counterElement) return;
+    let currentValue = parseInt(counterElement.textContent);
+    let newValue = currentValue + change;
+    if (newValue < 0) newValue = 0; // Não permite número negativo
+    counterElement.textContent = newValue;
+  };
 
   // ==========================================
   // 2. CONTROLE DO LOGOUT / DRAWER MÓVEL
