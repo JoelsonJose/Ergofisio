@@ -267,6 +267,12 @@ document.addEventListener('DOMContentLoaded', () => {
               return;
             }
             relaxTimerCycles.textContent = `Ciclo ${currentCycle} / ${maxCycles}`;
+            
+            // Pausar para o usuário iniciar manualmente o próximo ciclo
+            clearInterval(relaxTimerInterval);
+            isRelaxTimerRunning = false;
+            if (relaxTimerPlayBtn) relaxTimerPlayBtn.innerHTML = `<i data-lucide="play" style="width: 28px; height: 28px; margin-left: 4px;"></i>`;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
           }
           applyPhaseData();
         } else {
