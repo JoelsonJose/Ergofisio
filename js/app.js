@@ -118,16 +118,169 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   // ==========================================
-  // 1.B FUNÇÃO PARA CONTADOR DE RESPIRAÇÕES
+  // 1.B CRONÔMETRO DE RESPIRAÇÃO (TÉCNICAS)
   // ==========================================
-  window.updateCounter = function(counterId, change) {
-    const counterElement = document.getElementById(counterId);
-    if (!counterElement) return;
-    let currentValue = parseInt(counterElement.textContent);
-    let newValue = currentValue + change;
-    if (newValue < 0) newValue = 0; // Não permite número negativo
-    counterElement.textContent = newValue;
+  const DADOS_RELAXAMENTO = {
+    t1: {
+      titulo: "Técnica 1: Biquinho",
+      instrucao: "Concentre-se em soltar o ar de forma profunda e lenta.",
+      fases: [
+        { nome: "Inspire", segundos: 8, cor: "var(--primary)" },
+        { nome: "Segure", segundos: 2, cor: "#f59e0b" },
+        { nome: "Solte", segundos: 6, cor: "#3b82f6" }
+      ]
+    },
+    t2: {
+      titulo: "Técnica 2: Respiração Diafragmática",
+      instrucao: "Sinta a barriga estufar na inspiração.",
+      fases: [
+        { nome: "Inspire", segundos: 8, cor: "var(--primary)" },
+        { nome: "Segure", segundos: 2, cor: "#f59e0b" },
+        { nome: "Solte", segundos: 8, cor: "#3b82f6" }
+      ]
+    },
+    t3: {
+      titulo: "Técnica 3: Respiração Alternada",
+      instrucao: "Troque a narina ao soltar o ar.",
+      fases: [
+        { nome: "Inspire", segundos: 8, cor: "var(--primary)" },
+        { nome: "Segure", segundos: 2, cor: "#f59e0b" },
+        { nome: "Solte", segundos: 8, cor: "#3b82f6" }
+      ]
+    }
   };
+
+  const relaxTimerModal = document.getElementById('relaxation-timer-modal');
+  const closeRelaxTimerBtn = document.getElementById('close-relaxation-timer-btn');
+  const relaxTimerTitle = document.getElementById('relax-timer-title');
+  const relaxTimerInstruction = document.getElementById('relax-timer-instruction');
+  const relaxTimerCycles = document.getElementById('relax-timer-cycles');
+  const relaxPhaseText = document.getElementById('relax-phase-text');
+  const relaxTimerCountdown = document.getElementById('relax-timer-countdown');
+  const relaxTimerPlayBtn = document.getElementById('relax-timer-play-btn');
+  const relaxTimerResetBtn = document.getElementById('relax-timer-reset-btn');
+  const relaxTimerStroke = document.getElementById('relax-timer-stroke');
+
+  let activeRelaxObj = null;
+  let relaxTimerInterval = null;
+  let isRelaxTimerRunning = false;
+  let currentCycle = 1;
+  const maxCycles = 10;
+  
+  let currentPhaseIndex = 0; 
+  let relaxSecondsLeft = 0;
+  let currentPhaseMaxSeconds = 0;
+
+  window.openRelaxationTimer = function(id) {
+    activeRelaxObj = DADOS_RELAXAMENTO[id];
+    if (!activeRelaxObj) return;
+
+    relaxTimerTitle.textContent = activeRelaxObj.titulo;
+    relaxTimerInstruction.textContent = activeRelaxObj.instrucao;
+    
+    resetRelaxTimerStates();
+
+    if (relaxTimerModal) relaxTimerModal.classList.add('active');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  };
+
+  function closeRelaxTimer() {
+    if (relaxTimerModal) relaxTimerModal.classList.remove('active');
+    clearInterval(relaxTimerInterval);
+    isRelaxTimerRunning = false;
+  }
+
+  function resetRelaxTimerStates() {
+    clearInterval(relaxTimerInterval);
+    isRelaxTimerRunning = false;
+    currentCycle = 1;
+    currentPhaseIndex = 0;
+    
+    applyPhaseData();
+    relaxTimerCycles.textContent = `Ciclo ${currentCycle} / ${maxCycles}`;
+    relaxTimerCycles.style.background = "rgba(46,107,74,0.1)";
+    relaxTimerCycles.style.color = "var(--primary)";
+    
+    if (relaxTimerPlayBtn) {
+      relaxTimerPlayBtn.innerHTML = `<i data-lucide="play" style="width: 28px; height: 28px; margin-left: 4px;"></i>`;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+  }
+
+  function applyPhaseData() {
+    const faseAtual = activeRelaxObj.fases[currentPhaseIndex];
+    currentPhaseMaxSeconds = faseAtual.segundos;
+    relaxSecondsLeft = faseAtual.segundos;
+    
+    relaxPhaseText.textContent = faseAtual.nome;
+    relaxPhaseText.style.color = faseAtual.cor || 'var(--text)';
+    
+    if (relaxTimerStroke) relaxTimerStroke.style.stroke = faseAtual.cor || 'var(--primary)';
+    
+    relaxTimerCountdown.textContent = relaxSecondsLeft;
+    updateRelaxTimerStroke(relaxSecondsLeft, currentPhaseMaxSeconds);
+  }
+
+  function updateRelaxTimerStroke(seconds, maxSeconds) {
+    if (!relaxTimerStroke) return;
+    const offset = 326.7 - (seconds / maxSeconds) * 326.7;
+    relaxTimerStroke.style.strokeDashoffset = offset;
+  }
+
+  function toggleRelaxTimer() {
+    if (!activeRelaxObj) return;
+
+    if (isRelaxTimerRunning) {
+      clearInterval(relaxTimerInterval);
+      isRelaxTimerRunning = false;
+      if (relaxTimerPlayBtn) relaxTimerPlayBtn.innerHTML = `<i data-lucide="play" style="width: 28px; height: 28px; margin-left: 4px;"></i>`;
+    } else {
+      isRelaxTimerRunning = true;
+      if (relaxTimerPlayBtn) relaxTimerPlayBtn.innerHTML = `<i data-lucide="pause" style="width: 28px; height: 28px;"></i>`;
+      
+      relaxTimerInterval = setInterval(() => {
+        relaxSecondsLeft--;
+        
+        if (relaxSecondsLeft <= 0) {
+          currentPhaseIndex++;
+          
+          if (currentPhaseIndex >= activeRelaxObj.fases.length) {
+            currentPhaseIndex = 0;
+            currentCycle++;
+            
+            if (currentCycle > maxCycles) {
+              clearInterval(relaxTimerInterval);
+              isRelaxTimerRunning = false;
+              relaxPhaseText.textContent = "CONCLUÍDO!";
+              relaxPhaseText.style.color = "#10b981"; // success
+              relaxTimerCountdown.textContent = "✔";
+              if (relaxTimerStroke) {
+                relaxTimerStroke.style.strokeDashoffset = 0;
+                relaxTimerStroke.style.stroke = "#10b981";
+              }
+              relaxTimerCycles.textContent = `COMPLETO`;
+              relaxTimerCycles.style.background = "#10b981";
+              relaxTimerCycles.style.color = "#fff";
+              
+              if (relaxTimerPlayBtn) relaxTimerPlayBtn.innerHTML = `<i data-lucide="play" style="width: 28px; height: 28px; margin-left: 4px;"></i>`;
+              if (typeof lucide !== 'undefined') lucide.createIcons();
+              return;
+            }
+            relaxTimerCycles.textContent = `Ciclo ${currentCycle} / ${maxCycles}`;
+          }
+          applyPhaseData();
+        } else {
+          relaxTimerCountdown.textContent = relaxSecondsLeft;
+          updateRelaxTimerStroke(relaxSecondsLeft, currentPhaseMaxSeconds);
+        }
+      }, 1000);
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+
+  if (closeRelaxTimerBtn) closeRelaxTimerBtn.addEventListener('click', closeRelaxTimer);
+  if (relaxTimerPlayBtn) relaxTimerPlayBtn.addEventListener('click', toggleRelaxTimer);
+  if (relaxTimerResetBtn) relaxTimerResetBtn.addEventListener('click', resetRelaxTimerStates);
 
   // ==========================================
   // 2. CONTROLE DO LOGOUT / DRAWER MÓVEL
