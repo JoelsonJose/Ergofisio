@@ -102,6 +102,10 @@ a {
   grid-template-columns: repeat(3, 1fr);
 }
 
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
 .flex {
   display: flex;
 }
@@ -1836,6 +1840,10 @@ section {
     grid-template-columns: repeat(2, 1fr);
   }
   
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
   .hero-title {
     font-size: 2.5rem;
   }
@@ -2009,6 +2017,10 @@ section {
   }
   
   .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-4 {
     grid-template-columns: 1fr;
   }
 
