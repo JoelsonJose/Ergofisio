@@ -125,17 +125,17 @@ document.addEventListener('DOMContentLoaded', () => {
       titulo: "Técnica 1: Biquinho",
       instrucao: "Concentre-se em soltar o ar de forma profunda e lenta.",
       fases: [
-        { nome: "Inspire", segundos: 8, cor: "var(--primary)" },
-        { nome: "Segure", segundos: 2, cor: "#f59e0b" },
-        { nome: "Solte", segundos: 6, cor: "#3b82f6" }
+        { nome: "Inspire", segundos: 6, cor: "var(--primary)" },
+        { nome: "Segure", segundos: 4, cor: "#f59e0b" },
+        { nome: "Solte", segundos: 8, cor: "#3b82f6" }
       ]
     },
     t2: {
       titulo: "Técnica 2: Respiração Diafragmática",
       instrucao: "Sinta a barriga estufar na inspiração.",
       fases: [
-        { nome: "Inspire", segundos: 8, cor: "var(--primary)" },
-        { nome: "Segure", segundos: 2, cor: "#f59e0b" },
+        { nome: "Inspire", segundos: 6, cor: "var(--primary)" },
+        { nome: "Segure", segundos: 4, cor: "#f59e0b" },
         { nome: "Solte", segundos: 8, cor: "#3b82f6" }
       ]
     },
@@ -143,8 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
       titulo: "Técnica 3: Respiração Alternada",
       instrucao: "Troque a narina ao soltar o ar.",
       fases: [
-        { nome: "Inspire", segundos: 8, cor: "var(--primary)" },
-        { nome: "Segure", segundos: 2, cor: "#f59e0b" },
+        { nome: "Inspire", segundos: 6, cor: "var(--primary)" },
+        { nome: "Segure", segundos: 4, cor: "#f59e0b" },
         { nome: "Solte", segundos: 8, cor: "#3b82f6" }
       ]
     }
