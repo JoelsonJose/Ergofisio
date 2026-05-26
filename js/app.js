@@ -242,6 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         relaxSecondsLeft--;
         
         if (relaxSecondsLeft <= 0) {
+          playChime(); // Toca o som a cada mudança de fase (Inspire, Segure, Solte)
           currentPhaseIndex++;
           
           if (currentPhaseIndex >= activeRelaxObj.fases.length) {
