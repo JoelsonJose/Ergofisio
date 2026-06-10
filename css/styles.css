@@ -2216,3 +2216,158 @@ section {
     padding: 6px 8px !important;
   }
 }
+
+/* ==========================================================
+   HEADER LOGOS & DIVIDERS
+   ========================================================== */
+.logo-divider {
+  width: 1px;
+  height: 24px;
+  background-color: rgba(46, 107, 74, 0.15);
+  margin: 0 10px;
+}
+
+.brand-logo-img-secondary {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  opacity: 0.8;
+  transition: var(--transition-fast);
+}
+
+.brand-logo-img-secondary:hover {
+  opacity: 1;
+}
+
+/* FOOTER LOGOS & DIVIDERS */
+.logo-divider-footer {
+  width: 1px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.15);
+  margin: 0 8px;
+}
+
+.footer-logo-img-secondary {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  opacity: 0.6;
+  transition: var(--transition-fast);
+}
+
+.footer-logo-img-secondary:hover {
+  opacity: 1;
+}
+
+/* ==========================================================
+   SPOTIFY INTEGRATION STYLING
+   ========================================================== */
+.spotify-promo-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(29, 185, 84, 0.06);
+  border: 1px solid rgba(29, 185, 84, 0.15);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  width: 100%;
+  text-align: left;
+  margin-top: 16px;
+  box-sizing: border-box;
+}
+
+.spotify-music-icon {
+  color: #1DB954;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.spotify-promo-text {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.spotify-promo-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.spotify-promo-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.spotify-play-btn {
+  display: inline-flex;
+  align-items: center;
+  background-color: #1DB954;
+  color: var(--white) !important;
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.spotify-play-btn:hover {
+  background-color: #1ed760;
+  transform: translateY(-1px);
+}
+
+.spotify-play-btn svg {
+  margin-right: 4px;
+}
+
+/* SPOTIFY INLINE PROMO */
+.spotify-inline-promo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(29, 185, 84, 0.05);
+  border: 1px solid rgba(29, 185, 84, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-top: 14px;
+  box-sizing: border-box;
+}
+
+.spotify-inline-promo div {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.spotify-inline-icon {
+  color: #1DB954;
+  width: 14px;
+  height: 14px;
+}
+
+.spotify-inline-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background-color: transparent;
+  border: 1.5px solid #1DB954;
+  color: #1DB954 !important;
+  border-radius: 50px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.spotify-inline-btn:hover {
+  background-color: #1DB954;
+  color: var(--white) !important;
+}
