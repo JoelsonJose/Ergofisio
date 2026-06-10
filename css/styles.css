@@ -306,6 +306,7 @@ section {
 .logo-container {
   display: flex;
   align-items: center;
+  margin-right: 20px; /* Spacing between logo container and nav links */
 }
 
 .brand-logo-img {
@@ -325,7 +326,7 @@ section {
 .desktop-nav ul {
   display: flex;
   list-style: none;
-  gap: 24px;
+  gap: 18px; /* Reduced from 24px to prevent nav squeezing */
 }
 
 .nav-link {
@@ -360,6 +361,7 @@ section {
   display: flex;
   align-items: center;
   gap: 16px;
+  margin-left: 20px; /* Spacing between nav links and action buttons */
 }
 
 .break-timer-btn {
@@ -2227,16 +2229,30 @@ section {
   margin: 0 10px;
 }
 
-.brand-logo-img-secondary {
-  height: 28px;
+.brand-logo-unifg {
+  height: 26px; /* wide logo */
   width: auto;
   object-fit: contain;
   display: block;
-  opacity: 0.8;
+  opacity: 0.85;
   transition: var(--transition-fast);
 }
 
-.brand-logo-img-secondary:hover {
+.brand-logo-unifg:hover {
+  opacity: 1;
+}
+
+.brand-logo-anima {
+  height: 44px; /* square logo zoomed/scaled to be readable */
+  width: auto;
+  object-fit: contain;
+  display: block;
+  opacity: 0.85;
+  transition: var(--transition-fast);
+  margin-left: 4px;
+}
+
+.brand-logo-anima:hover {
   opacity: 1;
 }
 
@@ -2248,16 +2264,30 @@ section {
   margin: 0 8px;
 }
 
-.footer-logo-img-secondary {
-  height: 24px;
+.footer-logo-unifg {
+  height: 22px;
   width: auto;
   object-fit: contain;
   display: block;
-  opacity: 0.6;
+  opacity: 0.7;
   transition: var(--transition-fast);
 }
 
-.footer-logo-img-secondary:hover {
+.footer-logo-unifg:hover {
+  opacity: 1;
+}
+
+.footer-logo-anima {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  opacity: 0.7;
+  transition: var(--transition-fast);
+  margin-left: 4px;
+}
+
+.footer-logo-anima:hover {
   opacity: 1;
 }
 
@@ -2370,4 +2400,29 @@ section {
 .spotify-inline-btn:hover {
   background-color: #1DB954;
   color: var(--white) !important;
+}
+
+/* Intermediate screen adjustments to prevent nav collision */
+@media (min-width: 1025px) and (max-width: 1250px) {
+  .desktop-nav ul {
+    gap: 10px;
+  }
+  .nav-link {
+    font-size: 0.82rem;
+  }
+  .logo-divider {
+    margin: 0 6px;
+  }
+  .brand-logo-unifg {
+    height: 22px;
+  }
+  .brand-logo-anima {
+    height: 38px;
+  }
+  .logo-container {
+    margin-right: 12px;
+  }
+  .header-actions {
+    margin-left: 12px;
+  }
 }
