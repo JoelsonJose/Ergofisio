@@ -1944,28 +1944,21 @@ section {
   .header-container {
     height: 72px;
   }
-}
 
-/* 4. Medium & Portrait Tablets (max-width: 768px) */
-@media (max-width: 768px) {
-  section {
-    padding: 56px 0;
+  /* Hide secondary logos on smaller devices to prevent overflow */
+  .logo-container .logo-divider,
+  .logo-container .brand-logo-unifg,
+  .logo-container .brand-logo-anima {
+    display: none !important;
   }
 
+  /* Stack columns earlier for tablets to maintain generous breathing space */
   .grid-2 {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  
-  .exercises-grid {
-    grid-template-columns: 1fr; /* Stack single column earlier for premium mobile space */
-  }
-  
-  .hero-section {
-    padding-top: 110px;
-    padding-bottom: 48px;
-  }
-  
+
+  /* Center hero layout elements when stacked */
   .hero-content {
     text-align: center;
     display: flex;
@@ -1973,15 +1966,10 @@ section {
     align-items: center;
   }
   
-  .hero-title {
-    font-size: 2.25rem;
-    letter-spacing: -0.5px;
-  }
-  
   .hero-description {
     margin-left: auto;
     margin-right: auto;
-    font-size: 1rem;
+    font-size: 1.05rem;
     text-align: center;
   }
   
@@ -1996,11 +1984,33 @@ section {
     padding-top: 24px;
     margin-top: 12px;
   }
-  
-  .team-visual-container {
-    width: 100%;
+
+  .stat-item {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+  
+  .students-badges {
+    align-items: center;
+  }
+  
+  .hero-visual-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 24px;
+  }
+
+  .hero-visual {
+    margin-top: 36px;
+  }
+  
+  .visual-container {
+    height: 320px;
+    max-width: 320px;
   }
 
   .team-photos-container {
@@ -2013,25 +2023,26 @@ section {
   .team-photo-img {
     max-height: 180px;
   }
-  
-  .stat-item {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 8px;
+}
+
+/* 4. Medium & Portrait Tablets (max-width: 768px) */
+@media (max-width: 768px) {
+  section {
+    padding: 56px 0;
   }
   
-  .students-badges {
-    align-items: center;
+  .exercises-grid {
+    grid-template-columns: 1fr; /* Stack single column earlier for premium mobile space */
   }
   
-  .hero-visual {
-    margin-top: 36px;
+  .hero-section {
+    padding-top: 110px;
+    padding-bottom: 48px;
   }
   
-  .visual-container {
-    height: 320px;
-    max-width: 320px;
+  .hero-title {
+    font-size: 2.25rem;
+    letter-spacing: -0.5px;
   }
   
   .flip-card-container {
@@ -2049,8 +2060,6 @@ section {
   .tip-body {
     font-size: 0.9rem;
   }
-  
-
   
   .footer-grid {
     grid-template-columns: 1fr;
@@ -2082,6 +2091,21 @@ section {
   
   .exercise-card.flex-row .icon-circle-lg {
     margin: 0 auto;
+  }
+
+  /* Make Spotify FAB a circle on mobile to preserve screen space */
+  .spotify-fab {
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    justify-content: center;
+  }
+
+  .spotify-fab-text {
+    display: none;
   }
 }
 
@@ -2377,118 +2401,46 @@ section {
 }
 
 /* ==========================================================
-   SPOTIFY INTEGRATION STYLING
+   SPOTIFY FLOATING ACTION BUTTON (FAB)
    ========================================================== */
-.spotify-promo-card {
+.spotify-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: #1DB954;
+  color: var(--white) !important;
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: rgba(29, 185, 84, 0.06);
-  border: 1px solid rgba(29, 185, 84, 0.15);
-  border-radius: var(--radius-md);
-  padding: 10px 14px;
-  width: 100%;
-  text-align: left;
-  margin-top: 16px;
-  box-sizing: border-box;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+  z-index: 9999;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
 }
 
-.spotify-music-icon {
-  color: #1DB954;
-  width: 20px;
-  height: 20px;
+.spotify-fab:hover {
+  background-color: #1ed760;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(29, 185, 84, 0.4);
+}
+
+.spotify-fab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-.spotify-promo-text {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  text-align: left;
-}
-
-.spotify-promo-title {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
-.spotify-promo-subtitle {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-}
-
-.spotify-play-btn {
-  display: inline-flex;
-  align-items: center;
-  background-color: #1DB954;
-  color: var(--white) !important;
-  padding: 6px 12px;
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-}
-
-.spotify-play-btn:hover {
-  background-color: #1ed760;
-  transform: translateY(-1px);
-}
-
-.spotify-play-btn svg {
-  margin-right: 4px;
-}
-
-/* SPOTIFY INLINE PROMO */
-.spotify-inline-promo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(29, 185, 84, 0.05);
-  border: 1px solid rgba(29, 185, 84, 0.12);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  margin-top: 14px;
-  box-sizing: border-box;
-}
-
-.spotify-inline-promo div {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-dark);
-}
-
-.spotify-inline-icon {
-  color: #1DB954;
-  width: 14px;
-  height: 14px;
-}
-
-.spotify-inline-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  background-color: transparent;
-  border: 1.5px solid #1DB954;
-  color: #1DB954 !important;
-  border-radius: 50px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.spotify-inline-btn:hover {
-  background-color: #1DB954;
-  color: var(--white) !important;
+.spotify-fab-icon svg {
+  display: block;
 }
 
 /* Intermediate screen adjustments to prevent nav collision */
-@media (min-width: 1025px) and (max-width: 1250px) {
+@media (min-width: 1025px) and (max-width: 1400px) {
   .desktop-nav ul {
     gap: 10px;
   }
