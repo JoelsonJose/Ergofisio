@@ -582,7 +582,8 @@ section {
 
 .students-badges {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
 }
 
@@ -2021,7 +2022,7 @@ section {
   }
   
   .students-badges {
-    justify-content: center;
+    align-items: center;
   }
   
   .hero-visual {
