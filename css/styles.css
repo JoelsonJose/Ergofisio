@@ -509,28 +509,27 @@ section {
 
 .hero-stats {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 32px;
+  flex-direction: column;
+  gap: 16px;
   border-top: 1px solid rgba(46, 107, 74, 0.1);
   padding-top: 24px;
   margin-top: 32px;
   width: 100%;
 }
 
-.team-info-container {
+.team-visual-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  flex: 1;
+  align-items: center;
+  gap: 32px;
 }
 
 .team-photos-container {
   display: flex;
   gap: 16px;
   align-items: center;
-  flex-shrink: 0;
+  justify-content: center;
+  width: 100%;
 }
 
 .team-photo-wrapper {
@@ -559,9 +558,9 @@ section {
 
 .stat-item {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
 }
 
 .stat-num {
@@ -576,6 +575,7 @@ section {
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: var(--primary);
+  min-width: 120px;
 }
 
 .students-badges {
@@ -1989,22 +1989,17 @@ section {
   
   .hero-stats {
     width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
     border-top: 1px solid rgba(46, 107, 74, 0.08);
     padding-top: 24px;
     margin-top: 12px;
   }
   
-  .team-info-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .team-visual-container {
     width: 100%;
-    gap: 16px;
+    flex-direction: column;
+    gap: 24px;
   }
-  
+
   .team-photos-container {
     justify-content: center;
     width: 100%;
@@ -2016,8 +2011,10 @@ section {
   }
   
   .stat-item {
+    flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 8px;
   }
   
   .students-badges {
