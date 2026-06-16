@@ -1768,8 +1768,11 @@ section {
   backdrop-filter: blur(8px);
   z-index: 1200;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Enable scrolling starting from top on overflow */
   justify-content: center;
+  overflow-y: auto; /* Permit vertical scrolling */
+  padding: 40px 16px;
+  box-sizing: border-box;
   opacity: 0;
   visibility: hidden;
   transition: var(--transition-normal);
@@ -1782,12 +1785,14 @@ section {
 
 .exercise-timer-card {
   background-color: var(--white);
-  width: 90%;
+  width: 100%;
   max-width: 440px;
   border-radius: var(--radius-lg);
   padding: 32px;
   position: relative;
   box-shadow: var(--shadow-lg);
+  margin: auto; /* Centers card vertically and horizontally, handles overflow gracefully */
+  box-sizing: border-box;
 }
 
 .close-exercise-timer-btn {
@@ -2468,5 +2473,58 @@ section {
   .break-timer-btn {
     padding: 10px 14px !important;
     border-radius: var(--radius-sm);
+  }
+}
+
+/* 8. Vertical Responsiveness for Short Screen Heights (Laptops/Tablets) */
+@media (max-height: 750px) {
+  .exercise-timer-card {
+    padding: 20px !important;
+  }
+  
+  .exercise-timer-visual-area {
+    margin: 16px 0 !important;
+  }
+  
+  #exercise-3d-mannequin-container {
+    height: 150px !important;
+    margin-bottom: 16px !important;
+  }
+  
+  .ex-countdown-wheel {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  
+  .ex-countdown-number {
+    font-size: 2rem !important;
+  }
+  
+  .exercise-timer-title {
+    font-size: 1.2rem !important;
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .exercise-timer-tips {
+    padding: 8px 12px !important;
+    font-size: 0.75rem !important;
+  }
+  
+  /* Relaxation modal elements scaling */
+  #relaxation-timer-modal .ex-countdown-wheel {
+    width: 130px !important;
+    height: 130px !important;
+    margin-bottom: 10px !important;
+  }
+  
+  #relaxation-timer-modal .ex-countdown-number {
+    font-size: 2.8rem !important;
+  }
+  
+  #relax-phase-text {
+    margin-bottom: 1rem !important;
+    font-size: 1.4rem !important;
+    min-height: auto !important;
   }
 }
