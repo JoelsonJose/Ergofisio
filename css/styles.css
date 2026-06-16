@@ -2420,7 +2420,7 @@ section {
   padding: 12px 20px;
   border-radius: 50px;
   box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
-  z-index: 9999;
+  z-index: 900;
   font-weight: 600;
   font-size: 0.9rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2445,7 +2445,7 @@ section {
 }
 
 /* Intermediate screen adjustments to prevent nav collision */
-@media (min-width: 1025px) and (max-width: 1400px) {
+@media (min-width: 1025px) and (max-width: 1600px) {
   .desktop-nav ul {
     gap: 10px;
   }
