@@ -2446,7 +2446,7 @@ section {
 
 /* Smoothly shift the Spotify FAB up when the Lembrete de Pausa modal is open */
 .timer-widget-modal.active ~ .spotify-fab {
-  bottom: 420px;
+  bottom: 510px;
 }
 
 /* Intermediate screen adjustments to prevent nav collision */
