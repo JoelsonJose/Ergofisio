@@ -560,7 +560,7 @@ section {
 .stat-item {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
 }
 
@@ -577,6 +577,7 @@ section {
   letter-spacing: 0.8px;
   color: var(--primary);
   min-width: 120px;
+  padding-top: 7px;
 }
 
 .students-badges {
