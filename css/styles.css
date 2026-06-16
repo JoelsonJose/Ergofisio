@@ -551,7 +551,7 @@ section {
 }
 
 .team-photo-img {
-  max-height: 140px;
+  max-height: 200px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -2012,7 +2012,7 @@ section {
   }
 
   .team-photo-img {
-    max-height: 120px;
+    max-height: 180px;
   }
   
   .stat-item {
