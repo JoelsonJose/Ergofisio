@@ -2420,7 +2420,7 @@ section {
   padding: 12px 20px;
   border-radius: 50px;
   box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
-  z-index: 900;
+  z-index: 1001; /* High enough to float on top of modal card if needed */
   font-weight: 600;
   font-size: 0.9rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2442,6 +2442,11 @@ section {
 
 .spotify-fab-icon svg {
   display: block;
+}
+
+/* Smoothly shift the Spotify FAB up when the Lembrete de Pausa modal is open */
+.timer-widget-modal.active ~ .spotify-fab {
+  bottom: 420px;
 }
 
 /* Intermediate screen adjustments to prevent nav collision */
